@@ -162,3 +162,7 @@ def test_exec():
     assert format_code("exec     a") == "exec a"
     assert format_code("exec     a         in       b") == "exec a in b"
     assert format_code("exec     a         in       b       ,      c") == "exec a in b, c"
+
+
+def test_global():
+    assert format_code("global     a") == "global a"

@@ -425,8 +425,7 @@ def exec_(node):
 
 @node()
 def global_(node):
-    yield "global"
-    yield dump_node_list(node["formatting"])
+    yield "global "
     yield dump_node_list(node["value"])
 
 
