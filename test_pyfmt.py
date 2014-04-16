@@ -166,3 +166,7 @@ def test_exec():
 
 def test_global():
     assert format_code("global     a") == "global a"
+
+
+def test_while():
+    assert format_code("while    a     :\n    pass") == "while a:\n    pass\n"

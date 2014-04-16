@@ -431,12 +431,9 @@ def global_(node):
 
 @node()
 def while_(node):
-    yield "while"
-    yield dump_node_list(node["first_formatting"])
+    yield "while "
     yield dump_node(node["test"])
-    yield dump_node_list(node["second_formatting"])
     yield ":"
-    yield dump_node_list(node["third_formatting"])
     yield dump_node_list(node["value"])
     if node["else"]:
         yield dump_node(node["else"])
