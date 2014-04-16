@@ -140,16 +140,13 @@ def class_(node):
     if node["parenthesis"]:
         yield ")"
     yield ":"
-    print node["sixth_formatting"]
     yield dump_node_list(node["value"])
 
 
 @node()
 def repr(node):
     yield "`"
-    yield dump_node_list(node["first_formatting"])
     yield dump_node_list(node["value"])
-    yield dump_node_list(node["second_formatting"])
     yield "`"
 
 

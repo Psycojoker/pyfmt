@@ -30,3 +30,7 @@ def test_class_simple():
     assert format_code("class     A  (   ) :\n    pass") == "class A():\n    pass\n"
     assert format_code("class     A  ( zob  ) :\n    pass") == "class A(zob):\n    pass\n"
     assert format_code("class     A  ( zob    , plop  ) :\n    pass") == "class A(zob, plop):\n    pass\n"
+
+
+def test_repr():
+    assert format_code("`   a  `") == "`a`"
