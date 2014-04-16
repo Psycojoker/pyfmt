@@ -398,8 +398,8 @@ def del_(node):
 @node()
 def yield_(node):
     yield "yield"
-    yield dump_node_list(node["formatting"])
     if node["value"]:
+        yield " "
         yield dump_node(node["value"])
 
 

@@ -147,3 +147,8 @@ def test_with_as():
 
 def test_del():
     assert format_code("del     a") == "del a"
+
+
+def test_yield():
+    assert format_code("yield") == "yield"
+    assert format_code("yield            a") == "yield a"
