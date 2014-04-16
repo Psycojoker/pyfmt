@@ -15,3 +15,7 @@ def test_ellipsis():
 
 def test_dot():
     assert format_code("a .    b") == "a.b"
+
+
+def test_comma():
+    assert format_code("a   ,     c") == "a, c"

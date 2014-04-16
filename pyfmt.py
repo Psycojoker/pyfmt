@@ -111,9 +111,7 @@ def semicolon(node):
 
 @node()
 def comma(node):
-    yield dump_node_list(node["first_formatting"])
-    yield ","
-    yield dump_node_list(node["second_formatting"])
+    yield ", "
 
 
 @node()
