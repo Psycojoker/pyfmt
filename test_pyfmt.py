@@ -83,3 +83,7 @@ def test_raise():
 def test_assert():
     assert format_code("assert    a") == "assert a"
     assert format_code("assert    a         ,   b") == "assert a, b"
+
+
+def test_set_comprehension():
+    assert format_code("{  x      for  x     in     x   }") == "{x for x in x}"
