@@ -19,3 +19,7 @@ def test_dot():
 
 def test_comma():
     assert format_code("a   ,     c") == "a, c"
+
+
+def test_call():
+    assert format_code("a  (    b    	)") == "a(b)"
