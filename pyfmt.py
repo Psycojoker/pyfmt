@@ -345,12 +345,11 @@ def slice(node):
 @node()
 def assignment(node):
     yield dump_node(node["target"])
-    yield dump_node_list(node["first_formatting"])
+    yield " "
     if node.get("operator"):
         # FIXME should probably be a different node type
         yield node["operator"]
-    yield "="
-    yield dump_node_list(node["second_formatting"])
+    yield "= "
     yield dump_node(node["value"])
 
 

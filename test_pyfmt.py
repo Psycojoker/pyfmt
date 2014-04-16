@@ -107,3 +107,7 @@ def test_if_comprehension():
 
 def test_getitem():
     assert format_code("a[  b  ]") == "a[b]"
+
+
+def test_assignement():
+    assert format_code("a     =        b") == "a = b"
