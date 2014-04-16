@@ -461,12 +461,9 @@ def if_(node):
 
 @node()
 def elif_(node):
-    yield "elif"
-    yield dump_node_list(node["first_formatting"])
+    yield "elif "
     yield dump_node(node["test"])
-    yield dump_node_list(node["second_formatting"])
     yield ":"
-    yield dump_node_list(node["third_formatting"])
     yield dump_node_list(node["value"])
 
 
