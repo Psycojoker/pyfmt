@@ -284,14 +284,10 @@ def argument_generator_comprehension(node):
 
 @node()
 def generator_comprehension(node):
-    yield dump_node_list(node["first_formatting"])
     yield "("
-    yield dump_node_list(node["second_formatting"])
     yield dump_node(node["result"])
     yield dump_node_list(node["generators"])
-    yield dump_node_list(node["third_formatting"])
     yield ")"
-    yield dump_node_list(node["fourth_formatting"])
 
 
 @node()
