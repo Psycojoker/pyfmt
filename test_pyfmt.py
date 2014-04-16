@@ -174,3 +174,7 @@ def test_while():
 
 def test_for():
     assert format_code("for    a    in    b    :\n    pass") == "for a in b:\n    pass\n"
+
+
+def test_if():
+    assert format_code("if    a   :\n    pass") == "if a:\n    pass\n"

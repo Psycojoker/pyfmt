@@ -453,12 +453,9 @@ def for_(node):
 
 @node()
 def if_(node):
-    yield "if"
-    yield dump_node_list(node["first_formatting"])
+    yield "if "
     yield dump_node(node["test"])
-    yield dump_node_list(node["second_formatting"])
     yield ":"
-    yield dump_node_list(node["third_formatting"])
     yield dump_node_list(node["value"])
 
 
