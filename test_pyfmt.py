@@ -111,3 +111,7 @@ def test_getitem():
 
 def test_assignement():
     assert format_code("a     =        b") == "a = b"
+
+
+def test_augassign():
+    assert format_code("a     +=    b") == "a += b"
