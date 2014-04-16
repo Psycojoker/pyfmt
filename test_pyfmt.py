@@ -34,3 +34,7 @@ def test_class_simple():
 
 def test_repr():
     assert format_code("`   a  `") == "`a`"
+
+
+def test_list():
+    assert format_code("[ a  ,    b  ,    c    ]") == "[a, b, c]"
