@@ -103,3 +103,7 @@ def test_list_comprehension():
 
 def test_if_comprehension():
     assert format_code("[  x      for  x     in     x      if      x]") == "[x for x in x if x]"
+
+
+def test_getitem():
+    assert format_code("a[  b  ]") == "a[b]"
