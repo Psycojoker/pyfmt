@@ -119,3 +119,19 @@ def test_augassign():
 
 def test_unitary_operator():
     assert format_code("-   a") == "-a"
+
+
+def test_binary_operator():
+    assert format_code("a     +                  b") == "a + b"
+
+
+def test_comparison():
+    assert format_code("a   >     b") == "a > b"
+
+
+def test_boolean_operator():
+    assert format_code("a     and        b") == "a and b"
+
+
+def test_not_in():
+    assert format_code("a     not    in      b") == "a not in b"

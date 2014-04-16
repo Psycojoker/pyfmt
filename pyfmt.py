@@ -364,14 +364,12 @@ def unitary_operator(node):
 @node("comparison")
 def binary_operator(node):
     yield dump_node(node["first"])
-    yield dump_node_list(node["first_formatting"])
-    if node["value"] == "not in":  # FIXME ugly :(
-        yield "not"
-        yield dump_node_list(node["middle_formatting"])
-        yield "in"
+    yield " "
+    if node["value"] == "not in": 
+        yield "not in"
     else:
         yield node["value"]
-    yield dump_node_list(node["second_formatting"])
+    yield " "
     yield dump_node(node["second"])
 
 
