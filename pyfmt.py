@@ -187,9 +187,7 @@ def funcdef(node):
 def call_argument(node):
     if node["name"]:
         yield node["name"]
-        yield dump_node_list(node["first_formatting"])
         yield "="
-        yield dump_node_list(node["second_formatting"])
         yield dump_node(node["value"])
     else:
         yield dump_node(node["value"])

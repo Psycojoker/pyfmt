@@ -51,3 +51,7 @@ def test_tuple():
 
 def test_funcdef():
     assert format_code("def  a   (    )   :\n    pass") == "def a():\n    pass\n"
+
+
+def test_call_argument():
+    assert format_code("a(  b   =      c )") == "a(b=c)"
