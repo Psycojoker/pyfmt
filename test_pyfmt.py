@@ -55,3 +55,7 @@ def test_funcdef():
 
 def test_call_argument():
     assert format_code("a(  b   =      c )") == "a(b=c)"
+
+
+def test_def_arguments():
+    assert format_code("def a(   b       =False):\n    pass") == "def a(b=False):\n    pass\n"

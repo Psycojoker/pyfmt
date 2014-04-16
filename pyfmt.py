@@ -197,9 +197,7 @@ def call_argument(node):
 def def_argument(node):
     if node["value"]:
         yield node["name"]
-        yield dump_node_list(node["first_formatting"])
         yield "="
-        yield dump_node_list(node["second_formatting"])
         yield dump_node(node["value"])
     elif isinstance(node["name"], basestring):
         yield node["name"]
