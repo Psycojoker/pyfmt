@@ -243,13 +243,10 @@ def raise_(node):
 
 @node()
 def assert_(node):
-    yield "assert"
-    yield dump_node_list(node["first_formatting"])
+    yield "assert "
     yield dump_node(node["value"])
     if node["message"]:
-        yield dump_node_list(node["second_formatting"])
-        yield ","
-        yield dump_node_list(node["third_formatting"])
+        yield ", "
         yield dump_node(node["message"])
 
 

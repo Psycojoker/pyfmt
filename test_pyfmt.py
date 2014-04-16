@@ -78,3 +78,8 @@ def test_raise():
     assert format_code("raise      Exception()") == "raise Exception()"
     assert format_code("raise      Exception()  ,     b") == "raise Exception(), b"
     assert format_code("raise      Exception()  ,     b    ,     c") == "raise Exception(), b, c"
+
+
+def test_assert():
+    assert format_code("assert    a") == "assert a"
+    assert format_code("assert    a         ,   b") == "assert a, b"
