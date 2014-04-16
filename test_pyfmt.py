@@ -182,3 +182,7 @@ def test_if():
 
 def test_elif():
     assert format_code("if    a   :\n    pass\nelif     b    :\n    pass\n") == "if a:\n    pass\nelif b:\n    pass\n"
+
+
+def test_else():
+    assert format_code("if    a   :\n    pass\nelse     :\n    pass\n") == "if a:\n    pass\nelse:\n    pass\n"

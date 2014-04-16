@@ -469,10 +469,7 @@ def elif_(node):
 
 @node()
 def else_(node):
-    yield "else"
-    yield dump_node_list(node["first_formatting"])
-    yield ":"
-    yield dump_node_list(node["second_formatting"])
+    yield "else:"
     yield dump_node_list(node["value"])
 
 
