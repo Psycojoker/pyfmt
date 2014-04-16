@@ -99,3 +99,7 @@ def test_generator_comprehension():
 
 def test_list_comprehension():
     assert format_code("[  x      for  x     in     x   ]") == "[x for x in x]"
+
+
+def test_if_comprehension():
+    assert format_code("[  x      for  x     in     x      if      x]") == "[x for x in x if x]"

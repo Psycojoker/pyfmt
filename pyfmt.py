@@ -313,9 +313,7 @@ def comprehension_loop(node):
 
 @node()
 def comprehension_if(node):
-    yield dump_node_list(node["first_formatting"])
-    yield "if"
-    yield dump_node_list(node["second_formatting"])
+    yield " if "
     yield dump_node(node["value"])
 
 
