@@ -170,3 +170,7 @@ def test_global():
 
 def test_while():
     assert format_code("while    a     :\n    pass") == "while a:\n    pass\n"
+
+
+def test_for():
+    assert format_code("for    a    in    b    :\n    pass") == "for a in b:\n    pass\n"

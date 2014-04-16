@@ -441,16 +441,11 @@ def while_(node):
 
 @node()
 def for_(node):
-    yield "for"
-    yield dump_node_list(node["first_formatting"])
+    yield "for "
     yield dump_node(node["iterator"])
-    yield dump_node_list(node["second_formatting"])
-    yield "in"
-    yield dump_node_list(node["third_formatting"])
+    yield " in "
     yield dump_node(node["target"])
-    yield dump_node_list(node["fourth_formatting"])
     yield ":"
-    yield dump_node_list(node["fifth_formatting"])
     yield dump_node_list(node["value"])
     if node["else"]:
         yield dump_node(node["else"])
