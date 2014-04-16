@@ -93,11 +93,7 @@ def comment(node):
 
 @node()
 def ellipsis(node):
-    yield "."
-    yield dump_node_list(node["first_formatting"])
-    yield "."
-    yield dump_node_list(node["second_formatting"])
-    yield "."
+    yield "..."
 
 
 @node()

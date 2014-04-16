@@ -7,3 +7,7 @@ def test_empty():
 
 def test_ternary_operator():
     assert format_code("a  if   b     	 else        c") == "a if b else c"
+
+
+def test_ellipsis():
+    assert format_code("a[.  .    .]") == "a[...]"
