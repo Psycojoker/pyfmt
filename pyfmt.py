@@ -375,12 +375,9 @@ def binary_operator(node):
 
 @node()
 def with_(node):
-    yield "with"
-    yield dump_node_list(node["first_formatting"])
+    yield "with "
     yield dump_node_list(node["contexts"])
-    yield dump_node_list(node["second_formatting"])
     yield ":"
-    yield dump_node_list(node["third_formatting"])
     yield dump_node_list(node["value"])
 
 

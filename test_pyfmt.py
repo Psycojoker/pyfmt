@@ -135,3 +135,7 @@ def test_boolean_operator():
 
 def test_not_in():
     assert format_code("a     not    in      b") == "a not in b"
+
+
+def test_with():
+    assert format_code("with     a     :\n    pass") == "with a:\n    pass\n"
