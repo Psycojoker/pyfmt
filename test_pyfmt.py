@@ -139,3 +139,7 @@ def test_not_in():
 
 def test_with():
     assert format_code("with     a     :\n    pass") == "with a:\n    pass\n"
+
+
+def test_with_as():
+    assert format_code("with     a     as   b    :\n    pass") == "with a as b:\n    pass\n"
