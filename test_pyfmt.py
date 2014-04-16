@@ -42,3 +42,8 @@ def test_list():
 
 def test_associative_parenthesis():
     assert format_code("(    b  )") == "(b)"
+
+
+def test_tuple():
+    assert format_code("a   ,  b") == "a, b"
+    assert format_code("(  a   ,  b     )") == "(a, b)"

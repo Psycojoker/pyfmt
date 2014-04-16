@@ -167,14 +167,10 @@ def associative_parenthesis(node):
 @node()
 def tuple_(node):
     if node["with_parenthesis"]:
-        yield dump_node_list(node["first_formatting"])
         yield "("
-        yield dump_node_list(node["second_formatting"])
     yield dump_node_list(node["value"])
     if node["with_parenthesis"]:
-        yield dump_node_list(node["third_formatting"])
         yield ")"
-        yield dump_node_list(node["fourth_formatting"])
 
 
 @node()
