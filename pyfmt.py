@@ -220,8 +220,8 @@ def dict_argument(node):
 @node()
 def return_(node):
     yield "return"
-    yield dump_node_list(node["formatting"])
     if node["value"]:
+        yield " "
         yield dump_node(node["value"])
 
 
