@@ -413,18 +413,13 @@ def yield_atom(node):
 
 @node()
 def exec_(node):
-    yield "exec"
-    yield dump_node_list(node["first_formatting"])
+    yield "exec "
     yield dump_node(node["value"])
     if node["globals"]:
-        yield dump_node_list(node["second_formatting"])
-        yield "in"
-        yield dump_node_list(node["third_formatting"])
+        yield " in "
         yield dump_node(node["globals"])
     if node["locals"]:
-        yield dump_node_list(node["fourth_formatting"])
-        yield ","
-        yield dump_node_list(node["fifth_formatting"])
+        yield ", "
         yield dump_node(node["locals"])
 
 

@@ -156,3 +156,9 @@ def test_yield():
 
 def test_yield_atom():
     assert format_code("a = (        yield     a    )") == "a = (yield a)"
+
+
+def test_exec():
+    assert format_code("exec     a") == "exec a"
+    assert format_code("exec     a         in       b") == "exec a in b"
+    assert format_code("exec     a         in       b       ,      c") == "exec a in b, c"
