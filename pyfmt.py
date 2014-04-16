@@ -722,7 +722,7 @@ def dumps(tree):
     return "".join(map(dump_node, tree))
 
 
-def format(source_code):
+def format_code(source_code):
     return dumps(baron.parse(source_code))
 
 
@@ -736,7 +736,7 @@ def main():
         sys.stderr.write("Error: the file '%s' does not exist.\n" % args.file_name)
         sys.exit(1)
 
-    sys.stdout.write(format(open(args.file_name, "r").read()))
+    sys.stdout.write(format_code(open(args.file_name, "r").read()))
 
 
 if __name__ == '__main__':
