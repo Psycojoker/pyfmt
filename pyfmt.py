@@ -132,20 +132,15 @@ def decorator(node):
 @node()
 def class_(node):
     yield dump_node_list(node["decorators"])
-    yield "class"
-    yield dump_node_list(node["first_formatting"])
+    yield "class "
     yield node["name"]
-    yield dump_node_list(node["second_formatting"])
     if node["parenthesis"]:
         yield "("
-    yield dump_node_list(node["third_formatting"])
     yield dump_node_list(node["inherit_from"])
-    yield dump_node_list(node["fourth_formatting"])
     if node["parenthesis"]:
         yield ")"
-    yield dump_node_list(node["fifth_formatting"])
     yield ":"
-    yield dump_node_list(node["sixth_formatting"])
+    print node["sixth_formatting"]
     yield dump_node_list(node["value"])
 
 
