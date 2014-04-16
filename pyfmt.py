@@ -356,7 +356,6 @@ def assignment(node):
 @node()
 def unitary_operator(node):
     yield node["value"]
-    yield dump_node_list(node["formatting"])
     yield dump_node(node["target"])
 
 

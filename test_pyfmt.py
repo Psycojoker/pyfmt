@@ -115,3 +115,7 @@ def test_assignement():
 
 def test_augassign():
     assert format_code("a     +=    b") == "a += b"
+
+
+def test_unitary_operator():
+    assert format_code("-   a") == "-a"
