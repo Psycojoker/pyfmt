@@ -59,3 +59,7 @@ def test_call_argument():
 
 def test_def_arguments():
     assert format_code("def a(   b       =False):\n    pass") == "def a(b=False):\n    pass\n"
+
+
+def test_def_arguments_list_argument():
+    assert format_code("def a(  * b  ):\n    pass") == "def a(*b):\n    pass\n"
