@@ -737,3 +737,7 @@ def main():
         sys.exit(1)
 
     sys.stdout.write(format(open(args.file_name, "r").read()))
+
+
+if __name__ == '__main__':
+    main()
