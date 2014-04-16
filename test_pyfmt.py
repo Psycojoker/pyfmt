@@ -47,3 +47,7 @@ def test_associative_parenthesis():
 def test_tuple():
     assert format_code("a   ,  b") == "a, b"
     assert format_code("(  a   ,  b     )") == "(a, b)"
+
+
+def test_funcdef():
+    assert format_code("def  a   (    )   :\n    pass") == "def a():\n    pass\n"

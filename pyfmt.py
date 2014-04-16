@@ -175,19 +175,11 @@ def tuple_(node):
 
 @node()
 def funcdef(node):
-    yield dump_node_list(node["decorators"])
-    yield "def"
-    yield dump_node_list(node["first_formatting"])
+    yield "def "
     yield node["name"]
-    yield dump_node_list(node["second_formatting"])
     yield "("
-    yield dump_node_list(node["third_formatting"])
     yield dump_node_list(node["arguments"])
-    yield dump_node_list(node["fourth_formatting"])
-    yield ")"
-    yield dump_node_list(node["fifth_formatting"])
-    yield ":"
-    yield dump_node_list(node["sixth_formatting"])
+    yield "):"
     yield dump_node_list(node["value"])
 
 
