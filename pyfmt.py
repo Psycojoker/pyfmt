@@ -159,13 +159,9 @@ def list_(node):
 
 @node()
 def associative_parenthesis(node):
-    yield dump_node_list(node["first_formatting"])
     yield "("
-    yield dump_node_list(node["second_formatting"])
     yield dump_node(node["value"])
-    yield dump_node_list(node["third_formatting"])
     yield ")"
-    yield dump_node_list(node["fourth_formatting"])
 
 
 @node()

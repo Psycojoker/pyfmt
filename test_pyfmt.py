@@ -38,3 +38,7 @@ def test_repr():
 
 def test_list():
     assert format_code("[ a  ,    b  ,    c    ]") == "[a, b, c]"
+
+
+def test_associative_parenthesis():
+    assert format_code("(    b  )") == "(b)"
