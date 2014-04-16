@@ -72,3 +72,9 @@ def test_def_arguments_dict_argument():
 def test_return():
     assert format_code("return") == "return"
     assert format_code("return     a") == "return a"
+
+
+def test_raise():
+    assert format_code("raise      Exception()") == "raise Exception()"
+    assert format_code("raise      Exception()  ,     b") == "raise Exception(), b"
+    assert format_code("raise      Exception()  ,     b    ,     c") == "raise Exception(), b, c"

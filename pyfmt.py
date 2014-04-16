@@ -228,18 +228,16 @@ def return_(node):
 @node()
 def raise_(node):
     yield "raise"
-    yield dump_node_list(node["first_formatting"])
     if node["value"]:
+        yield " "
         yield dump_node(node["value"])
     if node["instance"]:
-        yield dump_node_list(node["second_formatting"])
         yield ","
-        yield dump_node_list(node["third_formatting"])
+        yield " "
         yield dump_node(node["instance"])
     if node["traceback"]:
-        yield dump_node_list(node["fourth_formatting"])
         yield ","
-        yield dump_node_list(node["fifth_formatting"])
+        yield " "
         yield dump_node(node["traceback"])
 
 
