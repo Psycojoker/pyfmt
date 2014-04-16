@@ -11,3 +11,7 @@ def test_ternary_operator():
 
 def test_ellipsis():
     assert format_code("a[.  .    .]") == "a[...]"
+
+
+def test_dot():
+    assert format_code("a .    b") == "a.b"

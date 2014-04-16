@@ -98,9 +98,7 @@ def ellipsis(node):
 
 @node()
 def dot(node):
-    yield dump_node_list(node["first_formatting"])
     yield "."
-    yield dump_node_list(node["second_formatting"])
 
 
 @node()
