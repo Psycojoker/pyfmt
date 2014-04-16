@@ -87,3 +87,7 @@ def test_assert():
 
 def test_set_comprehension():
     assert format_code("{  x      for  x     in     x   }") == "{x for x in x}"
+
+
+def test_dict_comprehension():
+    assert format_code("{  x    :  z      for  x     in     x   }") == "{x: z for x in x}"

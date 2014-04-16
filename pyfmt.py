@@ -268,18 +268,12 @@ def set_comprehension(node):
 
 @node()
 def dict_comprehension(node):
-    yield dump_node_list(node["first_formatting"])
     yield "{"
-    yield dump_node_list(node["second_formatting"])
     yield dump_node(node["result"]["key"])
-    yield dump_node_list(node["result"]["first_formatting"])
-    yield ":"
-    yield dump_node_list(node["result"]["second_formatting"])
+    yield ": "
     yield dump_node(node["result"]["value"])
     yield dump_node_list(node["generators"])
-    yield dump_node_list(node["third_formatting"])
     yield "}"
-    yield dump_node_list(node["fourth_formatting"])
 
 
 @node()
@@ -315,13 +309,9 @@ def list_comprehension(node):
 @node()
 def comprehension_loop(node):
     "for x in x"
-    yield dump_node_list(node["first_formatting"])
-    yield "for"
-    yield dump_node_list(node["second_formatting"])
+    yield " for "
     yield dump_node(node["iterator"])
-    yield dump_node_list(node["third_formatting"])
-    yield "in"
-    yield dump_node_list(node["fourth_formatting"])
+    yield " in "
     if isinstance(node["target"], list):
         yield dump_node_list(node["target"])
     else:
@@ -604,9 +594,7 @@ def dict_or_set(node):
 @node()
 def dictitem(node):
     yield dump_node(node["key"])
-    yield dump_node_list(node["first_formatting"])
-    yield ":"
-    yield dump_node_list(node["second_formatting"])
+    yield ": "
     yield dump_node(node["value"])
 
 
