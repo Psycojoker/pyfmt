@@ -143,3 +143,7 @@ def test_with():
 
 def test_with_as():
     assert format_code("with     a     as   b    :\n    pass") == "with a as b:\n    pass\n"
+
+
+def test_del():
+    assert format_code("del     a") == "del a"

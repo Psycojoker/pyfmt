@@ -391,8 +391,7 @@ def with_context_item(node):
 
 @node()
 def del_(node):
-    yield "del"
-    yield dump_node_list(node["formatting"])
+    yield "del "
     yield dump_node(node["value"])
 
 
