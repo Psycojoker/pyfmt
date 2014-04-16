@@ -152,3 +152,7 @@ def test_del():
 def test_yield():
     assert format_code("yield") == "yield"
     assert format_code("yield            a") == "yield a"
+
+
+def test_yield_atom():
+    assert format_code("a = (        yield     a    )") == "a = (yield a)"
