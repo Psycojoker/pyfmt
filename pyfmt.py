@@ -77,6 +77,7 @@ def get_type(node):
 @node("binary_raw_string")
 @node("unicode_raw_string")
 def generic(node):
+    # TODO
     yield dump_node_list(node["first_formatting"])
     yield node["value"]
     yield dump_node_list(node["second_formatting"])
