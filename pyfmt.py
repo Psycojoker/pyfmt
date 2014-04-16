@@ -722,16 +722,18 @@ def dumps(tree):
     return "".join(map(dump_node, tree))
 
 
-parser = argparse.ArgumentParser(description='Auto format a python file following the pep8 convention.')
-parser.add_argument('file_name', metavar='file_name', type=str, help='file name')
-parser.add_argument('-i', dest='in_place', action='store_true', default=False, help='in place modification, like sed')
+def format(source_code):
+    return dumps(baron.parse(source_code))
 
 
-if __name__ == '__main__':
+def main():
+    parser = argparse.ArgumentParser(description='Auto format a python file following the pep8 convention.')
+    parser.add_argument('file_name', metavar='file_name', type=str, help='file name')
+    parser.add_argument('-i', dest='in_place', action='store_true', default=False, help='in place modification, like sed')
+
     args = parser.parse_args()
     if not os.path.exists(args.file_name):
         sys.stderr.write("Error: the file '%s' does not exist.\n" % args.file_name)
         sys.exit(1)
 
-    sys.stdout.write(dumps(baron.parse(open(args.file_name, "r").read())))
-    sys.stdout.write("\n")
+    sys.stdout.write(format(open(args.file_name, "r").read()))
