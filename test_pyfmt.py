@@ -186,3 +186,8 @@ def test_elif():
 
 def test_else():
     assert format_code("if    a   :\n    pass\nelse     :\n    pass\n") == "if a:\n    pass\nelse:\n    pass\n"
+
+
+def test_lambda():
+    assert format_code("lambda            :       a") == "lambda: a"
+    assert format_code("lambda   a         :    a") == "lambda a: a"
