@@ -485,10 +485,7 @@ def lambda_(node):
 
 @node()
 def try_(node):
-    yield "try"
-    yield dump_node_list(node["first_formatting"])
-    yield ":"
-    yield dump_node_list(node["second_formatting"])
+    yield "try:"
     yield dump_node_list(node["value"])
     yield dump_node_list(node["excepts"])
     if node["else"]:

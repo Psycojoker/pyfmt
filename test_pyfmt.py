@@ -191,3 +191,7 @@ def test_else():
 def test_lambda():
     assert format_code("lambda            :       a") == "lambda: a"
     assert format_code("lambda   a         :    a") == "lambda a: a"
+
+
+def test_try():
+    assert format_code("try     :\n    pass\nexcept:\n    pass\n") == "try:\n    pass\nexcept:\n    pass\n"
