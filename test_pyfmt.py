@@ -218,3 +218,7 @@ def test_dict():
 def test_import():
     assert format_code("import           a") == "import a"
     assert format_code("import           a    ,      b      ,     d") == "import a, b, d"
+
+
+def test_import_dot():
+    assert format_code("import a  .  b  .  c") == "import a.b.c"
