@@ -226,3 +226,8 @@ def test_import_dot():
 
 def test_from_import():
     assert format_code("from  .  a   import   b  , c") == "from .a import b, c"
+
+
+def test_import_as():
+    assert format_code("import a       as      b") == "import a as b"
+    assert format_code("from c import a     as    b") == "from c import a as b"

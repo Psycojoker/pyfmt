@@ -549,9 +549,7 @@ def from_import(node):
 def dotted_as_name(node):
     yield dump_node_list(node["value"]["value"])
     if node["as"]:
-        yield dump_node_list(node["first_formatting"])
-        yield "as"
-        yield dump_node_list(node["second_formatting"])
+        yield " as "
         yield node["target"]
 
 
@@ -559,9 +557,7 @@ def dotted_as_name(node):
 def name_as_name(node):
     yield node["value"]
     if node["as"]:
-        yield dump_node_list(node["first_formatting"])
-        yield "as"
-        yield dump_node_list(node["second_formatting"])
+        yield " as "
         yield node["target"]
 
 
