@@ -519,13 +519,9 @@ def finally_(node):
 @node("dict")
 @node("set")
 def dict_or_set(node):
-    yield dump_node_list(node["first_formatting"])
     yield "{"
-    yield dump_node_list(node["second_formatting"])
     yield dump_node_list(node["value"])
-    yield dump_node_list(node["third_formatting"])
     yield "}"
-    yield dump_node_list(node["fourth_formatting"])
 
 
 @node()

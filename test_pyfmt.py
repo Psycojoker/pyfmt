@@ -207,3 +207,9 @@ def test_except():
 
 def test_finally():
     assert format_code("try:\n    pass\nfinally    :\n    pass\n") == "try:\n    pass\nfinally:\n    pass\n"
+
+
+def test_dict():
+    assert format_code("{       }") == "{}"
+    assert format_code("{     a   :    b     }") == "{a: b}"
+    assert format_code("{     a   :    b        ,   c   :    d     }") == "{a: b, c: d}"
