@@ -202,3 +202,8 @@ def test_except():
     assert format_code("try:\n    pass\nexcept   a   :\n    pass\n") == "try:\n    pass\nexcept a:\n    pass\n"
     assert format_code("try:\n    pass\nexcept   a     ,    b  :\n    pass\n") == "try:\n    pass\nexcept a, b:\n    pass\n"
     assert format_code("try:\n    pass\nexcept   a     as    b  :\n    pass\n") == "try:\n    pass\nexcept a as b:\n    pass\n"
+
+
+
+def test_finally():
+    assert format_code("try:\n    pass\nfinally    :\n    pass\n") == "try:\n    pass\nfinally:\n    pass\n"

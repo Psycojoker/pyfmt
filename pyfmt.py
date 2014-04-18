@@ -512,10 +512,7 @@ def except_(node):
 
 @node()
 def finally_(node):
-    yield "finally"
-    yield dump_node_list(node["first_formatting"])
-    yield ":"
-    yield dump_node_list(node["second_formatting"])
+    yield "finally:"
     yield dump_node_list(node["value"])
 
 
