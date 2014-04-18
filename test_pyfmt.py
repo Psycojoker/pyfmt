@@ -213,3 +213,8 @@ def test_dict():
     assert format_code("{       }") == "{}"
     assert format_code("{     a   :    b     }") == "{a: b}"
     assert format_code("{     a   :    b        ,   c   :    d     }") == "{a: b, c: d}"
+
+
+def test_import():
+    assert format_code("import           a") == "import a"
+    assert format_code("import           a    ,      b      ,     d") == "import a, b, d"
