@@ -222,3 +222,7 @@ def test_import():
 
 def test_import_dot():
     assert format_code("import a  .  b  .  c") == "import a.b.c"
+
+
+def test_from_import():
+    assert format_code("from  .  a   import   b  , c") == "from .a import b, c"

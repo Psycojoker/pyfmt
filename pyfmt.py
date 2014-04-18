@@ -539,12 +539,9 @@ def import_(node):
 
 @node()
 def from_import(node):
-    yield "from"
-    yield dump_node_list(node["first_formatting"])
+    yield "from "
     yield dump_node(node["value"])
-    yield dump_node_list(node["second_formatting"])
-    yield "import"
-    yield dump_node_list(node["third_formatting"])
+    yield " import "
     yield dump_node_list(node["targets"])
 
 
