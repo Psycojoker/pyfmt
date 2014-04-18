@@ -195,3 +195,10 @@ def test_lambda():
 
 def test_try():
     assert format_code("try     :\n    pass\nexcept:\n    pass\n") == "try:\n    pass\nexcept:\n    pass\n"
+
+
+def test_except():
+    assert format_code("try:\n    pass\nexcept     :\n    pass\n") == "try:\n    pass\nexcept:\n    pass\n"
+    assert format_code("try:\n    pass\nexcept   a   :\n    pass\n") == "try:\n    pass\nexcept a:\n    pass\n"
+    assert format_code("try:\n    pass\nexcept   a     ,    b  :\n    pass\n") == "try:\n    pass\nexcept a, b:\n    pass\n"
+    assert format_code("try:\n    pass\nexcept   a     as    b  :\n    pass\n") == "try:\n    pass\nexcept a as b:\n    pass\n"

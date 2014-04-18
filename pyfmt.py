@@ -497,17 +497,16 @@ def try_(node):
 @node()
 def except_(node):
     yield "except"
-    yield dump_node_list(node["first_formatting"])
     if node["exception"]:
+        yield " "
         yield dump_node(node["exception"])
     if node["delimiteur"]:
-        yield dump_node_list(node["second_formatting"])
+        if node["delimiteur"] == "as":
+            yield " "
         yield node["delimiteur"]
-        yield dump_node_list(node["third_formatting"])
+        yield " "
         yield dump_node(node["target"])
-    yield dump_node_list(node["fourth_formatting"])
     yield ":"
-    yield dump_node_list(node["fifth_formatting"])
     yield dump_node_list(node["value"])
 
 
