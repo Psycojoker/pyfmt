@@ -231,3 +231,9 @@ def test_from_import():
 def test_import_as():
     assert format_code("import a       as      b") == "import a as b"
     assert format_code("from c import a     as    b") == "from c import a as b"
+
+
+def test_print():
+    assert format_code("print    a") == "print a"
+    assert format_code("print    >>    a   ,   b") == "print >>a, b"
+    assert format_code("print    >>    a   ,   b  ,  c  ,  d") == "print >>a, b, c, d"

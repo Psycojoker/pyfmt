@@ -564,12 +564,12 @@ def name_as_name(node):
 @node()
 def print_(node):
     yield "print"
-    yield dump_node_list(node["formatting"])
     if node["destination"]:
-        yield ">>"
-        yield dump_node_list(node["destination_formatting"])
+        yield " >>"
         yield dump_node(node["destination"])
     if node["value"]:
+        if node["value"][0]["type"] != "comma":
+            yield " "
         yield dump_node_list(node["value"])
 
 
