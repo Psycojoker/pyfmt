@@ -1,0 +1,8 @@
+language: python
+install:
+  - pip install -r requirements.txt
+  - pip install py.test
+python:
+  - "2.7"
+script:
+  - py.test test_pyfmt.py
