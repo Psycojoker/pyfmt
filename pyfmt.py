@@ -581,6 +581,22 @@ def format_code(source_code):
     return dumps(baron.parse(source_code))
 
 
+def find(node_type, tree):
+    if isinstance(tree, dict):
+        if tree["type"] == node_type:
+            return tree
+        for i in tree.values():
+            result = find(node_type, i)
+            if result is not None:
+                return result
+    elif isinstance(tree, list):
+        for i in tree:
+            result = find(node_type, i)
+            if result is not None:
+                return result
+    return None
+
+
 def main():
     parser = argparse.ArgumentParser(description='Auto format a python file following the pep8 convention.')
     parser.add_argument('file_name', metavar='file_name', type=str, help='file name')

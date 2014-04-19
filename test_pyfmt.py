@@ -1,4 +1,5 @@
-from pyfmt import format_code
+import baron
+from pyfmt import format_code, find
 
 
 def test_empty():
@@ -204,7 +205,6 @@ def test_except():
     assert format_code("try:\n    pass\nexcept   a     as    b  :\n    pass\n") == "try:\n    pass\nexcept a as b:\n    pass\n"
 
 
-
 def test_finally():
     assert format_code("try:\n    pass\nfinally    :\n    pass\n") == "try:\n    pass\nfinally:\n    pass\n"
 
@@ -237,3 +237,44 @@ def test_print():
     assert format_code("print    a") == "print a"
     assert format_code("print    >>    a   ,   b") == "print >>a, b"
     assert format_code("print    >>    a   ,   b  ,  c  ,  d") == "print >>a, b, c, d"
+
+
+def test_find_endl_empty_string():
+    assert find('endl', "") == None
+
+
+def test_find_endl_dict_not_good():
+    assert find('endl', {'type': 'pouet'}) == None
+
+
+def test_find_endl_empty_list():
+    assert find('endl', []) == None
+
+
+def test_find_endl_list_not_good():
+    assert find('endl', [{'type': 'pouet'}]) == None
+
+
+def test_find_endl_dict_good():
+    assert find('endl', {'type': 'endl'}) == {'type': 'endl'}
+
+
+def test_find_endl_list_one():
+    assert find('endl', [{'type': 'endl'}]) == {'type': 'endl'}
+
+
+def test_find_endl_list_two():
+    assert find('endl', [{'type': 'not_endl'}, {'type': 'endl'}]) == {'type': 'endl'}
+
+
+def test_find_endl_first_one():
+    assert find('endl', [{'type': 'endl', 'stuff': 'is_the_first'}, {'type': 'endl'}]) == {'type': 'endl', 'stuff': 'is_the_first'}
+
+
+def test_find_endl_recursive():
+    assert find('endl', {'type': 'pouet', 'stuff': {'type': 'endl'}}) == {'type': 'endl'}
+    assert find('endl', {'type': 'pouet', 'stuff': [{'type': 'endl'}]}) == {'type': 'endl'}
+
+def test_find_endl_functionnal():
+    assert find('endl', baron.parse("[a, b, c]")[0]["value"]) == None
+    assert find('endl', baron.parse("[a, b,\n c]")[0]["value"]) == {'formatting': [], 'indent': ' ', 'type': 'endl', 'value': '\n'}
