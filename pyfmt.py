@@ -638,7 +638,11 @@ def main():
         sys.stderr.write("Error: the file '%s' does not exist.\n" % args.file_name)
         sys.exit(1)
 
-    sys.stdout.write(format_code(open(args.file_name, "r").read()))
+    if not args.in_place:
+        sys.stdout.write(format_code(open(args.file_name, "r").read()))
+    else:
+        result = format_code(open(args.file_name, "r").read())
+        open(args.file_name, "w").write(result)
 
 
 if __name__ == '__main__':
