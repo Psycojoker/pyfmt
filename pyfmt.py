@@ -179,7 +179,8 @@ class Dumper(object):
 
     def _dump_data_structure_body(self, node):
         if find('endl', node['value']):
-            return "".join(list(DataStructureDumper().dump_data_structure(content=node["value"], indent=self._current_indent)))
+            return "".join(list(self.dump_data_structure(content=node["value"],
+                                                         indent=self._current_indent)))
         else:
             return self.dump_node_list(node["value"])
 
@@ -603,7 +604,6 @@ class Dumper(object):
         return "".join(map(self.dump_node, tree))
 
 
-class DataStructureDumper(Dumper):
     def dump_data_structure(self, content, indent):
         yield "\n    " + indent
         to_yield = ""
