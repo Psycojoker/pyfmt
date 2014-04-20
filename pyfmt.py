@@ -195,7 +195,7 @@ class Dumper(object):
     def tuple_(self, node):
         if node["with_parenthesis"]:
             yield "("
-        yield self.dump_node_list(node["value"])
+        yield self._dump_data_structure_body(node)
         if node["with_parenthesis"]:
             yield ")"
 

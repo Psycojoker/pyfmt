@@ -303,3 +303,11 @@ def test_preserve_indent_in_dict_in_root():
 
 def test_preserve_indent_in_dict_indented():
     assert format_code("if a:\n    a = {\n        a,\n        b,\n    }") == "if a:\n    a = {\n        a,\n        b,\n    }\n"
+
+
+def test_preserve_indent_in_tuple_in_root():
+    assert format_code("(\n    a,\n    b,\n)") == "(\n    a,\n    b,\n)"
+
+
+def test_preserve_indent_in_tuple_indented():
+    assert format_code("if a:\n    a = (\n        a,\n        b,\n    )") == "if a:\n    a = (\n        a,\n        b,\n    )\n"
