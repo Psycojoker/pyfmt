@@ -607,6 +607,7 @@ class Dumper(object):
     def dump_data_structure(self, content, indent):
         yield "\n    " + indent
         to_yield = ""
+        self._current_indent = indent + "    "
         for i in content:
             if i["type"] != "comma":
                 to_yield += self.dump_node(i)
@@ -615,6 +616,7 @@ class Dumper(object):
         to_yield = to_yield.rstrip()
         yield to_yield
         yield "\n" + indent
+        self._current_indent = self._current_indent[:-4]
 
 
 def format_code(source_code):

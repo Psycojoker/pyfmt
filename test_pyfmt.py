@@ -311,3 +311,16 @@ def test_preserve_indent_in_tuple_in_root():
 
 def test_preserve_indent_in_tuple_indented():
     assert format_code("if a:\n    a = (\n        a,\n        b,\n    )") == "if a:\n    a = (\n        a,\n        b,\n    )\n"
+
+
+nested_data_structure = """
+a = [
+    {
+        a,
+        b,
+    },
+]
+"""
+
+def test_nested_data_structure():
+    assert format_code(nested_data_structure) == nested_data_structure
