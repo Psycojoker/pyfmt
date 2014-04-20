@@ -279,3 +279,11 @@ def test_find_endl_recursive():
 def test_find_endl_functionnal():
     assert find('endl', baron.parse("[a, b, c]")[0]["value"]) == None
     assert find('endl', baron.parse("[a, b,\n c]")[0]["value"]) == {'formatting': [], 'indent': ' ', 'type': 'endl', 'value': '\n'}
+
+
+def test_preserve_indent_in_list_in_root():
+    assert format_code("[\n    a,\n    b,\n]") == "[\n    a,\n    b,\n]"
+
+
+def test_preserve_indent_in_list_indented():
+    assert format_code("if a:\n    a = [\n        a,\n        b,\n    ]") == "if a:\n    a = [\n        a,\n        b,\n    ]\n"

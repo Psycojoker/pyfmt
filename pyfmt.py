@@ -40,6 +40,9 @@ def find(node_type, tree):
 
 
 class Dumper(object):
+    def __init__(self):
+        self._current_indent = ""  # we always start at the level 0
+
     def dump_node(self, node):
         return "".join(list(dumpers[node["type"]](self, node)))
 
@@ -50,6 +53,7 @@ class Dumper(object):
 
     @node()
     def endl(self, node):
+        self._current_indent = node["indent"]
         yield self.dump_node_list(node["formatting"])
         yield node["value"]
         yield node["indent"]
@@ -170,7 +174,10 @@ class Dumper(object):
     @node()
     def list_(self, node):
         yield "["
-        yield self.dump_node_list(node["value"])
+        if find('endl', node['value']):
+            yield "".join(list(DataStructureDumper().dump_data_structure(node=node, indent=self._current_indent)))
+        else:
+            yield self.dump_node_list(node["value"])
         yield "]"
 
 
@@ -592,6 +599,20 @@ class Dumper(object):
 
     def dumps(self, tree):
         return "".join(map(self.dump_node, tree))
+
+
+class DataStructureDumper(Dumper):
+    def dump_data_structure(self, node, indent):
+        yield "\n    " + indent
+        to_yield = ""
+        for i in node["value"]:
+            if i["type"] != "comma":
+                to_yield += self.dump_node(i)
+            else:
+                to_yield += ",\n    " + indent
+        to_yield = to_yield.rstrip()
+        yield to_yield
+        yield "\n" + indent
 
 
 def format_code(source_code):
