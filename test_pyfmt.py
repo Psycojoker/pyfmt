@@ -339,3 +339,8 @@ def test_comment():
 def test_decorator():
     assert format_code("@a\ndef a():\n    pass") == "@a\ndef a():\n    pass\n"
     assert format_code("@a\nclass a():\n    pass") == "@a\nclass a():\n    pass\n"
+
+
+def test_string_formatting_special_case():
+    assert format_code("'a' + 1") == "'a' + 1"
+    assert format_code("'a'\n'b'") == "'a'\n'b'"

@@ -98,10 +98,11 @@ class Dumper(object):
     @node("binary_raw_string")
     @node("unicode_raw_string")
     def generic(self, node):
-        # TODO
-        yield self.dump_node_list(node["first_formatting"])
+        if find('endl', node["first_formatting"]):
+            yield self.dump_node_list(node["first_formatting"])
         yield node["value"]
-        yield self.dump_node_list(node["second_formatting"])
+        if find('endl', node["second_formatting"]):
+            yield self.dump_node_list(node["second_formatting"])
 
 
     @node()
