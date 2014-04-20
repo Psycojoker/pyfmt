@@ -275,6 +275,7 @@ def test_find_endl_recursive():
     assert find('endl', {'type': 'pouet', 'stuff': {'type': 'endl'}}) == {'type': 'endl'}
     assert find('endl', {'type': 'pouet', 'stuff': [{'type': 'endl'}]}) == {'type': 'endl'}
 
+
 def test_find_endl_functionnal():
     assert find('endl', baron.parse("[a, b, c]")[0]["value"]) == None
     assert find('endl', baron.parse("[a, b,\n c]")[0]["value"]) == {'formatting': [], 'indent': ' ', 'type': 'endl', 'value': '\n'}
