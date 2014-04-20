@@ -334,3 +334,8 @@ def test_comment():
     assert format_code("#!/bin/bash") == "#!/bin/bash"
     assert format_code("#pouet") == "# pouet"
     assert format_code("##pouet") == "##pouet"
+
+
+def test_decorator():
+    assert format_code("@a\ndef a():\n    pass") == "@a\ndef a():\n    pass\n"
+    assert format_code("@a\nclass a():\n    pass") == "@a\nclass a():\n    pass\n"

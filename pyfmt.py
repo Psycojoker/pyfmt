@@ -205,6 +205,7 @@ class Dumper(object):
 
     @node()
     def funcdef(self, node):
+        yield self.dump_node_list(node["decorators"])
         yield "def "
         yield node["name"]
         yield "("
