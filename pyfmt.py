@@ -174,12 +174,14 @@ class Dumper(object):
     @node()
     def list_(self, node):
         yield "["
-        if find('endl', node['value']):
-            yield "".join(list(DataStructureDumper().dump_data_structure(node=node, indent=self._current_indent)))
-        else:
-            yield self.dump_node_list(node["value"])
+        yield self._dump_data_structure_body(node)
         yield "]"
 
+    def _dump_data_structure_body(self, node):
+        if find('endl', node['value']):
+            return "".join(list(DataStructureDumper().dump_data_structure(node=node, indent=self._current_indent)))
+        else:
+            return self.dump_node_list(node["value"])
 
     @node()
     def associative_parenthesis(self, node):
