@@ -328,3 +328,9 @@ def test_nested_data_structure():
 
 def test_not_keyword():
     assert format_code("not         a") == "not a"
+
+
+def test_comment():
+    assert format_code("#!/bin/bash") == "#!/bin/bash"
+    assert format_code("#pouet") == "# pouet"
+    assert format_code("##pouet") == "##pouet"

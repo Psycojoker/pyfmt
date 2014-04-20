@@ -109,7 +109,10 @@ class Dumper(object):
         # FIXME ugly, comment can end up in formatting of another node or being
         # standalone, this is bad
         yield self.dump_node_list(node.get("formatting", []))
-        yield node["value"]
+        if node["value"].startswith(("# ", "##", "#!")):
+            yield node["value"]
+        else:
+            yield "# " + node["value"][1:]
 
 
     @node()
