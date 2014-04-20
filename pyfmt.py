@@ -23,6 +23,22 @@ def node(key=""):
     return wrap
 
 
+def find(node_type, tree):
+    if isinstance(tree, dict):
+        if tree["type"] == node_type:
+            return tree
+        for i in tree.values():
+            result = find(node_type, i)
+            if result is not None:
+                return result
+    elif isinstance(tree, list):
+        for i in tree:
+            result = find(node_type, i)
+            if result is not None:
+                return result
+    return None
+
+
 class Dumper(object):
     def dump_node(self, node):
         return "".join(list(dumpers[node["type"]](self, node)))
@@ -580,22 +596,6 @@ class Dumper(object):
 
 def format_code(source_code):
     return Dumper().dumps(baron.parse(source_code))
-
-
-def find(node_type, tree):
-    if isinstance(tree, dict):
-        if tree["type"] == node_type:
-            return tree
-        for i in tree.values():
-            result = find(node_type, i)
-            if result is not None:
-                return result
-    elif isinstance(tree, list):
-        for i in tree:
-            result = find(node_type, i)
-            if result is not None:
-                return result
-    return None
 
 
 def main():
