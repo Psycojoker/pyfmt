@@ -324,3 +324,7 @@ a = [
 
 def test_nested_data_structure():
     assert format_code(nested_data_structure) == nested_data_structure
+
+
+def test_not_keyword():
+    assert format_code("not         a") == "not a"

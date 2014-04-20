@@ -383,6 +383,8 @@ class Dumper(object):
     @node()
     def unitary_operator(self, node):
         yield node["value"]
+        if node["value"] == "not":
+            yield " "
         yield self.dump_node(node["target"])
 
 
