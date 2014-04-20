@@ -14,6 +14,7 @@ setup(name='pyfmt',
       install_requires=['baron'],
       license= 'gplv3+',
       keywords='pep8 formatting baron fst code',
+      py_modules=['pyfmt'],
       entry_points={
         'console_scripts': [
             'pyfmt = pyfmt:main',
