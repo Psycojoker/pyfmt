@@ -25,7 +25,7 @@ def node(key=""):
 
 def find(node_type, tree):
     if isinstance(tree, dict):
-        if tree["type"] == node_type:
+        if tree.get("type") == node_type:
             return tree
         for i in tree.values():
             result = find(node_type, i)
