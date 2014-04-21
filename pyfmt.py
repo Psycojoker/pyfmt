@@ -51,6 +51,12 @@ class Dumper(object):
         return "".join(map(self.dump_node, node_list))
 
 
+    def dump_suite(self, node_list):
+        if node_list and node_list[0]["type"] != "endl":
+            node_list = [{"type": "endl", "formatting": [], "value": "\n", "indent": self._current_indent + "    "}] + node_list
+        return self.dump_node_list(node_list)
+
+
     @node()
     def endl(self, node):
         self._current_indent = node["indent"]
@@ -490,7 +496,7 @@ class Dumper(object):
         yield "if "
         yield self.dump_node(node["test"])
         yield ":"
-        yield self.dump_node_list(node["value"])
+        yield self.dump_suite(node["value"])
 
 
     @node()

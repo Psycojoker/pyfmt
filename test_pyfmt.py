@@ -344,3 +344,7 @@ def test_decorator():
 def test_string_formatting_special_case():
     assert format_code("'a' + 1") == "'a' + 1"
     assert format_code("'a'\n'b'") == "'a'\n'b'"
+
+
+def test_add_endl_one_line_suite_if():
+    assert format_code("if a: pass") == "if a:\n    pass\n"
