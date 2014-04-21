@@ -28,3 +28,8 @@ from pyfmt import format_code
 
 format_code(source_code)
 ```
+
+Community
+=========
+
+You can reach us on [irc.freenode.net#baron](https://webchat.freenode.net/?channels=%23baron)
