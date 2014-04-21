@@ -547,7 +547,7 @@ class Dumper(object):
             yield " "
             yield self.dump_node(node["target"])
         yield ":"
-        yield self.dump_node_list(node["value"])
+        yield self.dump_suite(node["value"])
 
 
     @node()

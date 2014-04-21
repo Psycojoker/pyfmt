@@ -364,3 +364,7 @@ def test_add_endl_one_line_suite_for():
 
 def test_add_endl_one_line_suite_try():
     assert format_code("try: pass\nexcept:\n    pass\n") == "try:\n    pass\nexcept:\n    pass\n"
+
+
+def test_add_endl_one_line_suite_except():
+    assert format_code("try:\n    pass\nexcept: pass\n") == "try:\n    pass\nexcept:\n    pass\n"
