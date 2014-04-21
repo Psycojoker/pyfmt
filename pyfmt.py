@@ -418,7 +418,7 @@ class Dumper(object):
         yield "with "
         yield self.dump_node_list(node["contexts"])
         yield ":"
-        yield self.dump_node_list(node["value"])
+        yield self.dump_suite(node["value"])
 
 
     @node()

@@ -372,3 +372,7 @@ def test_add_endl_one_line_suite_except():
 
 def test_add_endl_one_line_suite_finally():
     assert format_code("try:\n    pass\nfinally: pass\n") == "try:\n    pass\nfinally:\n    pass\n"
+
+
+def test_add_endl_one_line_suite_with():
+    assert format_code("with a: pass") == "with a:\n    pass\n"
