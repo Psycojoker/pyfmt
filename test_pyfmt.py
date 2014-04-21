@@ -348,3 +348,7 @@ def test_string_formatting_special_case():
 
 def test_add_endl_one_line_suite_if():
     assert format_code("if a: pass") == "if a:\n    pass\n"
+
+
+def test_add_endl_one_line_suite_elif():
+    assert format_code("if a:\n    pass\nelif a: pass") == "if a:\n    pass\nelif a:\n    pass\n"
