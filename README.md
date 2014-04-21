@@ -6,9 +6,11 @@ same spirit than [gofmt](http://golang.org/cmd/gofmt/). It follows the pep8 and
 uses [Baron](https://github.com/Psycojoker/baron) to do its work in one pass.
 
 **Pyfmt is in its early stage of developpement, it already do a good job at
-formatting most of python code but it might do unexpected things on indented
-datastructures or split accross several lines single statement.** Feedback is
-very welcome.
+formatting most of python code but it doesn't handle yet splitting a too long
+line and might end up putting back into one line a line that you have split.**
+But it should be fine for ~80% of the cases.
+
+Feedback is very welcome.
 
 Installation
 ============
