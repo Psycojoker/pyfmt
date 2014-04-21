@@ -510,7 +510,7 @@ class Dumper(object):
     @node()
     def else_(self, node):
         yield "else:"
-        yield self.dump_node_list(node["value"])
+        yield self.dump_suite(node["value"])
 
 
     @node()

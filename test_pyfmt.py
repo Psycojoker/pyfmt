@@ -352,3 +352,7 @@ def test_add_endl_one_line_suite_if():
 
 def test_add_endl_one_line_suite_elif():
     assert format_code("if a:\n    pass\nelif a: pass") == "if a:\n    pass\nelif a:\n    pass\n"
+
+
+def test_add_endl_one_line_suite_else():
+    assert format_code("if a:\n    pass\nelse: pass") == "if a:\n    pass\nelse:\n    pass\n"
