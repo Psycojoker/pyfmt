@@ -526,7 +526,7 @@ class Dumper(object):
     @node()
     def try_(self, node):
         yield "try:"
-        yield self.dump_node_list(node["value"])
+        yield self.dump_suite(node["value"])
         yield self.dump_node_list(node["excepts"])
         if node["else"]:
             yield self.dump_node(node["else"])

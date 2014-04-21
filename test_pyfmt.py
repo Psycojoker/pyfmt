@@ -360,3 +360,7 @@ def test_add_endl_one_line_suite_else():
 
 def test_add_endl_one_line_suite_for():
     assert format_code("for a in a: pass") == "for a in a:\n    pass\n"
+
+
+def test_add_endl_one_line_suite_try():
+    assert format_code("try: pass\nexcept:\n    pass\n") == "try:\n    pass\nexcept:\n    pass\n"
