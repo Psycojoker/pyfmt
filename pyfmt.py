@@ -553,7 +553,7 @@ class Dumper(object):
     @node()
     def finally_(self, node):
         yield "finally:"
-        yield self.dump_node_list(node["value"])
+        yield self.dump_suite(node["value"])
 
 
     @node("dict")
