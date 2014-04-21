@@ -376,3 +376,7 @@ def test_add_endl_one_line_suite_finally():
 
 def test_add_endl_one_line_suite_with():
     assert format_code("with a: pass") == "with a:\n    pass\n"
+
+
+def test_add_endl_one_line_suite_class():
+    assert format_code("class a: pass") == "class a:\n    pass\n"
