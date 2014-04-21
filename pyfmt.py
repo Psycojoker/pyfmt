@@ -474,7 +474,7 @@ class Dumper(object):
         yield "while "
         yield self.dump_node(node["test"])
         yield ":"
-        yield self.dump_node_list(node["value"])
+        yield self.dump_suite(node["value"])
         if node["else"]:
             yield self.dump_node(node["else"])
 
