@@ -356,3 +356,7 @@ def test_add_endl_one_line_suite_elif():
 
 def test_add_endl_one_line_suite_else():
     assert format_code("if a:\n    pass\nelse: pass") == "if a:\n    pass\nelse:\n    pass\n"
+
+
+def test_add_endl_one_line_suite_for():
+    assert format_code("for a in a: pass") == "for a in a:\n    pass\n"
