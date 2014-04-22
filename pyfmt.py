@@ -13,22 +13,12 @@ def d(j):
 dumpers = {}
 
 
-def rendering_call_wrapper(func):
-    def wrap(self, node):
-        # use 'list' to force total evaluation of generator
-        # otherwise the self.previous will be executed before this evaluation
-        to_return = list(func(self, node))
-        self.previous = node
-        return to_return
-    return wrap
-
-
 def node(key=""):
     def wrap(func):
         if not key:
-            dumpers[func.__name__ if not func.__name__.endswith("_") else func.__name__[:-1]] = rendering_call_wrapper(func)
+            dumpers[func.__name__ if not func.__name__.endswith("_") else func.__name__[:-1]] = func
 
-        dumpers[key] = rendering_call_wrapper(func)
+        dumpers[key] = func
         return func
     return wrap
 
@@ -59,7 +49,11 @@ class Dumper(object):
 
 
     def dump_node_list(self, node_list):
-        return "".join(map(self.dump_node, node_list))
+        to_return = ""
+        for node in node_list:
+            to_return += self.dump_node(node)
+            self.previous = node
+        return to_return
 
 
     def dump_suite(self, node_list):
@@ -624,10 +618,7 @@ class Dumper(object):
                 yield " "
             yield self.dump_node_list(node["value"])
 
-
-    def dumps(self, tree):
-        return "".join(map(self.dump_node, tree))
-
+    dumps = dump_node_list
 
     def dump_data_structure(self, content, indent):
         yield "\n    " + indent
@@ -645,7 +636,7 @@ class Dumper(object):
 
 
 def format_code(source_code):
-    return Dumper().dumps(baron.parse(source_code))
+    return Dumper().dump_node_list(baron.parse(source_code))
 
 
 def main():
