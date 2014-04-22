@@ -217,7 +217,6 @@ def test_dict():
 
 def test_import():
     assert format_code("import           a") == "import a"
-    assert format_code("import           a    ,      b      ,     d") == "import a, b, d"
 
 
 def test_import_dot():
@@ -413,3 +412,29 @@ def test_add_endl_one_line_suite_funcdef():
 
 def test_replace_repr_by_function_call():
     assert format_code("`a`") == "repr(a)"
+
+
+one_line_import = "import a, b.e.f, c as pouet, d.d as i"
+split_import = """\
+import a
+import b.e.f
+import c as pouet
+import d.d as i"""
+
+
+one_line_import_indented = "if a:\n    import a, b.e.f, c as pouet, d.d as i"
+split_import_indented = """\
+if a:
+    import a
+    import b.e.f
+    import c as pouet
+    import d.d as i
+"""
+
+
+def test_split_import():
+    assert format_code(one_line_import) == split_import
+
+
+def test_split_import_indented():
+    assert format_code(one_line_import_indented) == split_import_indented

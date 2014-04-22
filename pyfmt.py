@@ -594,8 +594,10 @@ class Dumper(object):
 
     @node()
     def import_(self, node):
-        yield "import "
-        yield self.dump_node_list(node["value"])
+        to_yield = []
+        for i in filter(lambda x: x["type"] != "comma", node["value"]):
+            to_yield.append("import " + self.dump_node(i))
+        yield ("\n" + self._current_indent).join(to_yield)
 
 
     @node()
