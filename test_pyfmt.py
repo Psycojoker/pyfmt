@@ -361,6 +361,10 @@ def test_comment_after_colon_statement():
     assert format_code("try:# pouet\n    pass\nexcept:\n    pass\n") == "try:  # pouet\n    pass\nexcept:\n    pass\n"
 
 
+def test_comment_empty_line_indented():
+    assert format_code("if a:\n    # pouet\n    pass\n") == "if a:\n    # pouet\n    pass\n"
+
+
 def test_add_endl_one_line_suite_if():
     assert format_code("if a: pass") == "if a:\n    pass\n"
 

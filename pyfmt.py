@@ -44,6 +44,7 @@ class Dumper(object):
         self._current_indent = ""  # we always start at the level 0
         self.previous = None
         self.stack = []
+        self.previous_of_endl_is_endl = False
 
     def dump_node(self, node):
         self.stack.append(node)
@@ -68,6 +69,11 @@ class Dumper(object):
 
     @node()
     def endl(self, node):
+        if self.previous and self.previous["type"] == "endl":
+            print self.previous
+            self.previous_of_endl_is_endl = True
+        else:
+            self.previous_of_endl_is_endl = False
         self._current_indent = node["indent"]
         yield self.dump_node_list(node["formatting"])
         yield node["value"]
@@ -122,10 +128,14 @@ class Dumper(object):
 
     @node()
     def comment(self, node):
+        # print map(lambda x: x["type"], self.stack)
+        # for i in self.stack:
+            # print i
+        print self.previous_of_endl_is_endl
         if self.previous and self.previous["type"] != "endl":
             yield "  "
         # meh, not very cool case :(
-        elif len(self.stack) >= 3 and self.stack[-2]["type"] == "endl":
+        elif len(self.stack) >= 3 and self.stack[-2]["type"] == "endl" and not self.previous_of_endl_is_endl:
             yield "  "
         if node["value"].startswith(("# ", "##", "#!")):
             yield node["value"]
