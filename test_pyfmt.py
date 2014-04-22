@@ -348,8 +348,16 @@ def test_string_formatting_special_case():
 
 def test_before_comment_formatting():
     assert format_code("a # b") == "a  # b"
+
+def test_comment_not_empty_line():
     assert format_code("'1' # b") == "'1'  # b"
+
+
+def test_comment_empty_line():
     assert format_code("# b") == "# b"
+
+
+def test_comment_after_colon_statement():
     assert format_code("try:# pouet\n    pass\nexcept:\n    pass\n") == "try:  # pouet\n    pass\nexcept:\n    pass\n"
 
 
