@@ -12,7 +12,7 @@ But it should be fine for ~80% of the cases.
 
 Feedback is very welcome.
 
-You can see it in action [here](https://github.com/Psycojoker/pyfmt/commit/df625ff49ba1c3b16269edf4feed3e7ae70c627a).
+You can see it in action [here](https://github.com/Psycojoker/pyfmt/commit/bcbed45da18d1ca5892e0caf1ab3cd9769221013).
 
 Installation
 ============
