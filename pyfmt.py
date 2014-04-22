@@ -43,9 +43,13 @@ class Dumper(object):
     def __init__(self):
         self._current_indent = ""  # we always start at the level 0
         self.previous = None
+        self.stack = []
 
     def dump_node(self, node):
-        return "".join(list(dumpers[node["type"]](self, node)))
+        self.stack.append(node)
+        to_return = "".join(list(dumpers[node["type"]](self, node)))
+        self.stack.pop()
+        return to_return
 
 
     def dump_node_list(self, node_list):
