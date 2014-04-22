@@ -350,6 +350,7 @@ def test_before_comment_formatting():
     assert format_code("a # b") == "a  # b"
     assert format_code("'1' # b") == "'1'  # b"
     assert format_code("# b") == "# b"
+    assert format_code("try:# pouet\n    pass\nexcept:\n    pass\n") == "try:  # pouet\n    pass\nexcept:\n    pass\n"
 
 
 def test_add_endl_one_line_suite_if():

@@ -122,9 +122,10 @@ class Dumper(object):
 
     @node()
     def comment(self, node):
-        # FIXME ugly, comment can end up in formatting of another node or being
-        # standalone, this is bad
         if self.previous and self.previous["type"] != "endl":
+            yield "  "
+        # meh, not very cool case :(
+        elif len(self.stack) >= 3 and self.stack[-2]["type"] == "endl":
             yield "  "
         if node["value"].startswith(("# ", "##", "#!")):
             yield node["value"]
