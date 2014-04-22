@@ -13,12 +13,22 @@ def d(j):
 dumpers = {}
 
 
+def rendering_call_wrapper(func):
+    def wrap(self, node):
+        # use 'list' to force total evaluation of generator
+        # otherwise the self.previous will be executed before this evaluation
+        to_return = list(func(self, node))
+        self.previous = node
+        return to_return
+    return wrap
+
+
 def node(key=""):
     def wrap(func):
         if not key:
-            dumpers[func.__name__ if not func.__name__.endswith("_") else func.__name__[:-1]] = func
+            dumpers[func.__name__ if not func.__name__.endswith("_") else func.__name__[:-1]] = rendering_call_wrapper(func)
 
-        dumpers[key] = func
+        dumpers[key] = rendering_call_wrapper(func)
         return func
     return wrap
 
@@ -42,6 +52,7 @@ def find(node_type, tree):
 class Dumper(object):
     def __init__(self):
         self._current_indent = ""  # we always start at the level 0
+        self.previous = None
 
     def dump_node(self, node):
         return "".join(list(dumpers[node["type"]](self, node)))
@@ -115,7 +126,9 @@ class Dumper(object):
     def comment(self, node):
         # FIXME ugly, comment can end up in formatting of another node or being
         # standalone, this is bad
-        yield self.dump_node_list(node.get("formatting", []))
+        print "in function", self.previous
+        if self.previous and self.previous["type"] != "endl":
+            yield "  "
         if node["value"].startswith(("# ", "##", "#!")):
             yield node["value"]
         else:
