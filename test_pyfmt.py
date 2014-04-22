@@ -322,6 +322,7 @@ a = [
 ]
 """
 
+
 def test_nested_data_structure():
     assert format_code(nested_data_structure) == nested_data_structure
 
@@ -348,6 +349,7 @@ def test_string_formatting_special_case():
 
 def test_before_comment_formatting():
     assert format_code("a # b") == "a  # b"
+
 
 def test_comment_not_empty_line():
     assert format_code("'1' # b") == "'1'  # b"
