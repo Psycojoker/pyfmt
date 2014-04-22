@@ -126,7 +126,6 @@ class Dumper(object):
     def comment(self, node):
         # FIXME ugly, comment can end up in formatting of another node or being
         # standalone, this is bad
-        print "in function", self.previous
         if self.previous and self.previous["type"] != "endl":
             yield "  "
         if node["value"].startswith(("# ", "##", "#!")):
