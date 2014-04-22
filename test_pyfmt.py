@@ -34,7 +34,7 @@ def test_class_simple():
 
 
 def test_repr():
-    assert format_code("`   a  `") == "`a`"
+    assert format_code("`   a  `") == "repr(a)"
 
 
 def test_list():
@@ -403,3 +403,7 @@ def test_add_endl_one_line_suite_while():
 
 def test_add_endl_one_line_suite_funcdef():
     assert format_code("def a(): pass") == "def a():\n    pass\n"
+
+
+def test_replace_repr_by_function_call():
+    assert format_code("`a`") == "repr(a)"

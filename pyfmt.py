@@ -187,9 +187,9 @@ class Dumper(object):
 
     @node()
     def repr(self, node):
-        yield "`"
+        yield "repr("
         yield self.dump_node_list(node["value"])
-        yield "`"
+        yield ")"
 
 
     @node()
