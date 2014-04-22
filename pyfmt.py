@@ -70,7 +70,6 @@ class Dumper(object):
     @node()
     def endl(self, node):
         if self.previous and self.previous["type"] == "endl":
-            print self.previous
             self.previous_of_endl_is_endl = True
         else:
             self.previous_of_endl_is_endl = False
