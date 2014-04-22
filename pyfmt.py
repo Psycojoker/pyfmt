@@ -130,7 +130,6 @@ class Dumper(object):
         # print map(lambda x: x["type"], self.stack)
         # for i in self.stack:
             # print i
-        print self.previous_of_endl_is_endl
         if self.previous and self.previous["type"] != "endl":
             yield "  "
         # meh, not very cool case :(
