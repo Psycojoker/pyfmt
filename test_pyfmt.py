@@ -438,3 +438,34 @@ def test_split_import():
 
 def test_split_import_indented():
     assert format_code(one_line_import_indented) == split_import_indented
+
+
+comment_2_spaces_target = """
+class A:# stuff
+    def a():# stuff
+        try:# stuff
+            pass
+        except:# stuff
+            pass
+        finally:# stuff
+            pass
+        for a in a:# stuff
+            pass
+"""
+
+
+comment_2_spaces_target_result = """
+class A:  # stuff
+    def a():  # stuff
+        try:  # stuff
+            pass
+        except:  # stuff
+            pass
+        finally:  # stuff
+            pass
+        for a in a:  # stuff
+            pass
+"""
+
+def test_comment_indented_after_try():
+    assert format_code(comment_2_spaces_target) == comment_2_spaces_target_result
