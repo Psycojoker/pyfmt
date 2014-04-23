@@ -440,7 +440,7 @@ def test_split_import_indented():
     assert format_code(one_line_import_indented) == split_import_indented
 
 
-comment_2_spaces_target = """
+comment_2_spaces_target = """\
 class A:# stuff
     def a():# stuff
         try:# stuff
@@ -454,7 +454,7 @@ class A:# stuff
 """
 
 
-comment_2_spaces_target_result = """
+comment_2_spaces_target_result = """\
 class A:  # stuff
     def a():  # stuff
         try:  # stuff
@@ -551,3 +551,34 @@ if b:
 
 def test_bug_reindent_tabs():
     assert format_code(bug_reindent_tabs) == bug_reindent_tabs_fixed
+
+
+root_level_function = """
+pouet
+import a
+def plop():
+    pass
+plop
+pop
+"""
+
+
+root_level_function_fixed = """
+pouet
+import a
+
+
+def plop():
+    pass
+
+
+plop
+pop
+"""
+
+def test_blank_lines_arround_functions_first_level():
+    assert format_code(root_level_function) == root_level_function_fixed
+
+
+def test_blank_lines_arround_class_first_level():
+    assert format_code(root_level_function.replace('def', 'class')) == root_level_function_fixed.replace('def', 'class')

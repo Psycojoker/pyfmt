@@ -46,9 +46,14 @@ class Dumper(object):
         self.previous = None
         self.stack = []
         self.indentation_stack = []
+        self.number_of_endl = 0
 
     def dump_node(self, node):
         self.stack.append(node)
+        if node["type"] == "endl":
+            self.number_of_endl += 1
+        elif node["type"] not in ('space', 'comment'):
+            self.number_of_endl = 0
         to_return = "".join(list(dumpers[node["type"]](self, node)))
         self.stack.pop()
         return to_return
@@ -61,6 +66,21 @@ class Dumper(object):
             self.previous = node
         return to_return
 
+    def dump_root(self, node_list):
+        to_return = ""
+        previous_is_function = False
+        for instruction_number, node in enumerate(node_list):
+            if node["type"] not in ('endl', 'comment', 'space'):
+                if node["type"] in ("funcdef", "class") and self.number_of_endl != 3 and instruction_number != 0:
+                    to_return += "\n"*(3 - self.number_of_endl)
+                    previous_is_function = True
+                elif previous_is_function:
+                    previous_is_function = False
+                    to_return += "\n"*(3 - self.number_of_endl)
+
+            to_return += self.dump_node(node)
+            self.previous = node
+        return to_return
 
     def dump_suite(self, node_list):
         if node_list and node_list[0]["type"] != "endl":
@@ -687,7 +707,7 @@ class Dumper(object):
 
 
 def format_code(source_code):
-    return Dumper().dump_node_list(baron.parse(source_code))
+    return Dumper().dump_root(baron.parse(source_code))
 
 
 def main():
