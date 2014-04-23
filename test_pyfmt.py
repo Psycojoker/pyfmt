@@ -586,3 +586,33 @@ def test_blank_lines_arround_class_first_level():
 
 def test_replace_windows_endl():
     assert format_code("\r\n") == "\n"
+
+
+class_level_function = """\
+class A:
+    def plop():
+        pass
+    def pop():
+        pass
+    def ploup():
+        pass
+"""
+
+
+class_level_function_fixed = """\
+class A:
+    def plop():
+        pass
+
+    def pop():
+        pass
+
+    def ploup():
+        pass
+"""
+
+
+def test_blank_lines_arround_methods():
+    print format_code(class_level_function)
+    print [format_code(class_level_function)]
+    assert format_code(class_level_function) == class_level_function_fixed

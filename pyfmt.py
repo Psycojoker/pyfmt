@@ -69,9 +69,9 @@ class Dumper(object):
     def dump_root(self, node_list):
         to_return = ""
         previous_is_function = False
-        for instruction_number, node in enumerate(node_list):
+        for statement_number, node in enumerate(node_list):
             if node["type"] not in ('endl', 'comment', 'space'):
-                if node["type"] in ("funcdef", "class") and self.number_of_endl != 3 and instruction_number != 0:
+                if node["type"] in ("funcdef", "class") and self.number_of_endl != 3 and statement_number != 0:
                     to_return += "\n"*(3 - self.number_of_endl)
                     previous_is_function = True
                 elif previous_is_function:
@@ -87,6 +87,23 @@ class Dumper(object):
             node_list = [{"type": "endl", "formatting": [], "value": "\n", "indent": self._current_indent + "    "}] + node_list
         return self.dump_node_list(node_list)
 
+    def dump_class_body(self, node_list):
+        if node_list and node_list[0]["type"] != "endl":
+            node_list = [{"type": "endl", "formatting": [], "value": "\n", "indent": self._current_indent + "    "}] + node_list
+
+        to_return = ""
+        previous_is_function = False
+        for statement_number, node in enumerate(node_list):
+            if node["type"] not in ('endl', 'comment', 'space'):
+                if node["type"] == "funcdef" and self.number_of_endl != 3 and statement_number != 1:
+                    to_return = re.sub(' *$', '', to_return)
+                    to_return += "\n"*(2 - self.number_of_endl) + self._current_indent
+                    previous_is_function = True
+                elif previous_is_function:
+                    previous_is_function = False
+                    to_return += "\n"*(2 - self.number_of_endl)
+            to_return += self.dump_node(node)
+        return to_return
 
     @node()
     def endl(self, node):
@@ -233,7 +250,7 @@ class Dumper(object):
             yield ")"
         yield ":"
         self.previous = node
-        yield self.dump_suite(node["value"])
+        yield self.dump_class_body(node["value"])
 
 
     @node()
