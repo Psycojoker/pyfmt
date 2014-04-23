@@ -125,7 +125,7 @@ class Dumper(object):
     def comment(self, node):
         if self.previous and self.previous["type"] != "endl":
             yield "  "
-        if node["value"].startswith(("# ", "##", "#!")):
+        if node["value"].startswith(("# ", "##", "#!")) or len(node["value"]) == 1:
             yield node["value"]
         else:
             yield "# " + node["value"][1:]

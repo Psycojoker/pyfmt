@@ -485,3 +485,7 @@ def test_set_trailing():
 
 def test_dict_trailing():
     assert format_code("{3: 3,}") == "{3: 3,}"
+
+
+def test_empty_comment_no_space():
+    assert format_code("#") == "#"
