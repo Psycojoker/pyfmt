@@ -489,3 +489,7 @@ def test_dict_trailing():
 
 def test_empty_comment_no_space():
     assert format_code("#") == "#"
+
+
+def test_simily_print_function_stuff():
+    assert format_code("print(a)") == "print(a)"

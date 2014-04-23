@@ -630,9 +630,12 @@ class Dumper(object):
             yield " >>"
             yield self.dump_node(node["destination"])
         if node["value"]:
-            if node["value"][0]["type"] != "comma":
+            to_yield = self.dump_node_list(node["value"])
+            if to_yield.startswith("(") and to_yield.endswith(")") and "," not in to_yield:
+                pass
+            elif node["value"][0]["type"] != "comma":
                 yield " "
-            yield self.dump_node_list(node["value"])
+            yield to_yield
 
     dumps = dump_node_list
 
