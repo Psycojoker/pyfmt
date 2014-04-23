@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import os
+import re
 import sys
 import argparse
 import baron
@@ -214,7 +215,7 @@ class Dumper(object):
     def tuple_(self, node):
         if node["with_parenthesis"]:
             yield "("
-        yield self._dump_data_structure_body(node)
+        yield re.sub("([^\n ]) +$", "\g<1>", self._dump_data_structure_body(node))
         if node["with_parenthesis"]:
             yield ")"
 

@@ -469,3 +469,7 @@ class A:  # stuff
 
 def test_comment_indented_after_try():
     assert format_code(comment_2_spaces_target) == comment_2_spaces_target_result
+
+
+def test_tuple_trailing():
+    assert format_code("(3,)") == "(3,)"
