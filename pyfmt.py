@@ -202,7 +202,7 @@ class Dumper(object):
             return "".join(list(self.dump_data_structure(content=node["value"],
                                                          indent=self._current_indent)))
         else:
-            return self.dump_node_list(node["value"])
+            return re.sub("([^\n ]) +$", "\g<1>", self.dump_node_list(node["value"]))
 
     @node()
     def associative_parenthesis(self, node):
@@ -215,7 +215,7 @@ class Dumper(object):
     def tuple_(self, node):
         if node["with_parenthesis"]:
             yield "("
-        yield re.sub("([^\n ]) +$", "\g<1>", self._dump_data_structure_body(node))
+        yield self._dump_data_structure_body(node)
         if node["with_parenthesis"]:
             yield ")"
 

@@ -473,3 +473,15 @@ def test_comment_indented_after_try():
 
 def test_tuple_trailing():
     assert format_code("(3,)") == "(3,)"
+
+
+def test_list_trailing():
+    assert format_code("[3,]") == "[3,]"
+
+
+def test_set_trailing():
+    assert format_code("{3,}") == "{3,}"
+
+
+def test_dict_trailing():
+    assert format_code("{3: 3,}") == "{3: 3,}"
