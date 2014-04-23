@@ -72,7 +72,7 @@ class Dumper(object):
         self._current_indent = node["indent"]
         yield self.dump_node_list(node["formatting"])
         yield node["value"]
-        yield node["indent"]
+        yield node["indent"].replace("\t", " "*8)
 
 
     @node()

@@ -493,3 +493,7 @@ def test_empty_comment_no_space():
 
 def test_simily_print_function_stuff():
     assert format_code("print(a)") == "print(a)"
+
+
+def test_replace_tabs():
+    assert format_code("if a:\n    if b:\n	pass\n\n") == "if a:\n    if b:\n        pass\n\n"
