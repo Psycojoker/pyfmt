@@ -497,3 +497,57 @@ def test_simily_print_function_stuff():
 
 def test_replace_tabs():
     assert format_code("if a:\n    if b:\n	pass\n\n") == "if a:\n    if b:\n        pass\n\n"
+
+bad_indentation = """\
+if a:
+ if b:
+  if c:
+   if d:
+    pouet
+  plop
+ pop
+"""
+
+bad_indentation_fixed = """\
+if a:
+    if b:
+        if c:
+            if d:
+                pouet
+        plop
+    pop
+"""
+
+def test_fix_bad_indentation_simple_too_small():
+    assert format_code("if a:\n pass") == "if a:\n    pass\n"
+
+
+def test_fix_bad_indentation_simple_too_big():
+    assert format_code("if a:\n            pass") == "if a:\n    pass\n"
+
+
+def test_fix_indentation_complex():
+    print "result:"
+    print format_code(bad_indentation)
+    print "expected:"
+    print bad_indentation_fixed
+    assert format_code(bad_indentation) == bad_indentation_fixed
+
+bug_reindent_tabs = """
+if b:
+	if a:
+		pass
+		pass
+		pass
+"""
+
+bug_reindent_tabs_fixed = """
+if b:
+    if a:
+        pass
+        pass
+        pass
+"""
+
+def test_bug_reindent_tabs():
+    assert format_code(bug_reindent_tabs) == bug_reindent_tabs_fixed

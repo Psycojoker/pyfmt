@@ -45,6 +45,7 @@ class Dumper(object):
         self._current_indent = ""  # we always start at the level 0
         self.previous = None
         self.stack = []
+        self.indentation_stack = []
 
     def dump_node(self, node):
         self.stack.append(node)
@@ -69,10 +70,41 @@ class Dumper(object):
 
     @node()
     def endl(self, node):
-        self._current_indent = node["indent"]
+        # replace tab with space
+        indentation = node["indent"].replace("\t", " "*8)
+
+        # reindentation rules
+        # self.indentation_stack store tuples ('found intentation', 'correct indentation')
+        if len(indentation) == 0:
+            pass
+
+        elif len(self.indentation_stack) == 0:
+            if len(indentation) != 4:
+                self.indentation_stack.append((indentation, " "*4))
+                indentation = " "*4
+            else:
+                self.indentation_stack.append((indentation, indentation))
+
+        elif indentation > self.indentation_stack[-1][0]:
+            if indentation != self.indentation_stack[-1][1] + " "*4:
+                self.indentation_stack.append((indentation, self.indentation_stack[-1][1] + " "*4))
+                indentation = self.indentation_stack[-2][1] + " "*4
+            else:
+                self.indentation_stack.append((indentation, indentation))
+
+        elif indentation < self.indentation_stack[-1][0]:
+            while self.indentation_stack and indentation != self.indentation_stack[-1][0]:
+                self.indentation_stack.pop()
+            if indentation != self.indentation_stack[-1][1]:
+                indentation = self.indentation_stack[-1][1]
+
+        elif indentation == self.indentation_stack[-1][0]:
+            indentation = self.indentation_stack[-1][1]
+
+        self._current_indent = indentation
         yield self.dump_node_list(node["formatting"])
         yield node["value"]
-        yield node["indent"].replace("\t", " "*8)
+        yield indentation
 
 
     @node()
