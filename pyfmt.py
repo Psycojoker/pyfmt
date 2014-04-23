@@ -429,6 +429,7 @@ class Dumper(object):
         yield "with "
         yield self.dump_node_list(node["contexts"])
         yield ":"
+        self.previous = node
         yield self.dump_suite(node["value"])
 
 
@@ -485,6 +486,7 @@ class Dumper(object):
         yield "while "
         yield self.dump_node(node["test"])
         yield ":"
+        self.previous = node
         yield self.dump_suite(node["value"])
         if node["else"]:
             yield self.dump_node(node["else"])
@@ -497,6 +499,7 @@ class Dumper(object):
         yield " in "
         yield self.dump_node(node["target"])
         yield ":"
+        self.previous = node
         yield self.dump_suite(node["value"])
         if node["else"]:
             yield self.dump_node(node["else"])
@@ -507,6 +510,7 @@ class Dumper(object):
         yield "if "
         yield self.dump_node(node["test"])
         yield ":"
+        self.previous = node
         yield self.dump_suite(node["value"])
 
 
@@ -515,12 +519,14 @@ class Dumper(object):
         yield "elif "
         yield self.dump_node(node["test"])
         yield ":"
+        self.previous = node
         yield self.dump_suite(node["value"])
 
 
     @node()
     def else_(self, node):
         yield "else:"
+        self.previous = node
         yield self.dump_suite(node["value"])
 
 
