@@ -123,7 +123,7 @@ class Dumper(object):
 
         self._current_indent = indentation
         yield self.dump_node_list(node["formatting"])
-        yield node["value"]
+        yield "\n"
         yield indentation
 
 

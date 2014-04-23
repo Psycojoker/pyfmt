@@ -582,3 +582,7 @@ def test_blank_lines_arround_functions_first_level():
 
 def test_blank_lines_arround_class_first_level():
     assert format_code(root_level_function.replace('def', 'class')) == root_level_function_fixed.replace('def', 'class')
+
+
+def test_replace_windows_endl():
+    assert format_code("\r\n") == "\n"
