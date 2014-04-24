@@ -1,6 +1,7 @@
 language: python
 install:
   - pip install -r requirements.txt
+  - pip install git+https://github.com/psycojoker/baron -U
   - pip install pytest python-coveralls pytest-cov
 python:
   - "2.7"
