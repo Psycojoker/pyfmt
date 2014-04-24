@@ -614,3 +614,7 @@ class A:
 
 def test_blank_lines_arround_methods():
     assert format_code(class_level_function) == class_level_function_fixed
+
+
+def test_split_semicolon():
+    assert format_code("a;b") == "a\nb"

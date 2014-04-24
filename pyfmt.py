@@ -212,10 +212,7 @@ class Dumper(object):
 
     @node()
     def semicolon(self, node):
-        # TODO I think that I should remove semicolon
-        yield self.dump_node_list(node["first_formatting"])
-        yield ";"
-        yield self.dump_node_list(node["second_formatting"])
+        yield "\n"
 
 
     @node()
