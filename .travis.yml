@@ -1,8 +1,8 @@
 language: python
 install:
   - pip install -r requirements.txt
-  - pip install pytest
+  - pip install pytest python-coveralls
 python:
   - "2.7"
 script:
-  - py.test test_pyfmt.py
+  - py.test --cov test_pyfmt.py --cov-report term-missing
