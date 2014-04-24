@@ -618,3 +618,7 @@ def test_blank_lines_arround_methods():
 
 def test_split_semicolon():
     assert format_code("a;b") == "a\nb"
+
+
+def test_split_semicolon_indented():
+    assert format_code("\n    a;b") == "\n    a\n    b"

@@ -212,7 +212,7 @@ class Dumper(object):
 
     @node()
     def semicolon(self, node):
-        yield "\n"
+        yield "\n" + self._current_indent
 
 
     @node()
