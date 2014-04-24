@@ -613,6 +613,4 @@ class A:
 
 
 def test_blank_lines_arround_methods():
-    print format_code(class_level_function)
-    print [format_code(class_level_function)]
     assert format_code(class_level_function) == class_level_function_fixed
