@@ -1,7 +1,7 @@
 language: python
 install:
   - pip install -r requirements.txt
-  - pip install pytest python-coveralls
+  - pip install -U pytest python-coveralls
 python:
   - "2.7"
 script:
