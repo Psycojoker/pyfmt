@@ -6,6 +6,6 @@ install:
 python:
   - "2.7"
 script:
-  - py.test test_pyfmt.py --cov coveralls --cov-report term-missing
+  - py.test test_pyfmt.py --cov pyfmt --cov-report term-missing
 after_success:
   - coveralls
