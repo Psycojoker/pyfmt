@@ -485,7 +485,7 @@ class Dumper(object):
         if node["value"] == "not in": 
             yield "not in"
         else:
-            yield node["value"]
+            yield node["value"].replace("<>", "!=")
         yield " "
         yield self.dump_node(node["second"])
 

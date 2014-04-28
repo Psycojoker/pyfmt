@@ -54,6 +54,7 @@ Things that pyfmt do (if it's not already done in the code):
 * convert windows '\r\n' to '\n'
 * if not present, put two blank lines around functions or class definitions at the root level of the file
 * if not present, put one blank line around method definition in a class
+* replace <code><></code> with !=
 
 Things that pyfmt don't do or don't do yet and that can be annoying:
 

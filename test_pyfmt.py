@@ -622,3 +622,7 @@ def test_split_semicolon():
 
 def test_split_semicolon_indented():
     assert format_code("\n    a;b") == "\n    a\n    b"
+
+
+def test_replace_old_comparison_operator():
+    assert format_code("a <> b") == "a != b"
