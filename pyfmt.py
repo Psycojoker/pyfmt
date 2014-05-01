@@ -103,6 +103,7 @@ class Dumper(object):
                     previous_is_function = False
                     to_return += "\n"*(2 - self.number_of_endl)
             to_return += self.dump_node(node)
+            self.previous = node
         return to_return
 
     @node()

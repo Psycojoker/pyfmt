@@ -626,3 +626,14 @@ def test_split_semicolon_indented():
 
 def test_replace_old_comparison_operator():
     assert format_code("a <> b") == "a != b"
+
+
+comment_previous_endl_indent = """\
+class A:
+    a = b
+    # should not be indented
+    b = c
+"""
+
+def test_comment_previous_endl_indent_regression_test():
+    assert format_code(comment_previous_endl_indent) == comment_previous_endl_indent
