@@ -60,5 +60,4 @@ Things that pyfmt don't do or don't do yet and that can be annoying:
 
 * properly formatting the content of a "from x import (lot of stuff)"
 * properly splitting too long lines, it may ends up putting back on one line a splited line
-* replacing "<>" with "!="
 * removing extra blank lines
