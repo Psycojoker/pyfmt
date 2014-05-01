@@ -132,7 +132,9 @@ class Dumper(object):
         elif indentation < self.indentation_stack[-1][0]:
             while self.indentation_stack and indentation != self.indentation_stack[-1][0]:
                 self.indentation_stack.pop()
-            if indentation != self.indentation_stack[-1][1]:
+            if not self.indentation_stack:
+                self.indentation = ""
+            elif indentation != self.indentation_stack[-1][1]:
                 indentation = self.indentation_stack[-1][1]
 
         elif indentation == self.indentation_stack[-1][0]:
