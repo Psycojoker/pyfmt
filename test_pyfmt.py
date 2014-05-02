@@ -637,3 +637,10 @@ class A:
 
 def test_comment_previous_endl_indent_regression_test():
     assert format_code(comment_previous_endl_indent) == comment_previous_endl_indent
+
+
+def test_respect_backslash():
+    respect_backslash = "a ==\\\n  b"
+    assert format_code(respect_backslash) == respect_backslash
+    respect_backslash = "a \\\n== b"
+    assert format_code(respect_backslash) == respect_backslash

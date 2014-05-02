@@ -48,6 +48,12 @@ class Dumper(object):
         self.indentation_stack = []
         self.number_of_endl = 0
 
+    def maybe_backslash(self, formatting, default):
+        if formatting and "\\" in formatting[0]["value"]:
+            return formatting[0]["value"]
+        else:
+            return default
+
     def dump_node(self, node):
         self.stack.append(node)
         if node["type"] == "endl":
@@ -484,14 +490,13 @@ class Dumper(object):
     @node("comparison")
     def binary_operator(self, node):
         yield self.dump_node(node["first"])
-        yield " "
+        yield self.maybe_backslash(node["first_formatting"], " ")
         if node["value"] == "not in": 
             yield "not in"
         else:
             yield node["value"].replace("<>", "!=")
-        yield " "
+        yield self.maybe_backslash(node["second_formatting"], " ")
         yield self.dump_node(node["second"])
-
 
     @node()
     def with_(self, node):
