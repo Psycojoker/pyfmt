@@ -487,16 +487,27 @@ class Dumper(object):
 
     @node("binary_operator")
     @node("boolean_operator")
-    @node("comparison")
+    @node("comparison")  # XXX comparison will need a new function in the futur
     def binary_operator(self, node):
         yield self.dump_node(node["first"])
         yield self.maybe_backslash(node["first_formatting"], " ")
-        if node["value"] == "not in": 
-            yield "not in"
+        if isinstance(node["value"], basestring):
+            if node["value"] == "not in":
+                yield "not in"
+            elif node["value"] == "is not":
+                yield "is not"
+            else:
+                yield node["value"].replace("<>", "!=")
         else:
-            yield node["value"].replace("<>", "!=")
+            yield self.dump_node(node["value"])
         yield self.maybe_backslash(node["second_formatting"], " ")
         yield self.dump_node(node["second"])
+
+    @node()
+    def complex_operator(self, node):
+        yield node["first"]
+        yield self.maybe_backslash(node["formatting"], " ")
+        yield node["second"]
 
     @node()
     def with_(self, node):
