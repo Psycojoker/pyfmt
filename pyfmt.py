@@ -687,7 +687,7 @@ class Dumper(object):
     @node()
     def from_import(self, node):
         yield "from "
-        yield self.dump_node(node["value"])
+        yield self.dump_node_list(node["value"])
         yield " import "
         yield self.dump_node_list(node["targets"])
 
@@ -703,7 +703,7 @@ class Dumper(object):
     @node()
     def name_as_name(self, node):
         yield node["value"]
-        if node["as"]:
+        if node["target"]:
             yield " as "
             yield node["target"]
 
