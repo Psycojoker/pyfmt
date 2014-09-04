@@ -643,10 +643,10 @@ class Dumper(object):
         if node["exception"]:
             yield " "
             yield self.dump_node(node["exception"])
-        if node["delimiteur"]:
-            if node["delimiteur"] == "as":
+        if node["delimiter"]:
+            if node["delimiter"] == "as":
                 yield " "
-            yield node["delimiteur"]
+            yield node["delimiter"]
             yield " "
             yield self.dump_node(node["target"])
         yield ":"
