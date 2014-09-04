@@ -694,8 +694,8 @@ class Dumper(object):
 
     @node()
     def dotted_as_name(self, node):
-        yield self.dump_node_list(node["value"]["value"])
-        if node["as"]:
+        yield self.dump_node_list(node["value"])
+        if node["target"]:
             yield " as "
             yield node["target"]
 
