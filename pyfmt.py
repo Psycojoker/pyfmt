@@ -485,29 +485,29 @@ class Dumper(object):
         yield self.dump_node(node["target"])
 
 
+    @node()
+    def comparison(self, node):
+        yield self.dump_node(node["first"])
+        yield self.maybe_backslash(node["first_formatting"], " ")
+        yield self.dump_node(node["value"])
+        yield self.maybe_backslash(node["second_formatting"], " ")
+        yield self.dump_node(node["second"])
+
     @node("binary_operator")
     @node("boolean_operator")
-    @node("comparison")  # XXX comparison will need a new function in the futur
     def binary_operator(self, node):
         yield self.dump_node(node["first"])
         yield self.maybe_backslash(node["first_formatting"], " ")
-        if isinstance(node["value"], basestring):
-            if node["value"] == "not in":
-                yield "not in"
-            elif node["value"] == "is not":
-                yield "is not"
-            else:
-                yield node["value"].replace("<>", "!=")
-        else:
-            yield self.dump_node(node["value"])
+        yield node["value"].replace("<>", "!=")
         yield self.maybe_backslash(node["second_formatting"], " ")
         yield self.dump_node(node["second"])
 
     @node()
-    def complex_operator(self, node):
-        yield node["first"]
-        yield self.maybe_backslash(node["formatting"], " ")
-        yield node["second"]
+    def comparison_operator(self, node):
+        yield node["first"].replace("<>", "!=")
+        if node["second"]:
+            yield " "
+            yield node["second"]
 
     @node()
     def with_(self, node):
