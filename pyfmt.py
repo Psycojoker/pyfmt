@@ -77,7 +77,7 @@ class Dumper(object):
         previous_is_function = False
         for statement_number, node in enumerate(node_list):
             if node["type"] not in ('endl', 'comment', 'space'):
-                if node["type"] in ("funcdef", "class") and self.number_of_endl != 3 and statement_number != 0:
+                if node["type"] in ("def", "class") and self.number_of_endl != 3 and statement_number != 0:
                     to_return += "\n"*(3 - self.number_of_endl)
                     previous_is_function = True
                 elif previous_is_function:
@@ -101,7 +101,7 @@ class Dumper(object):
         previous_is_function = False
         for statement_number, node in enumerate(node_list):
             if node["type"] not in ('endl', 'comment', 'space'):
-                if node["type"] == "funcdef" and self.number_of_endl != 3 and statement_number != 1:
+                if node["type"] == "def" and self.number_of_endl != 3 and statement_number != 1:
                     to_return = re.sub(' *$', '', to_return)
                     to_return += "\n"*(2 - self.number_of_endl) + self._current_indent
                     previous_is_function = True
@@ -296,7 +296,7 @@ class Dumper(object):
 
 
     @node()
-    def funcdef(self, node):
+    def def_(self, node):
         yield self.dump_node_list(node["decorators"])
         yield "def "
         yield node["name"]
