@@ -644,3 +644,7 @@ def test_respect_backslash():
     assert format_code(respect_backslash) == respect_backslash
     respect_backslash = "a \\\n== b"
     assert format_code(respect_backslash) == respect_backslash
+
+
+def test_on_Self():
+    assert format_code(open("./pyfmt.py", "r").read()) == open("./pyfmt.py", "r").read()
