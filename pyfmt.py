@@ -6,6 +6,7 @@ import sys
 import argparse
 import baron
 
+
 def d(j):
     import json
     print json.dumps(j, indent=4)
@@ -17,7 +18,8 @@ dumpers = {}
 def node(key=""):
     def wrap(func):
         if not key:
-            dumpers[func.__name__ if not func.__name__.endswith("_") else func.__name__[:-1]] = func
+            dumpers[func.__name__ if not func.__name__.endswith(
+                "_") else func.__name__[:-1]] = func
 
         dumpers[key] = func
         return func
@@ -41,6 +43,7 @@ def find(node_type, tree):
 
 
 class Dumper(object):
+
     def __init__(self):
         self._current_indent = ""  # we always start at the level 0
         self.previous = None
@@ -64,7 +67,6 @@ class Dumper(object):
         self.stack.pop()
         return to_return
 
-
     def dump_node_list(self, node_list):
         to_return = ""
         for node in node_list:
@@ -78,11 +80,11 @@ class Dumper(object):
         for statement_number, node in enumerate(node_list):
             if node["type"] not in ('endl', 'comment', 'space'):
                 if node["type"] in ("funcdef", "class") and self.number_of_endl != 3 and statement_number != 0:
-                    to_return += "\n"*(3 - self.number_of_endl)
+                    to_return += "\n" * (3 - self.number_of_endl)
                     previous_is_function = True
                 elif previous_is_function:
                     previous_is_function = False
-                    to_return += "\n"*(3 - self.number_of_endl)
+                    to_return += "\n" * (3 - self.number_of_endl)
 
             to_return += self.dump_node(node)
             self.previous = node
@@ -90,12 +92,14 @@ class Dumper(object):
 
     def dump_suite(self, node_list):
         if node_list and node_list[0]["type"] != "endl":
-            node_list = [{"type": "endl", "formatting": [], "value": "\n", "indent": self._current_indent + "    "}] + node_list
+            node_list = [
+                {"type": "endl", "formatting": [], "value": "\n", "indent": self._current_indent + "    "}] + node_list
         return self.dump_node_list(node_list)
 
     def dump_class_body(self, node_list):
         if node_list and node_list[0]["type"] != "endl":
-            node_list = [{"type": "endl", "formatting": [], "value": "\n", "indent": self._current_indent + "    "}] + node_list
+            node_list = [
+                {"type": "endl", "formatting": [], "value": "\n", "indent": self._current_indent + "    "}] + node_list
 
         to_return = ""
         previous_is_function = False
@@ -103,11 +107,12 @@ class Dumper(object):
             if node["type"] not in ('endl', 'comment', 'space'):
                 if node["type"] == "funcdef" and self.number_of_endl != 3 and statement_number != 1:
                     to_return = re.sub(' *$', '', to_return)
-                    to_return += "\n"*(2 - self.number_of_endl) + self._current_indent
+                    to_return += "\n" * \
+                        (2 - self.number_of_endl) + self._current_indent
                     previous_is_function = True
                 elif previous_is_function:
                     previous_is_function = False
-                    to_return += "\n"*(2 - self.number_of_endl)
+                    to_return += "\n" * (2 - self.number_of_endl)
             to_return += self.dump_node(node)
             self.previous = node
         return to_return
@@ -115,24 +120,26 @@ class Dumper(object):
     @node()
     def endl(self, node):
         # replace tab with space
-        indentation = node["indent"].replace("\t", " "*8)
+        indentation = node["indent"].replace("\t", " " * 8)
 
         # reindentation rules
-        # self.indentation_stack store tuples ('found intentation', 'correct indentation')
+        # self.indentation_stack store tuples ('found intentation', 'correct
+        # indentation')
         if len(indentation) == 0:
             pass
 
         elif len(self.indentation_stack) == 0:
             if len(indentation) != 4:
-                self.indentation_stack.append((indentation, " "*4))
-                indentation = " "*4
+                self.indentation_stack.append((indentation, " " * 4))
+                indentation = " " * 4
             else:
                 self.indentation_stack.append((indentation, indentation))
 
         elif indentation > self.indentation_stack[-1][0]:
-            if indentation != self.indentation_stack[-1][1] + " "*4:
-                self.indentation_stack.append((indentation, self.indentation_stack[-1][1] + " "*4))
-                indentation = self.indentation_stack[-2][1] + " "*4
+            if indentation != self.indentation_stack[-1][1] + " " * 4:
+                self.indentation_stack.append(
+                    (indentation, self.indentation_stack[-1][1] + " " * 4))
+                indentation = self.indentation_stack[-2][1] + " " * 4
             else:
                 self.indentation_stack.append((indentation, indentation))
 
@@ -152,7 +159,6 @@ class Dumper(object):
         yield "\n"
         yield indentation
 
-
     @node()
     def ternary_operator(self, node):
         yield self.dump_node(node["first"])
@@ -160,7 +166,6 @@ class Dumper(object):
         yield self.dump_node(node["value"])
         yield " else "
         yield self.dump_node(node["second"])
-
 
     @node("int")
     @node("name")
@@ -176,13 +181,11 @@ class Dumper(object):
     def get_value(self, node):
         yield node["value"]
 
-
     @node("break")
     @node("continue")
     @node("pass")
     def get_type(self, node):
         yield node["type"]
-
 
     @node("star")
     @node("string")
@@ -198,7 +201,6 @@ class Dumper(object):
         if find('endl', node["second_formatting"]):
             yield self.dump_node_list(node["second_formatting"])
 
-
     @node()
     def comment(self, node):
         if self.previous and self.previous["type"] != "endl":
@@ -208,26 +210,21 @@ class Dumper(object):
         else:
             yield "# " + node["value"][1:]
 
-
     @node()
     def ellipsis(self, node):
         yield "..."
-
 
     @node()
     def dot(self, node):
         yield "."
 
-
     @node()
     def semicolon(self, node):
         yield "\n" + self._current_indent
 
-
     @node()
     def comma(self, node):
         yield ", "
-
 
     @node()
     def call(self, node):
@@ -235,14 +232,12 @@ class Dumper(object):
         yield self.dump_node_list(node["value"])
         yield ")"
 
-
     @node()
     def decorator(self, node):
         yield "@"
         yield self.dump_node(node["value"])
         if node["call"]:
             yield self.dump_node(node["call"])
-
 
     @node()
     def class_(self, node):
@@ -258,13 +253,11 @@ class Dumper(object):
         self.previous = node
         yield self.dump_class_body(node["value"])
 
-
     @node()
     def repr(self, node):
         yield "repr("
         yield self.dump_node_list(node["value"])
         yield ")"
-
 
     @node()
     def list_(self, node):
@@ -285,7 +278,6 @@ class Dumper(object):
         yield self.dump_node(node["value"])
         yield ")"
 
-
     @node()
     def tuple_(self, node):
         if node["with_parenthesis"]:
@@ -293,7 +285,6 @@ class Dumper(object):
         yield self._dump_data_structure_body(node)
         if node["with_parenthesis"]:
             yield ")"
-
 
     @node()
     def funcdef(self, node):
@@ -306,7 +297,6 @@ class Dumper(object):
         self.previous = node
         yield self.dump_suite(node["value"])
 
-
     @node()
     def call_argument(self, node):
         if node["name"]:
@@ -315,7 +305,6 @@ class Dumper(object):
             yield self.dump_node(node["value"])
         else:
             yield self.dump_node(node["value"])
-
 
     @node()
     def def_argument(self, node):
@@ -328,18 +317,15 @@ class Dumper(object):
         else:
             yield self.dump_node(node["name"])
 
-
     @node()
     def list_argument(self, node):
         yield "*"
         yield self.dump_node(node["value"])
 
-
     @node()
     def dict_argument(self, node):
         yield "**"
         yield self.dump_node(node["value"])
-
 
     @node()
     def return_(self, node):
@@ -347,7 +333,6 @@ class Dumper(object):
         if node["value"]:
             yield " "
             yield self.dump_node(node["value"])
-
 
     @node()
     def raise_(self, node):
@@ -364,7 +349,6 @@ class Dumper(object):
             yield " "
             yield self.dump_node(node["traceback"])
 
-
     @node()
     def assert_(self, node):
         yield "assert "
@@ -373,7 +357,6 @@ class Dumper(object):
             yield ", "
             yield self.dump_node(node["message"])
 
-
     @node("dotted_name")
     @node("ifelseblock")
     @node("atomtrailers")
@@ -381,14 +364,12 @@ class Dumper(object):
     def dump_node_list_value(self, node):
         yield self.dump_node_list(node["value"])
 
-
     @node()
     def set_comprehension(self, node):
         yield "{"
         yield self.dump_node(node["result"])
         yield self.dump_node_list(node["generators"])
         yield "}"
-
 
     @node()
     def dict_comprehension(self, node):
@@ -399,12 +380,10 @@ class Dumper(object):
         yield self.dump_node_list(node["generators"])
         yield "}"
 
-
     @node()
     def argument_generator_comprehension(self, node):
         yield self.dump_node(node["result"])
         yield self.dump_node_list(node["generators"])
-
 
     @node()
     def generator_comprehension(self, node):
@@ -413,14 +392,12 @@ class Dumper(object):
         yield self.dump_node_list(node["generators"])
         yield ")"
 
-
     @node()
     def list_comprehension(self, node):
         yield "["
         yield self.dump_node(node["result"])
         yield self.dump_node_list(node["generators"])
         yield "]"
-
 
     @node()
     def comprehension_loop(self, node):
@@ -434,19 +411,16 @@ class Dumper(object):
             yield self.dump_node(node["target"])
         yield self.dump_node_list(node["ifs"])
 
-
     @node()
     def comprehension_if(self, node):
         yield " if "
         yield self.dump_node(node["value"])
-
 
     @node()
     def getitem(self, node):
         yield "["
         yield self.dump_node(node["value"])
         yield "]"
-
 
     @node()
     def slice(self, node):
@@ -465,7 +439,6 @@ class Dumper(object):
             if node["step"]:
                 yield self.dump_node(node["step"])
 
-
     @node()
     def assignment(self, node):
         yield self.dump_node(node["target"])
@@ -476,14 +449,12 @@ class Dumper(object):
         yield "= "
         yield self.dump_node(node["value"])
 
-
     @node()
     def unitary_operator(self, node):
         yield node["value"]
         if node["value"] == "not":
             yield " "
         yield self.dump_node(node["target"])
-
 
     @node("binary_operator")
     @node("boolean_operator")
@@ -517,7 +488,6 @@ class Dumper(object):
         self.previous = node
         yield self.dump_suite(node["value"])
 
-
     @node()
     def with_context_item(self, node):
         yield self.dump_node(node["value"])
@@ -525,12 +495,10 @@ class Dumper(object):
             yield " as "
             yield self.dump_node(node["as"])
 
-
     @node()
     def del_(self, node):
         yield "del "
         yield self.dump_node(node["value"])
-
 
     @node()
     def yield_(self, node):
@@ -539,14 +507,12 @@ class Dumper(object):
             yield " "
             yield self.dump_node(node["value"])
 
-
     @node()
     def yield_atom(self, node):
         yield "(yield "
         if node["value"]:
             yield self.dump_node(node["value"])
         yield ")"
-
 
     @node()
     def exec_(self, node):
@@ -559,12 +525,10 @@ class Dumper(object):
             yield ", "
             yield self.dump_node(node["locals"])
 
-
     @node()
     def global_(self, node):
         yield "global "
         yield self.dump_node_list(node["value"])
-
 
     @node()
     def while_(self, node):
@@ -575,7 +539,6 @@ class Dumper(object):
         yield self.dump_suite(node["value"])
         if node["else"]:
             yield self.dump_node(node["else"])
-
 
     @node()
     def for_(self, node):
@@ -589,7 +552,6 @@ class Dumper(object):
         if node["else"]:
             yield self.dump_node(node["else"])
 
-
     @node()
     def if_(self, node):
         yield "if "
@@ -597,7 +559,6 @@ class Dumper(object):
         yield ":"
         self.previous = node
         yield self.dump_suite(node["value"])
-
 
     @node()
     def elif_(self, node):
@@ -607,13 +568,11 @@ class Dumper(object):
         self.previous = node
         yield self.dump_suite(node["value"])
 
-
     @node()
     def else_(self, node):
         yield "else:"
         self.previous = node
         yield self.dump_suite(node["value"])
-
 
     @node()
     def lambda_(self, node):
@@ -623,7 +582,6 @@ class Dumper(object):
             yield self.dump_node_list(node["arguments"])
         yield ": "
         yield self.dump_node(node["value"])
-
 
     @node()
     def try_(self, node):
@@ -635,7 +593,6 @@ class Dumper(object):
             yield self.dump_node(node["else"])
         if node["finally"]:
             yield self.dump_node(node["finally"])
-
 
     @node()
     def except_(self, node):
@@ -653,13 +610,11 @@ class Dumper(object):
         self.previous = node
         yield self.dump_suite(node["value"])
 
-
     @node()
     def finally_(self, node):
         yield "finally:"
         self.previous = node
         yield self.dump_suite(node["value"])
-
 
     @node("dict")
     @node("set")
@@ -668,13 +623,11 @@ class Dumper(object):
         yield self._dump_data_structure_body(node)
         yield "}"
 
-
     @node()
     def dictitem(self, node):
         yield self.dump_node(node["key"])
         yield ": "
         yield self.dump_node(node["value"])
-
 
     @node()
     def import_(self, node):
@@ -683,14 +636,12 @@ class Dumper(object):
             to_yield.append("import " + self.dump_node(i))
         yield ("\n" + self._current_indent).join(to_yield)
 
-
     @node()
     def from_import(self, node):
         yield "from "
         yield self.dump_node_list(node["value"])
         yield " import "
         yield self.dump_node_list(node["targets"])
-
 
     @node()
     def dotted_as_name(self, node):
@@ -699,14 +650,12 @@ class Dumper(object):
             yield " as "
             yield node["target"]
 
-
     @node()
     def name_as_name(self, node):
         yield node["value"]
         if node["target"]:
             yield " as "
             yield node["target"]
-
 
     @node()
     def print_(self, node):
@@ -744,13 +693,17 @@ def format_code(source_code):
 
 
 def main():
-    parser = argparse.ArgumentParser(description='Auto format a python file following the pep8 convention.')
-    parser.add_argument('file_name', metavar='file_name', type=str, help='file name')
-    parser.add_argument('-i', dest='in_place', action='store_true', default=False, help='in place modification, like sed')
+    parser = argparse.ArgumentParser(
+        description='Auto format a python file following the pep8 convention.')
+    parser.add_argument(
+        'file_name', metavar='file_name', type=str, help='file name')
+    parser.add_argument('-i', dest='in_place', action='store_true',
+                        default=False, help='in place modification, like sed')
 
     args = parser.parse_args()
     if not os.path.exists(args.file_name):
-        sys.stderr.write("Error: the file '%s' does not exist.\n" % args.file_name)
+        sys.stderr.write(
+            "Error: the file '%s' does not exist.\n" % args.file_name)
         sys.exit(1)
 
     if not args.in_place:
