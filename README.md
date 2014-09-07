@@ -16,7 +16,7 @@ You can see it in action [here](https://github.com/Psycojoker/pyfmt/commit/145a1
 
 Installation
 ============
-`PyFmt` can be installed using `$ pip install git+https://github.com/Psycojoker/pyfmt.git`
+`PyFmt` can be installed using `$ pip install pyfmt`
 
 Usage
 =====
