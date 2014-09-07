@@ -648,3 +648,7 @@ def test_respect_backslash():
 
 def test_on_Self():
     assert format_code(open("./pyfmt.py", "r").read()) == open("./pyfmt.py", "r").read()
+
+
+def test_on_self_tests():
+    assert format_code(open("./test_pyfmt.py", "r").read()) == open("./test_pyfmt.py", "r").read()
