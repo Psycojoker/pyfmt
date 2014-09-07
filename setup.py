@@ -20,7 +20,7 @@ setup(name='pyfmt',
       url='https://github.com/Psycojoker/pyfmt',
       install_requires=['baron<0.4,<=0.3'],
       license='gplv3+',
-      keywords='pep8 formatting baron fst code',
+      keywords='pep8 formatting baron fst code fmt gofmt',
       py_modules=['pyfmt'],
       entry_points={
       'console_scripts': [
