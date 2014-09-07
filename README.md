@@ -1,8 +1,8 @@
-Introduction
-============
+PyFmt
+======
 
-Pyfmt is an autoformatting source code tool for python, in more or less the
-same spirit than [gofmt](http://golang.org/cmd/gofmt/). It follows the pep8 and
+`Pyfmt` is an autoformatting source code tool for `python`, in more or less the
+same spirit than [gofmt](http://golang.org/cmd/gofmt/). It follows the `pep8` and
 uses [Baron](https://github.com/Psycojoker/baron) to do its work in one pass.
 
 **Pyfmt is in its early stage of developpement, it already do a good job at
@@ -16,8 +16,7 @@ You can see it in action [here](https://github.com/Psycojoker/pyfmt/commit/145a1
 
 Installation
 ============
-
-    pip install git+https://github.com/Psycojoker/pyfmt.git
+`PyFmt` can be installed using `$ pip install git+https://github.com/Psycojoker/pyfmt.git`
 
 Usage
 =====
