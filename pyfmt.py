@@ -784,6 +784,9 @@ custom_key_renderers = {
         "first_formatting": empty_string,
         "second_formatting": empty_string,
     },
+    "dict_argument": {
+        "formatting": empty_string,
+    },
     "dot": {
         "first_formatting": empty_string,
         "second_formatting": empty_string,
