@@ -814,6 +814,10 @@ custom_key_renderers = {
         "first_formatting": empty_string,
         "second_formatting": empty_string,
     },
+    "else": {
+        "first_formatting": empty_string,
+        "second_formatting": empty_string,
+    },
     "endl": {
         "formatting": empty_string,
     },
