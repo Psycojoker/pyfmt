@@ -709,6 +709,9 @@ def _render_node(node):
     node_rendering_order = baron.nodes_rendering_order[node["type"]]
 
     for key_type, key_name, display_condition in node_rendering_order:
+        if display_condition is False or (display_condition is not True and not node[display_condition]):
+            continue
+
         if key_type == "constant":
             yield key_name
         elif key_type == "formatting":
