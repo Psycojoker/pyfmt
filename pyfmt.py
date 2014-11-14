@@ -813,6 +813,9 @@ custom_key_renderers = {
     "endl": {
         "formatting": empty_string,
     },
+    "exec": {
+        "fourth_formatting": empty_string,
+    },
     "generator_comprehension": {
         "first_formatting": empty_string,
         "second_formatting": empty_string,
