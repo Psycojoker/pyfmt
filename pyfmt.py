@@ -929,8 +929,17 @@ custom_key_renderers = {
     },
 }
 
+
+def comment(node):
+    if node["value"].startswith(("# ", "##", "#!")) or len(node["value"]) == 1:
+        return node["value"]
+    else:
+        return "# " + node["value"][1:]
+
+
 advanced_formatters = {
-    "repr": lambda x: "repr(%s)" % _generator_to_string(_render_list(x["value"]))
+    "repr": lambda x: "repr(%s)" % _generator_to_string(_render_list(x["value"])),
+    "comment": comment,
 }
 
 
