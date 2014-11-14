@@ -909,7 +909,7 @@ custom_key_renderers = {
         "fourth_formatting": empty_string,
     },
     "unitary_operator": {
-        "formatting": empty_string,
+        "formatting": lambda _, node: " " if node["value"] == "not" else "",
     },
     "with": {
         "second_formatting": empty_string,
