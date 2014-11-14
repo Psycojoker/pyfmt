@@ -712,7 +712,7 @@ def _render_node(node):
         if key_type == "constant":
             yield key_name
         elif key_type == "formatting":
-            yield " "
+            yield _render_key(node["type"], key_name, " ")
         elif key_type == "string":
             yield node[key_name]
         elif key_type == "key":
@@ -721,6 +721,20 @@ def _render_node(node):
             yield "".join(list(_render_list(node[key_name])))
         else:
             raise Exception("wut")
+
+
+def _render_key(node_type, key_name, value):
+    if custom_key_renderers.get(node_type, {}).get(key_name) is None:
+        return value
+
+    return custom_key_renderers[node_type][key_name](value)
+
+
+empty_string = lambda _: ""
+
+
+custom_key_renderers = {
+}
 
 
 def main():
