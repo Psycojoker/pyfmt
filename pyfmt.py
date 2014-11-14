@@ -860,6 +860,9 @@ custom_key_renderers = {
         "second_formatting": empty_string,
         "third_formatting": empty_string,
     },
+    "import": {
+        "first_formatting": empty_string,
+    },
     "lambda": {
         "first_formatting": lambda _, node: " " if node["arguments"] else "",
         "second_formatting": empty_string,
