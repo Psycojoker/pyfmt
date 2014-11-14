@@ -745,6 +745,13 @@ custom_key_renderers = {
         "third_formatting": empty_string,
         "fourth_formatting": empty_string,
     },
+    "class": {
+        "second_formatting": empty_string,
+        "third_formatting": empty_string,
+        "fourth_formatting": empty_string,
+        "fifth_formatting": empty_string,
+        "sixth_formatting": empty_string,
+    },
     "comma": {
         "first_formatting": empty_string,
     },
@@ -755,6 +762,9 @@ custom_key_renderers = {
     "ellipsis": {
         "first_formatting": empty_string,
         "second_formatting": empty_string,
+    },
+    "endl": {
+        "formatting": empty_string,
     },
     "getitem": {
         "first_formatting": empty_string,
