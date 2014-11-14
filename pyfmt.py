@@ -694,7 +694,33 @@ class Dumper(object):
 
 
 def format_code(source_code):
-    return Dumper().dump_root(baron.parse(source_code))
+    result = ""
+    for i in _render_list(baron.parse(source_code)):
+        result += i
+    return result
+
+
+def _render_list(nodes_list):
+    for node in nodes_list:
+        yield "".join(list(_render_node(node)))
+
+
+def _render_node(node):
+    node_rendering_order = baron.nodes_rendering_order[node["type"]]
+
+    for key_type, key_name, display_condition in node_rendering_order:
+        if key_type == "constant":
+            yield key_name
+        elif key_type == "formatting":
+            yield " "
+        elif key_type == "string":
+            yield node[key_name]
+        elif key_type == "key":
+            yield "".join(list(_render_node(node[key_name])))
+        elif key_type == "list":
+            yield "".join(list(_render_list(node[key_name])))
+        else:
+            raise Exception("wut")
 
 
 def main():
