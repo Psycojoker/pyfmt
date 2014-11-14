@@ -716,6 +716,10 @@ def _render_node(node):
         if display_condition is False or (display_condition is not True and not node[display_condition]):
             continue
 
+        if node["type"] in advanced_formatters:
+            yield advanced_formatters[node["type"]](node)
+            break
+
         if key_type == "constant":
             yield key_name
         elif key_type == "formatting":
@@ -776,6 +780,10 @@ custom_key_renderers = {
         "third_formatting": empty_string,
         "fourth_formatting": empty_string,
     },
+}
+
+advanced_formatters = {
+    "repr": lambda x: "repr(%s)" % _generator_to_string(_render_list(x["value"]))
 }
 
 
