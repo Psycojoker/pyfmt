@@ -810,6 +810,12 @@ custom_key_renderers = {
     "endl": {
         "formatting": empty_string,
     },
+    "generator_comprehension": {
+        "first_formatting": empty_string,
+        "second_formatting": empty_string,
+        "third_formatting": empty_string,
+        "fourth_formatting": empty_string,
+    },
     "getitem": {
         "first_formatting": empty_string,
         "second_formatting": empty_string,
