@@ -720,7 +720,7 @@ def _render_node(node):
         elif key_type == "list":
             yield "".join(list(_render_list(node[key_name])))
         else:
-            raise Exception("wut")
+            raise Exception("Unhandled key type: %s" % key_type)
 
 
 def _render_key(node_type, key_name, value):
