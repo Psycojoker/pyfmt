@@ -1,6 +1,8 @@
 import baron
+from baron.helpers import show
 from pyfmt import format_code, find
 
+show
 
 def test_empty():
     assert format_code("") == ""
