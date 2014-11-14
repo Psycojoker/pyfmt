@@ -759,6 +759,10 @@ custom_key_renderers = {
         "third_formatting": empty_string,
         "fourth_formatting": empty_string,
     },
+    "call_argument": {
+        "first_formatting": empty_string,
+        "second_formatting": empty_string,
+    },
     "class": {
         "second_formatting": empty_string,
         "third_formatting": empty_string,
