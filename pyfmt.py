@@ -816,6 +816,10 @@ custom_key_renderers = {
     "exec": {
         "fourth_formatting": empty_string,
     },
+    "for": {
+        "fourth_formatting": empty_string,
+        "fifth_formatting": empty_string,
+    },
     "generator_comprehension": {
         "first_formatting": empty_string,
         "second_formatting": empty_string,
