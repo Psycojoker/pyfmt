@@ -747,6 +747,9 @@ empty_string = lambda _, __: ""
 
 
 custom_key_renderers = {
+    "assert": {
+        "second_formatting": empty_string,
+    },
     "associative_parenthesis": {
         "first_formatting": empty_string,
         "second_formatting": empty_string,
