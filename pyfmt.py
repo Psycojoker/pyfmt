@@ -823,6 +823,12 @@ custom_key_renderers = {
     "return": {
         "formatting": lambda _, node: " " if node["value"] else ""
     },
+    "set_comprehension": {
+        "first_formatting": empty_string,
+        "second_formatting": empty_string,
+        "third_formatting": empty_string,
+        "fourth_formatting": empty_string,
+    },
     "tuple": {
         "first_formatting": empty_string,
         "second_formatting": empty_string,
