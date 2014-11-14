@@ -719,6 +719,8 @@ def _render_node(node):
             yield "".join(list(_render_node(node[key_name])))
         elif key_type == "list":
             yield "".join(list(_render_list(node[key_name])))
+        elif key_type == "bool":
+            pass
         else:
             raise Exception("Unhandled key type: %s" % key_type)
 
