@@ -824,6 +824,12 @@ custom_key_renderers = {
     "exec": {
         "fourth_formatting": empty_string,
     },
+    "except": {
+        "first_formatting": lambda _, node: " " if node["exception"] else "",
+        "second_formatting": lambda _, node: " " if node["delimiter"] == "as" else "",
+        "fourth_formatting": empty_string,
+        "fifth_formatting": empty_string,
+    },
     "for": {
         "fourth_formatting": empty_string,
         "fifth_formatting": empty_string,
