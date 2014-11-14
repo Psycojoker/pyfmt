@@ -807,6 +807,9 @@ custom_key_renderers = {
         "third_formatting": empty_string,
         "fourth_formatting": empty_string,
     },
+    "list_argument": {
+        "formatting": empty_string,
+    },
     "tuple": {
         "first_formatting": empty_string,
         "second_formatting": empty_string,
