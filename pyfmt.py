@@ -739,6 +739,9 @@ empty_string = lambda _: ""
 
 
 custom_key_renderers = {
+    "comma": {
+        "first_formatting": empty_string,
+    },
     "dot": {
         "first_formatting": empty_string,
         "second_formatting": empty_string,
