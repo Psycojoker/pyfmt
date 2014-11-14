@@ -776,6 +776,9 @@ custom_key_renderers = {
     "comma": {
         "first_formatting": empty_string,
     },
+    "comparison_operator": {
+        "formatting": lambda _, node: " " if node["second"] else "",
+    },
     "def": {
         "second_formatting": empty_string,
         "third_formatting": empty_string,
