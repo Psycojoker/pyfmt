@@ -700,9 +700,13 @@ def format_code(source_code):
     return result
 
 
+def _generator_to_string(generator):
+    return "".join(list(generator))
+
+
 def _render_list(nodes_list):
     for node in nodes_list:
-        yield "".join(list(_render_node(node)))
+        yield _generator_to_string(_render_node(node))
 
 
 def _render_node(node):
@@ -719,9 +723,9 @@ def _render_node(node):
         elif key_type == "string":
             yield node[key_name]
         elif key_type == "key":
-            yield "".join(list(_render_node(node[key_name])))
+            yield _generator_to_string(_render_node(node[key_name]))
         elif key_type == "list":
-            yield "".join(list(_render_list(node[key_name])))
+            yield _generator_to_string(_render_list(node[key_name]))
         elif key_type == "bool":
             pass
         else:
