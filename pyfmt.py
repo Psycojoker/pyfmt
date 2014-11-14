@@ -830,6 +830,10 @@ custom_key_renderers = {
         "fourth_formatting": empty_string,
         "fifth_formatting": empty_string,
     },
+    "finally": {
+        "first_formatting": empty_string,
+        "second_formatting": empty_string,
+    },
     "for": {
         "fourth_formatting": empty_string,
         "fifth_formatting": empty_string,
