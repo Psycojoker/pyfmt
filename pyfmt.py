@@ -787,8 +787,17 @@ custom_key_renderers = {
         "first_formatting": empty_string,
         "second_formatting": empty_string,
     },
+    "dictitem": {
+        "first_formatting": empty_string,
+    },
     "dict_argument": {
         "formatting": empty_string,
+    },
+    "dict_comprehension": {
+        "first_formatting": empty_string,
+        "second_formatting": empty_string,
+        "third_formatting": empty_string,
+        "fourth_formatting": empty_string,
     },
     "dot": {
         "first_formatting": empty_string,
