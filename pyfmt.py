@@ -780,6 +780,12 @@ custom_key_renderers = {
         "third_formatting": empty_string,
         "fourth_formatting": empty_string,
     },
+    "list": {
+        "first_formatting": empty_string,
+        "second_formatting": empty_string,
+        "third_formatting": empty_string,
+        "fourth_formatting": empty_string,
+    },
 }
 
 advanced_formatters = {
