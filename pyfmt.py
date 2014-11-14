@@ -862,6 +862,10 @@ custom_key_renderers = {
     "unitary_operator": {
         "formatting": empty_string,
     },
+    "with": {
+        "second_formatting": empty_string,
+        "third_formatting": empty_string,
+    },
 }
 
 advanced_formatters = {
