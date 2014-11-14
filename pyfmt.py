@@ -780,6 +780,10 @@ custom_key_renderers = {
         "fifth_formatting": empty_string,
         "sixth_formatting": empty_string,
     },
+    "def_argument": {
+        "first_formatting": empty_string,
+        "second_formatting": empty_string,
+    },
     "dot": {
         "first_formatting": empty_string,
         "second_formatting": empty_string,
