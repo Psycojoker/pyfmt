@@ -831,6 +831,12 @@ custom_key_renderers = {
     "list_argument": {
         "formatting": empty_string,
     },
+    "list_comprehension": {
+        "first_formatting": empty_string,
+        "second_formatting": empty_string,
+        "third_formatting": empty_string,
+        "fourth_formatting": empty_string,
+    },
     "raise": {
         "second_formatting": empty_string,
         "fourth_formatting": empty_string,
