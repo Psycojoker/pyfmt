@@ -695,7 +695,10 @@ class Dumper(object):
 
 def format_code(source_code):
     result = ""
-    for i in _render_list(baron.parse(source_code)):
+    state = {
+        "previous": None,
+    }
+    for i in _render_list(baron.parse(source_code), state):
         result += i
     return result
 
@@ -704,46 +707,53 @@ def _generator_to_string(generator):
     return "".join(list(generator))
 
 
-def _render_list(nodes_list):
+def _render_list(nodes_list, state):
     for node in nodes_list:
-        yield _generator_to_string(_render_node(node))
+        yield _generator_to_string(_render_node(node, state))
 
 
-def _render_node(node):
+def _render_node(node, state):
     node_rendering_order = baron.nodes_rendering_order[node["type"]]
 
     for key_type, key_name, display_condition in node_rendering_order:
-        if display_condition is False or (display_condition is not True and not node[display_condition]):
-            continue
 
         if node["type"] in advanced_formatters:
-            yield advanced_formatters[node["type"]](node)
+            yield advanced_formatters[node["type"]](node, state)
             break
+
+        if display_condition is False or (display_condition is not True and not node[display_condition]):
+            state["previous"] = node
+            continue
 
         if key_type == "constant":
             yield key_name
         elif key_type == "formatting":
-            yield _render_key(node["type"], key_name, " ", node)
+            state["previous"] = node
+            yield _render_key(node["type"], key_name, " ", node, state)
         elif key_type == "string":
             yield node[key_name]
         elif key_type == "key":
-            yield _generator_to_string(_render_node(node[key_name]))
+            state["previous"] = node
+            yield _generator_to_string(_render_node(node[key_name], state))
         elif key_type == "list":
-            yield _generator_to_string(_render_list(node[key_name]))
+            state["previous"] = node
+            yield _generator_to_string(_render_list(node[key_name], state))
         elif key_type == "bool":
             pass
         else:
             raise Exception("Unhandled key type: %s" % key_type)
 
+    state["previous"] = node
 
-def _render_key(node_type, key_name, value, node):
+
+def _render_key(node_type, key_name, value, node, state):
     if custom_key_renderers.get(node_type, {}).get(key_name) is None:
         return value
 
-    return custom_key_renderers[node_type][key_name](value, node)
+    return custom_key_renderers[node_type][key_name](value, node, state)
 
 
-empty_string = lambda _, __: ""
+empty_string = lambda _, __, state: ""
 
 
 custom_key_renderers = {
@@ -777,7 +787,7 @@ custom_key_renderers = {
         "first_formatting": empty_string,
     },
     "comparison_operator": {
-        "formatting": lambda _, node: " " if node["second"] else "",
+        "formatting": lambda _, node, __: " " if node["second"] else "",
     },
     "def": {
         "second_formatting": empty_string,
@@ -825,14 +835,14 @@ custom_key_renderers = {
         "second_formatting": empty_string,
     },
     "endl": {
-        "formatting": empty_string,
+        "formatting": lambda _, node, state: _generator_to_string(_render_list(node["formatting"], state)),
     },
     "exec": {
         "fourth_formatting": empty_string,
     },
     "except": {
-        "first_formatting": lambda _, node: " " if node["exception"] else "",
-        "second_formatting": lambda _, node: " " if node["delimiter"] == "as" else "",
+        "first_formatting": lambda _, node, __: " " if node["exception"] else "",
+        "second_formatting": lambda _, node, __: " " if node["delimiter"] == "as" else "",
         "fourth_formatting": empty_string,
         "fifth_formatting": empty_string,
     },
@@ -864,7 +874,7 @@ custom_key_renderers = {
         "first_formatting": empty_string,
     },
     "lambda": {
-        "first_formatting": lambda _, node: " " if node["arguments"] else "",
+        "first_formatting": lambda _, node, __: " " if node["arguments"] else "",
         "second_formatting": empty_string,
     },
     "list": {
@@ -890,7 +900,7 @@ custom_key_renderers = {
         "fourth_formatting": empty_string,
     },
     "return": {
-        "formatting": lambda _, node: " " if node["value"] else ""
+        "formatting": lambda _, node, __: " " if node["value"] else ""
     },
     "set_comprehension": {
         "first_formatting": empty_string,
@@ -913,18 +923,18 @@ custom_key_renderers = {
         "fourth_formatting": empty_string,
     },
     "unitary_operator": {
-        "formatting": lambda _, node: " " if node["value"] == "not" else "",
+        "formatting": lambda _, node, __: " " if node["value"] == "not" else "",
     },
     "with": {
         "second_formatting": empty_string,
         "third_formatting": empty_string,
     },
     "yield": {
-        "formatting": lambda _, node: " " if node["value"] else ""
+        "formatting": lambda _, node, __: " " if node["value"] else ""
     },
     "yield_atom": {
         "first_formatting": empty_string,
-        "second_formatting": lambda _, node: " " if node["value"] else "",
+        "second_formatting": lambda _, node, __: " " if node["value"] else "",
         "third_formatting": empty_string,
     },
     "while": {
@@ -934,16 +944,34 @@ custom_key_renderers = {
 }
 
 
-def comment(node):
+def comment(node, state):
+    to_return = ""
+    if state["previous"] and state["previous"]["type"] != "endl" and state["previous"] is not node:
+        to_return += "  "
     if node["value"].startswith(("# ", "##", "#!")) or len(node["value"]) == 1:
-        return node["value"]
+        to_return += node["value"]
     else:
-        return "# " + node["value"][1:]
+        to_return += "# " + node["value"][1:]
+
+    return to_return
+
+
+def endl(node, state):
+    to_return = ""
+
+    if find("comment", node["formatting"]):
+        to_return += _generator_to_string(_render_list(node["formatting"], state))
+
+    to_return += node["value"]
+    to_return += node["indent"]
+    state["previous"] = node
+    return to_return
 
 
 advanced_formatters = {
-    "repr": lambda x: "repr(%s)" % _generator_to_string(_render_list(x["value"])),
+    "repr": lambda x, state: "repr(%s)" % _generator_to_string(_render_list(x["value"], state)),
     "comment": comment,
+    "endl": endl,
 }
 
 
