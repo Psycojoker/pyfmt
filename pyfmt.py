@@ -882,6 +882,9 @@ custom_key_renderers = {
         "third_formatting": empty_string,
         "fourth_formatting": empty_string,
     },
+    "print": {
+        "destination_formatting": empty_string,
+    },
     "raise": {
         "second_formatting": empty_string,
         "fourth_formatting": empty_string,
