@@ -877,6 +877,10 @@ custom_key_renderers = {
         "second_formatting": lambda _, node: " " if node["value"] else "",
         "third_formatting": empty_string,
     },
+    "while": {
+        "second_formatting": empty_string,
+        "third_formatting": empty_string,
+    },
 }
 
 advanced_formatters = {
