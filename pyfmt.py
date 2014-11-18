@@ -352,6 +352,7 @@ custom_key_renderers = {
         "second_formatting": empty_string,
     },
     "elif": {
+        "value": suite,
         "second_formatting": empty_string,
         "third_formatting": empty_string,
     },
