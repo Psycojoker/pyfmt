@@ -215,7 +215,7 @@ def format_code(source_code):
         "previous": None,
         "current_indent": "",
     }
-    for i in _render_list(baron.parse(source_code), state):
+    for i in _render_list(None, None, baron.parse(source_code), state):
         result += i
     return result
 
@@ -224,9 +224,14 @@ def _generator_to_string(generator):
     return "".join(list(generator))
 
 
-def _render_list(nodes_list, state):
-    for node in nodes_list:
-        yield _generator_to_string(_render_node(node, state))
+def _render_list(node_type, key_name, nodes_list, state):
+    if custom_key_renderers.get(node_type, {}).get(key_name) is None:
+        for node in nodes_list:
+            yield _generator_to_string(_render_node(node, state))
+
+    else:
+        for i in custom_key_renderers[node_type][key_name](node_type, key_name, nodes_list, state):
+            yield i
 
 
 def _render_node(node, state):
@@ -254,7 +259,7 @@ def _render_node(node, state):
             yield _generator_to_string(_render_node(node[key_name], state))
         elif key_type == "list":
             state["previous"] = node
-            yield _generator_to_string(_render_list(node[key_name], state))
+            yield _generator_to_string(_render_list(node["type"], key_name, node[key_name], state))
         elif key_type == "bool":
             pass
         else:
@@ -271,6 +276,13 @@ def _render_key(node_type, key_name, value, node, state):
 
 
 empty_string = lambda _, __, state: ""
+
+
+def suite(node_type, key_name, node_list, state):
+    if node_list and node_list[0]["type"] != "endl":
+        node_list = [
+            {"type": "endl", "formatting": [], "value": "\n", "indent": state["current_indent"] + "    "}] + node_list
+    return _render_list(None, None, node_list, state)
 
 
 custom_key_renderers = {
@@ -352,7 +364,7 @@ custom_key_renderers = {
         "second_formatting": empty_string,
     },
     "endl": {
-        "formatting": lambda _, node, state: _generator_to_string(_render_list(node["formatting"], state)),
+        "formatting": lambda _, node, state: _generator_to_string(_render_list(None, None, node["formatting"], state)),
     },
     "exec": {
         "fourth_formatting": empty_string,
@@ -384,6 +396,7 @@ custom_key_renderers = {
         "fourth_formatting": empty_string,
     },
     "if": {
+        "value": suite,
         "second_formatting": empty_string,
         "third_formatting": empty_string,
     },
@@ -477,7 +490,7 @@ def endl(node, state):
     to_return = ""
 
     if find("comment", node["formatting"]):
-        to_return += _generator_to_string(_render_list(node["formatting"], state))
+        to_return += _generator_to_string(_render_list(None, None, node["formatting"], state))
 
     to_return += node["value"]
     to_return += node["indent"]
@@ -487,7 +500,7 @@ def endl(node, state):
 
 
 advanced_formatters = {
-    "repr": lambda x, state: "repr(%s)" % _generator_to_string(_render_list(x["value"], state)),
+    "repr": lambda x, state: "repr(%s)" % _generator_to_string(_render_list(None, None, x["value"], state)),
     "comment": comment,
     "endl": endl,
 }
