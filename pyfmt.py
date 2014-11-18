@@ -381,6 +381,7 @@ custom_key_renderers = {
         "fifth_formatting": empty_string,
     },
     "finally": {
+        "value": suite,
         "first_formatting": empty_string,
         "second_formatting": empty_string,
     },
