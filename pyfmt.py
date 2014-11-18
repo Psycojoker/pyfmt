@@ -306,6 +306,7 @@ custom_key_renderers = {
         "second_formatting": empty_string,
     },
     "class": {
+        "value": suite,
         "second_formatting": empty_string,
         "third_formatting": empty_string,
         "fourth_formatting": empty_string,
