@@ -464,6 +464,7 @@ custom_key_renderers = {
         "formatting": lambda _, node, __: " " if node["value"] == "not" else "",
     },
     "with": {
+        "value": suite,
         "second_formatting": empty_string,
         "third_formatting": empty_string,
     },
