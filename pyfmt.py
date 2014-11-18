@@ -9,7 +9,7 @@ import baron
 
 def d(j):
     import json
-    print json.dumps(j, indent=4)
+    print(json.dumps(j, indent=4))
 
 
 dumpers = {}

@@ -529,10 +529,10 @@ def test_fix_bad_indentation_simple_too_big():
 
 
 def test_fix_indentation_complex():
-    print "result:"
-    print format_code(bad_indentation)
-    print "expected:"
-    print bad_indentation_fixed
+    print("result:")
+    print(format_code(bad_indentation))
+    print("expected:")
+    print(bad_indentation_fixed)
     assert format_code(bad_indentation) == bad_indentation_fixed
 
 bug_reindent_tabs = """
