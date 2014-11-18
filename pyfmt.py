@@ -7,6 +7,11 @@ import argparse
 import baron
 
 
+python_version = sys.version_info[0]
+python_subversion = sys.version_info[1]
+string_instance = str if python_version == 3 else basestring
+
+
 def d(j):
     import json
     print(json.dumps(j, indent=4))
@@ -312,7 +317,7 @@ class Dumper(object):
             yield node["name"]
             yield "="
             yield self.dump_node(node["value"])
-        elif isinstance(node["name"], basestring):
+        elif isinstance(node["name"], string_instance):
             yield node["name"]
         else:
             yield self.dump_node(node["name"])
