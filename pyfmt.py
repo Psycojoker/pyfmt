@@ -374,6 +374,7 @@ custom_key_renderers = {
         "fourth_formatting": empty_string,
     },
     "except": {
+        "value": suite,
         "first_formatting": lambda _, node, __: " " if node["exception"] else "",
         "second_formatting": lambda _, node, __: " " if node["delimiter"] == "as" else "",
         "fourth_formatting": empty_string,
