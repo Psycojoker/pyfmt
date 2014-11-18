@@ -4,6 +4,7 @@ install:
   - pip install pytest python-coveralls pytest-cov
 python:
   - "2.7"
+  - "3.4"
 script:
   - py.test test_pyfmt.py --cov pyfmt --cov-report term-missing
 after_success:
