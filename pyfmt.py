@@ -320,6 +320,7 @@ custom_key_renderers = {
         "formatting": lambda _, node, __: " " if node["second"] else "",
     },
     "def": {
+        "value": suite,
         "second_formatting": empty_string,
         "third_formatting": empty_string,
         "fourth_formatting": empty_string,
