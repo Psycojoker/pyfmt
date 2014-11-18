@@ -407,9 +407,6 @@ custom_key_renderers = {
         "second_formatting": empty_string,
         "third_formatting": empty_string,
     },
-    "import": {
-        "first_formatting": empty_string,
-    },
     "lambda": {
         "first_formatting": lambda _, node, __: " " if node["arguments"] else "",
         "second_formatting": empty_string,
@@ -509,10 +506,20 @@ def endl(node, state):
     return to_return
 
 
+def import_(node, state):
+    to_return = []
+
+    for i in filter(lambda x: x["type"] != "comma", node["value"]):
+        to_return.append("import " + _generator_to_string(_render_node(i, state)))
+
+    return ("\n" + state["current_indent"]).join(to_return)
+
+
 advanced_formatters = {
     "repr": lambda x, state: "repr(%s)" % _generator_to_string(_render_list(None, None, x["value"], state)),
     "comment": comment,
     "endl": endl,
+    "import": import_,
 }
 
 
