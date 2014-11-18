@@ -467,6 +467,7 @@ class A:  # stuff
             pass
 """
 
+
 def test_comment_indented_after_try():
     assert format_code(comment_2_spaces_target) == comment_2_spaces_target_result
 
@@ -518,6 +519,7 @@ if a:
     pop
 """
 
+
 def test_fix_bad_indentation_simple_too_small():
     assert format_code("if a:\n pass") == "if a:\n    pass\n"
 
@@ -549,6 +551,7 @@ if b:
         pass
 """
 
+
 def test_bug_reindent_tabs():
     assert format_code(bug_reindent_tabs) == bug_reindent_tabs_fixed
 
@@ -575,6 +578,7 @@ def plop():
 plop
 pop
 """
+
 
 def test_blank_lines_arround_functions_first_level():
     assert format_code(root_level_function) == root_level_function_fixed
@@ -634,6 +638,7 @@ class A:
     # should not be indented
     b = c
 """
+
 
 def test_comment_previous_endl_indent_regression_test():
     assert format_code(comment_previous_endl_indent) == comment_previous_endl_indent
