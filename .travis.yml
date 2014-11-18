@@ -9,3 +9,5 @@ script:
   - py.test test_pyfmt.py --cov pyfmt --cov-report term-missing
 after_success:
   - coveralls
+notifications:
+  irc: "chat.freenode.net#baron"
