@@ -477,6 +477,7 @@ custom_key_renderers = {
         "third_formatting": empty_string,
     },
     "while": {
+        "value": suite,
         "second_formatting": empty_string,
         "third_formatting": empty_string,
     },
