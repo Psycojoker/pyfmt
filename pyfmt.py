@@ -213,6 +213,7 @@ def format_code(source_code):
     result = ""
     state = {
         "previous": None,
+        "current_indent": "",
     }
     for i in _render_list(baron.parse(source_code), state):
         result += i
@@ -481,6 +482,7 @@ def endl(node, state):
     to_return += node["value"]
     to_return += node["indent"]
     state["previous"] = node
+    state["current_indent"] = node["indent"]
     return to_return
 
 
