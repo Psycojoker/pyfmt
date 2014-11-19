@@ -214,6 +214,7 @@ def format_code(source_code):
     state = {
         "previous": None,
         "current_indent": "",
+        "indentation_stack": [],
     }
     for i in _render_list(None, None, baron.parse(source_code), state):
         result += i
@@ -513,13 +514,45 @@ def endl(node, state):
     to_return = ""
 
     # replace tab with space
-    node["indent"] = node["indent"].replace("\t", " " * 8)
+    indentation = node["indent"].replace("\t", " " * 8)
+
+    # reindentation rules
+    # self.indentation_stack store tuples ('found intentation', 'correct
+    # indentation')
+    if len(indentation) == 0:
+        pass
+
+    elif len(state["indentation_stack"]) == 0:
+        if len(indentation) != 4:
+            state["indentation_stack"].append((indentation, " " * 4))
+            indentation = " " * 4
+        else:
+            state["indentation_stack"].append((indentation, indentation))
+
+    elif indentation > state["indentation_stack"][-1][0]:
+        if indentation != state["indentation_stack"][-1][1] + " " * 4:
+            state["indentation_stack"].append(
+                (indentation, state["indentation_stack"][-1][1] + " " * 4))
+            indentation = state["indentation_stack"][-2][1] + " " * 4
+        else:
+            state["indentation_stack"].append((indentation, indentation))
+
+    elif indentation < state["indentation_stack"][-1][0]:
+        while state["indentation_stack"] and indentation != state["indentation_stack"][-1][0]:
+            state["indentation_stack"].pop()
+        if not state["indentation_stack"]:
+            indentation = ""
+        elif indentation != state["indentation_stack"][-1][1]:
+            indentation = state["indentation_stack"][-1][1]
+
+    elif indentation == state["indentation_stack"][-1][0]:
+        indentation = state["indentation_stack"][-1][1]
 
     if find("comment", node["formatting"]):
         to_return += _generator_to_string(_render_list(None, None, node["formatting"], state))
 
     to_return += node["value"]
-    to_return += node["indent"]
+    to_return += indentation
     state["previous"] = node
     state["current_indent"] = node["indent"]
     return to_return
