@@ -426,9 +426,6 @@ custom_key_renderers = {
         "third_formatting": empty_string,
         "fourth_formatting": empty_string,
     },
-    "print": {
-        "destination_formatting": empty_string,
-    },
     "raise": {
         "second_formatting": empty_string,
         "fourth_formatting": empty_string,
@@ -493,6 +490,25 @@ def comment(node, state):
     return to_return
 
 
+def print_(node, state):
+    to_return = "print"
+
+    if node["destination"]:
+        to_return += " >>"
+        to_return += _generator_to_string(_render_node(node["destination"], state))
+
+    if node["value"]:
+        value = _generator_to_string(_render_list(node["type"], "value", node["value"], state))
+        if value.startswith("(") and value.endswith(")") and "," not in value:
+            pass
+        elif node["value"][0]["type"] != "comma":
+            to_return += " "
+
+        to_return += value
+
+    return to_return
+
+
 def endl(node, state):
     to_return = ""
 
@@ -520,6 +536,7 @@ advanced_formatters = {
     "comment": comment,
     "endl": endl,
     "import": import_,
+    "print": print_,
 }
 
 
