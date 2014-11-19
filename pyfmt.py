@@ -512,6 +512,9 @@ def print_(node, state):
 def endl(node, state):
     to_return = ""
 
+    # replace tab with space
+    node["indent"] = node["indent"].replace("\t", " " * 8)
+
     if find("comment", node["formatting"]):
         to_return += _generator_to_string(_render_list(None, None, node["formatting"], state))
 
