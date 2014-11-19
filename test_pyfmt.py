@@ -1,8 +1,13 @@
+import logging
+
 import baron
 from baron.helpers import show
 from pyfmt import format_code, find
 
 show
+
+logging.basicConfig(level=logging.DEBUG, format='%(message)s')
+
 
 def test_empty():
     assert format_code("") == ""

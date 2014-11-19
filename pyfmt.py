@@ -4,6 +4,8 @@ import os
 import re
 import sys
 import argparse
+import logging
+
 import baron
 
 
@@ -239,33 +241,43 @@ def _render_node(node, state):
     node_rendering_order = baron.nodes_rendering_order[node["type"]]
 
     for key_type, key_name, display_condition in node_rendering_order:
+        for_debug = "%s %s %s %s %s " % (node["type"], key_name, key_type, [node.get(key_name)], "----->",)
 
         if node["type"] in advanced_formatters:
+            logging.debug(for_debug + "advanced formatters")
             yield advanced_formatters[node["type"]](node, state)
             break
 
         if display_condition is False or (display_condition is not True and not node[display_condition]):
+            logging.debug(for_debug + "not displayed")
             state["previous"] = node
             continue
 
         if key_type == "constant":
+            logging.debug(for_debug + "constant")
             yield key_name
         elif key_type == "formatting":
+            logging.debug(for_debug + "formatting")
             state["previous"] = node
             yield _render_key(node["type"], key_name, " ", node, state)
         elif key_type == "string":
+            logging.debug(for_debug + "string")
             yield node[key_name]
         elif key_type == "key":
+            logging.debug(for_debug + "key")
             state["previous"] = node
             yield _generator_to_string(_render_node(node[key_name], state))
         elif key_type == "list":
+            logging.debug(for_debug + "list")
             state["previous"] = node
             yield _generator_to_string(_render_list(node["type"], key_name, node[key_name], state))
         elif key_type == "bool":
+            logging.debug(for_debug + "bool")
             pass
         else:
             raise Exception("Unhandled key type: %s" % key_type)
 
+    logging.debug("%s %s" % ("set as previous", node["type"]))
     state["previous"] = node
 
 
@@ -481,6 +493,7 @@ custom_key_renderers = {
 
 def comment(node, state):
     to_return = ""
+    logging.debug("%s %s" % ("==> previous:", state["previous"]))
     if state["previous"] and state["previous"]["type"] != "endl" and state["previous"] is not node:
         to_return += "  "
     if node["value"].startswith(("# ", "##", "#!")) or len(node["value"]) == 1:
