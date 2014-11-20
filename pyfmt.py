@@ -466,6 +466,12 @@ custom_key_renderers = {
     "return": {
         "formatting": lambda _, node, __: " " if node["value"] else ""
     },
+    "set": {
+        "first_formatting": empty_string,
+        "second_formatting": empty_string,
+        "third_formatting": empty_string,
+        "fourth_formatting": empty_string,
+    },
     "set_comprehension": {
         "first_formatting": empty_string,
         "second_formatting": empty_string,
