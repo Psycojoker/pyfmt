@@ -467,6 +467,7 @@ custom_key_renderers = {
         "formatting": lambda _, node, __: " " if node["value"] else ""
     },
     "set": {
+        "value": dump_data_structure_body,
         "first_formatting": empty_string,
         "second_formatting": empty_string,
         "third_formatting": empty_string,
