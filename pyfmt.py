@@ -364,6 +364,7 @@ custom_key_renderers = {
         "second_formatting": empty_string,
     },
     "dict": {
+        "value": dump_data_structure_body,
         "first_formatting": empty_string,
         "second_formatting": empty_string,
         "third_formatting": empty_string,
