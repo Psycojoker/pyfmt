@@ -303,16 +303,17 @@ def dump_data_structure_body(node_type, key_name, node_list, state):
         return re.sub("([^\n ]) +$", "\g<1>", _generator_to_string(_render_list(None, None, node_list, state)))
 
     to_return = "\n    " + state["current_indent"]
+    state["current_indent"] += "    "
 
     for i in node_list:
         if i["type"] != "comma":
             to_return += _generator_to_string(_render_node(i, state))
         else:
-            to_return += ",\n    " + state["current_indent"]
+            to_return += ",\n" + state["current_indent"]
 
     to_return = to_return.rstrip()
-    to_return += "\n" + state["current_indent"]
     state["current_indent"] = state["current_indent"][:-4]
+    to_return += "\n" + state["current_indent"]
 
     return to_return
 
