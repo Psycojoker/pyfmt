@@ -97,12 +97,6 @@ class Dumper(object):
             self.previous = node
         return to_return
 
-    def dump_suite(self, node_list):
-        if node_list and node_list[0]["type"] != "endl":
-            node_list = [
-                {"type": "endl", "formatting": [], "value": "\n", "indent": self._current_indent + "    "}] + node_list
-        return self.dump_node_list(node_list)
-
     def dump_class_body(self, node_list):
         if node_list and node_list[0]["type"] != "endl":
             node_list = [
@@ -124,48 +118,6 @@ class Dumper(object):
             self.previous = node
         return to_return
 
-    @node()
-    def endl(self, node):
-        # replace tab with space
-        indentation = node["indent"].replace("\t", " " * 8)
-
-        # reindentation rules
-        # self.indentation_stack store tuples ('found intentation', 'correct
-        # indentation')
-        if len(indentation) == 0:
-            pass
-
-        elif len(self.indentation_stack) == 0:
-            if len(indentation) != 4:
-                self.indentation_stack.append((indentation, " " * 4))
-                indentation = " " * 4
-            else:
-                self.indentation_stack.append((indentation, indentation))
-
-        elif indentation > self.indentation_stack[-1][0]:
-            if indentation != self.indentation_stack[-1][1] + " " * 4:
-                self.indentation_stack.append(
-                    (indentation, self.indentation_stack[-1][1] + " " * 4))
-                indentation = self.indentation_stack[-2][1] + " " * 4
-            else:
-                self.indentation_stack.append((indentation, indentation))
-
-        elif indentation < self.indentation_stack[-1][0]:
-            while self.indentation_stack and indentation != self.indentation_stack[-1][0]:
-                self.indentation_stack.pop()
-            if not self.indentation_stack:
-                self.indentation = ""
-            elif indentation != self.indentation_stack[-1][1]:
-                indentation = self.indentation_stack[-1][1]
-
-        elif indentation == self.indentation_stack[-1][0]:
-            indentation = self.indentation_stack[-1][1]
-
-        self._current_indent = indentation
-        yield self.dump_node_list(node["formatting"])
-        yield "\n"
-        yield indentation
-
     @node("star")
     @node("string")
     @node("raw_string")
@@ -179,36 +131,6 @@ class Dumper(object):
         yield node["value"]
         if find('endl', node["second_formatting"]):
             yield self.dump_node_list(node["second_formatting"])
-
-    @node()
-    def comment(self, node):
-        if self.previous and self.previous["type"] != "endl":
-            yield "  "
-        if node["value"].startswith(("# ", "##", "#!")) or len(node["value"]) == 1:
-            yield node["value"]
-        else:
-            yield "# " + node["value"][1:]
-
-    def _dump_data_structure_body(self, node):
-        if find('endl', node['value']):
-            return "".join(list(self.dump_data_structure(content=node["value"],
-                                                         indent=self._current_indent)))
-        else:
-            return re.sub("([^\n ]) +$", "\g<1>", self.dump_node_list(node["value"]))
-
-    def dump_data_structure(self, content, indent):
-        yield "\n    " + indent
-        to_yield = ""
-        self._current_indent = indent + "    "
-        for i in content:
-            if i["type"] != "comma":
-                to_yield += self.dump_node(i)
-            else:
-                to_yield += ",\n    " + indent
-        to_yield = to_yield.rstrip()
-        yield to_yield
-        yield "\n" + indent
-        self._current_indent = self._current_indent[:-4]
 
 
 def format_code(source_code):
