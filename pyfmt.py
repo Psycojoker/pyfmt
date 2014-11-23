@@ -138,10 +138,23 @@ def format_code(source_code):
     state = {
         "previous": None,
         "current_indent": "",
+        "number_of_endl": 0,
         "indentation_stack": [],
     }
-    for i in _render_list(None, None, baron.parse(source_code), state):
-        result += i
+
+    previous_is_function = False
+    for statement_number, node in enumerate(baron.parse(source_code)):
+        if node["type"] not in ('endl', 'comment', 'space'):
+            if node["type"] in ("def", "class") and state["number_of_endl"] != 3 and statement_number != 0:
+                result += "\n"*(3 - state["number_of_endl"])
+                previous_is_function = True
+            elif previous_is_function:
+                previous_is_function = False
+                result += "\n" * (3 - state["number_of_endl"])
+
+        result += _generator_to_string(_render_node(node, state))
+        state["previous"] = node
+
     return result
 
 
@@ -164,6 +177,11 @@ def _render_node(node, state):
 
     for key_type, key_name, display_condition in node_rendering_order:
         for_debug = "%s %s %s %s %s " % (node["type"], key_name, key_type, [node.get(key_name)], "----->",)
+
+        if node["type"] == "endl":
+            state["number_of_endl"] += 1
+        else:
+            state["number_of_endl"] = 0
 
         if node["type"] in advanced_formatters:
             logging.debug(for_debug + "advanced formatters")
