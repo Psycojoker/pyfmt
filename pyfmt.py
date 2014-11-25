@@ -221,14 +221,28 @@ def _render_node(node, state):
     state["previous"] = node
 
 
+def dont_break_backslash(to_test, normal_value, key_name=None):
+    logging.debug("%s %s %s %s" % ("don't break backslash", [to_test], [normal_value], key_name))
+    if isinstance(to_test, list):
+        to_test = _generator_to_string(_render_list(None, None, to_test, {}))
+
+    if key_name is not None and "formatting" not in key_name:
+        return normal_value
+
+    if "\\" in to_test:
+        return to_test
+
+    return normal_value
+
+
 def _render_key(node_type, key_name, value, node, state):
     if custom_key_renderers.get(node_type, {}).get(key_name) is None:
-        return value
+        return dont_break_backslash(to_test=node[key_name], normal_value=value, key_name=key_name)
 
-    return custom_key_renderers[node_type][key_name](value, node, state)
+    return custom_key_renderers[node_type][key_name](value, key_name, node, state)
 
 
-empty_string = lambda _, __, state: ""
+empty_string = lambda value, key_name, node, state: dont_break_backslash(to_test=node[key_name], normal_value="", key_name=key_name)
 
 
 def suite(node_type, key_name, node_list, state):
@@ -290,7 +304,7 @@ custom_key_renderers = {
         "first_formatting": empty_string,
     },
     "comparison_operator": {
-        "formatting": lambda _, node, __: " " if node["second"] else "",
+        "formatting": lambda value, key_name, node, state: dont_break_backslash(to_test=node[key_name], normal_value=" " if node["second"] else ""),
     },
     "def": {
         "value": suite,
@@ -342,15 +356,15 @@ custom_key_renderers = {
         "second_formatting": empty_string,
     },
     "endl": {
-        "formatting": lambda _, node, state: _generator_to_string(_render_list(None, None, node["formatting"], state)),
+        "formatting": lambda value, key_name, node, state: _generator_to_string(_render_list(None, None, node["formatting"], state)),
     },
     "exec": {
         "fourth_formatting": empty_string,
     },
     "except": {
         "value": suite,
-        "first_formatting": lambda _, node, __: " " if node["exception"] else "",
-        "second_formatting": lambda _, node, __: " " if node["delimiter"] == "as" else "",
+        "first_formatting": lambda value, key_name, node, state: " " if node["exception"] else "",
+        "second_formatting": lambda value, key_name, node, state: " " if node["delimiter"] == "as" else "",
         "fourth_formatting": empty_string,
         "fifth_formatting": empty_string,
     },
@@ -382,7 +396,7 @@ custom_key_renderers = {
         "third_formatting": empty_string,
     },
     "lambda": {
-        "first_formatting": lambda _, node, __: " " if node["arguments"] else "",
+        "first_formatting": lambda value, key_name, node, state: " " if node["arguments"] else "",
         "second_formatting": empty_string,
     },
     "list": {
@@ -406,7 +420,7 @@ custom_key_renderers = {
         "fourth_formatting": empty_string,
     },
     "return": {
-        "formatting": lambda _, node, __: " " if node["value"] else ""
+        "formatting": lambda value, key_name, node, __: " " if node["value"] else ""
     },
     "set": {
         "value": dump_data_structure_body,
@@ -438,7 +452,7 @@ custom_key_renderers = {
         "fourth_formatting": empty_string,
     },
     "unitary_operator": {
-        "formatting": lambda _, node, __: " " if node["value"] == "not" else "",
+        "formatting": lambda value, key_name, node, __: " " if node["value"] == "not" else "",
     },
     "with": {
         "value": suite,
@@ -446,11 +460,11 @@ custom_key_renderers = {
         "third_formatting": empty_string,
     },
     "yield": {
-        "formatting": lambda _, node, __: " " if node["value"] else ""
+        "formatting": lambda value, key_name, node, __: " " if node["value"] else ""
     },
     "yield_atom": {
         "first_formatting": empty_string,
-        "second_formatting": lambda _, node, __: " " if node["value"] else "",
+        "second_formatting": lambda value, key_name, node, __: " " if node["value"] else "",
         "third_formatting": empty_string,
     },
     "while": {
