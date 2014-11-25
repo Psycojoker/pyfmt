@@ -14,25 +14,6 @@ python_subversion = sys.version_info[1]
 string_instance = str if python_version == 3 else basestring
 
 
-def d(j):
-    import json
-    print(json.dumps(j, indent=4))
-
-
-dumpers = {}
-
-
-def node(key=""):
-    def wrap(func):
-        if not key:
-            dumpers[func.__name__ if not func.__name__.endswith(
-                "_") else func.__name__[:-1]] = func
-
-        dumpers[key] = func
-        return func
-    return wrap
-
-
 def find(node_type, tree):
     if isinstance(tree, dict):
         if tree.get("type") == node_type:
@@ -47,90 +28,6 @@ def find(node_type, tree):
             if result is not None:
                 return result
     return None
-
-
-class Dumper(object):
-
-    def __init__(self):
-        self._current_indent = ""  # we always start at the level 0
-        self.previous = None
-        self.stack = []
-        self.indentation_stack = []
-        self.number_of_endl = 0
-
-    def maybe_backslash(self, formatting, default):
-        if formatting and "\\" in formatting[0]["value"]:
-            return formatting[0]["value"]
-        else:
-            return default
-
-    def dump_node(self, node):
-        self.stack.append(node)
-        if node["type"] == "endl":
-            self.number_of_endl += 1
-        elif node["type"] not in ('space', 'comment'):
-            self.number_of_endl = 0
-        to_return = "".join(list(dumpers[node["type"]](self, node)))
-        self.stack.pop()
-        return to_return
-
-    def dump_node_list(self, node_list):
-        to_return = ""
-        for node in node_list:
-            to_return += self.dump_node(node)
-            self.previous = node
-        return to_return
-
-    def dump_root(self, node_list):
-        to_return = ""
-        previous_is_function = False
-        for statement_number, node in enumerate(node_list):
-            if node["type"] not in ('endl', 'comment', 'space'):
-                if node["type"] in ("def", "class") and self.number_of_endl != 3 and statement_number != 0:
-                    to_return += "\n"*(3 - self.number_of_endl)
-                    previous_is_function = True
-                elif previous_is_function:
-                    previous_is_function = False
-                    to_return += "\n" * (3 - self.number_of_endl)
-
-            to_return += self.dump_node(node)
-            self.previous = node
-        return to_return
-
-    def dump_class_body(self, node_list):
-        if node_list and node_list[0]["type"] != "endl":
-            node_list = [
-                {"type": "endl", "formatting": [], "value": "\n", "indent": self._current_indent + "    "}] + node_list
-
-        to_return = ""
-        previous_is_function = False
-        for statement_number, node in enumerate(node_list):
-            if node["type"] not in ('endl', 'comment', 'space'):
-                if node["type"] == "def" and self.number_of_endl != 3 and statement_number != 1:
-                    to_return = re.sub(' *$', '', to_return)
-                    to_return += "\n" * \
-                        (2 - self.number_of_endl) + self._current_indent
-                    previous_is_function = True
-                elif previous_is_function:
-                    previous_is_function = False
-                    to_return += "\n" * (2 - self.number_of_endl)
-            to_return += self.dump_node(node)
-            self.previous = node
-        return to_return
-
-    @node("star")
-    @node("string")
-    @node("raw_string")
-    @node("binary_string")
-    @node("unicode_string")
-    @node("binary_raw_string")
-    @node("unicode_raw_string")
-    def generic(self, node):
-        if find('endl', node["first_formatting"]):
-            yield self.dump_node_list(node["first_formatting"])
-        yield node["value"]
-        if find('endl', node["second_formatting"]):
-            yield self.dump_node_list(node["second_formatting"])
 
 
 def format_code(source_code):
