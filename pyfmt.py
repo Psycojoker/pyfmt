@@ -49,7 +49,7 @@ def format_code(source_code):
                 previous_is_function = False
                 result += "\n" * (3 - state["number_of_endl"])
 
-        result += _generator_to_string(_render_node(node, state))
+        result += _generator_to_string(_render_node(state, node))
         state["previous"] = node
 
     return result
@@ -59,17 +59,17 @@ def _generator_to_string(generator):
     return "".join(list(generator))
 
 
-def _render_list(node_type, key_name, nodes_list, state):
-    if custom_key_renderers.get(node_type, {}).get(key_name) is None:
-        for node in nodes_list:
-            yield _generator_to_string(_render_node(node, state))
+def _render_list(state, node, key, avoid_custom=False):
+    if avoid_custom or custom_key_renderers.get(node["type"], {}).get(key) is None:
+        for node in node[key]:
+            yield _generator_to_string(_render_node(state, node))
 
     else:
-        for i in custom_key_renderers[node_type][key_name](node_type, key_name, nodes_list, state):
+        for i in custom_key_renderers[node["type"]][key](state, node, key):
             yield i
 
 
-def _render_node(node, state):
+def _render_node(state, node):
     node_rendering_order = baron.nodes_rendering_order[node["type"]]
 
     for key_type, key_name, display_condition in node_rendering_order:
@@ -82,7 +82,7 @@ def _render_node(node, state):
 
         if node["type"] in advanced_formatters:
             logging.debug(for_debug + "advanced formatters")
-            yield advanced_formatters[node["type"]](node, state)
+            yield advanced_formatters[node["type"]](state, node)
             break
 
         if display_condition is False or (display_condition is not True and not node[display_condition]):
@@ -96,18 +96,18 @@ def _render_node(node, state):
         elif key_type == "formatting":
             logging.debug(for_debug + "formatting")
             state["previous"] = node
-            yield _render_key(node["type"], key_name, " ", node, state)
+            yield _render_key(state, node, key_name)
         elif key_type == "string":
             logging.debug(for_debug + "string")
             yield node[key_name]
         elif key_type == "key":
             logging.debug(for_debug + "key")
             state["previous"] = node
-            yield _generator_to_string(_render_node(node[key_name], state))
+            yield _generator_to_string(_render_node(state, node[key_name]))
         elif key_type == "list":
             logging.debug(for_debug + "list")
             state["previous"] = node
-            yield _generator_to_string(_render_list(node["type"], key_name, node[key_name], state))
+            yield _generator_to_string(_render_list(state, node, key_name))
         elif key_type == "bool":
             logging.debug(for_debug + "bool")
             pass
@@ -118,47 +118,48 @@ def _render_node(node, state):
     state["previous"] = node
 
 
-def dont_break_backslash(to_test, normal_value, key_name=None):
-    logging.debug("%s %s %s %s" % ("don't break backslash", [to_test], [normal_value], key_name))
-    if isinstance(to_test, list):
-        to_test = _generator_to_string(_render_list(None, None, to_test, {}))
+def dont_break_backslash(state, node, key, normal_value):
+    logging.debug("%s %s %s %s" % ("don't break backslash", [node[key]], [normal_value], key))
+    if isinstance(node[key], list):
+        # to_test = _generator_to_string(_render_list(None, None, to_test, {}))
+        pass
 
-    if key_name is not None and "formatting" not in key_name:
+    if "formatting" not in key:
         return normal_value
 
-    if "\\" in to_test:
-        return to_test
+    if "\\" in node[key]:
+        return node[key]
 
     return normal_value
 
 
-def _render_key(node_type, key_name, value, node, state):
-    if custom_key_renderers.get(node_type, {}).get(key_name) is None:
-        return dont_break_backslash(to_test=node[key_name], normal_value=value, key_name=key_name)
+def _render_key(state, node, key):
+    if custom_key_renderers.get(node["type"], {}).get(key) is None:
+        return dont_break_backslash(state, node, key, normal_value=" ")
 
-    return custom_key_renderers[node_type][key_name](value, key_name, node, state)
-
-
-empty_string = lambda value, key_name, node, state: dont_break_backslash(to_test=node[key_name], normal_value="", key_name=key_name)
+    return custom_key_renderers[node["type"]][key](state, node, key)
 
 
-def suite(node_type, key_name, node_list, state):
-    if node_list and node_list[0]["type"] != "endl":
-        node_list = [
-            {"type": "endl", "formatting": [], "value": "\n", "indent": state["current_indent"] + "    "}] + node_list
-    return _render_list(None, None, node_list, state)
+empty_string = lambda state, node, key: dont_break_backslash(state, node, key, "")
 
 
-def dump_data_structure_body(node_type, key_name, node_list, state):
-    if not find('endl', node_list):
-        return re.sub("([^\n ]) +$", "\g<1>", _generator_to_string(_render_list(None, None, node_list, state)))
+def suite(state, node, key):
+    if node[key] and node[key][0]["type"] != "endl":
+        node[key] = [
+            {"type": "endl", "formatting": [], "value": "\n", "indent": state["current_indent"] + "    "}] + node[key]
+    return _render_list(state, node, key, avoid_custom=True)
+
+
+def dump_data_structure_body(state, node, key):
+    if not find('endl', node[key]):
+        return re.sub("([^\n ]) +$", "\g<1>", _generator_to_string(_render_list(state, node, key, avoid_custom=True)))
 
     to_return = "\n    " + state["current_indent"]
     state["current_indent"] += "    "
 
-    for i in node_list:
+    for i in node[key]:
         if i["type"] != "comma":
-            to_return += _generator_to_string(_render_node(i, state))
+            to_return += _generator_to_string(_render_node(state, i))
         else:
             to_return += ",\n" + state["current_indent"]
 
@@ -201,7 +202,7 @@ custom_key_renderers = {
         "first_formatting": empty_string,
     },
     "comparison_operator": {
-        "formatting": lambda value, key_name, node, state: dont_break_backslash(to_test=node[key_name], normal_value=" " if node["second"] else ""),
+        "formatting": lambda state, node, key: dont_break_backslash(state, node, key, normal_value=" " if node["second"] else ""),
     },
     "def": {
         "value": suite,
@@ -252,16 +253,13 @@ custom_key_renderers = {
         "first_formatting": empty_string,
         "second_formatting": empty_string,
     },
-    "endl": {
-        "formatting": lambda value, key_name, node, state: _generator_to_string(_render_list(None, None, node["formatting"], state)),
-    },
     "exec": {
         "fourth_formatting": empty_string,
     },
     "except": {
         "value": suite,
-        "first_formatting": lambda value, key_name, node, state: " " if node["exception"] else "",
-        "second_formatting": lambda value, key_name, node, state: " " if node["delimiter"] == "as" else "",
+        "first_formatting": lambda state, node, key: " " if node["exception"] else "",
+        "second_formatting": lambda state, node, key: " " if node["delimiter"] == "as" else "",
         "fourth_formatting": empty_string,
         "fifth_formatting": empty_string,
     },
@@ -293,7 +291,7 @@ custom_key_renderers = {
         "third_formatting": empty_string,
     },
     "lambda": {
-        "first_formatting": lambda value, key_name, node, state: " " if node["arguments"] else "",
+        "first_formatting": lambda state, node, key: " " if node["arguments"] else "",
         "second_formatting": empty_string,
     },
     "list": {
@@ -317,7 +315,7 @@ custom_key_renderers = {
         "fourth_formatting": empty_string,
     },
     "return": {
-        "formatting": lambda value, key_name, node, __: " " if node["value"] else ""
+        "formatting": lambda state, node, key: " " if node["value"] else ""
     },
     "set": {
         "value": dump_data_structure_body,
@@ -349,7 +347,7 @@ custom_key_renderers = {
         "fourth_formatting": empty_string,
     },
     "unitary_operator": {
-        "formatting": lambda value, key_name, node, __: " " if node["value"] == "not" else "",
+        "formatting": lambda state, node, key: " " if node["value"] == "not" else "",
     },
     "with": {
         "value": suite,
@@ -357,11 +355,11 @@ custom_key_renderers = {
         "third_formatting": empty_string,
     },
     "yield": {
-        "formatting": lambda value, key_name, node, __: " " if node["value"] else ""
+        "formatting": lambda state, node, key: " " if node["value"] else ""
     },
     "yield_atom": {
         "first_formatting": empty_string,
-        "second_formatting": lambda value, key_name, node, __: " " if node["value"] else "",
+        "second_formatting": lambda state, node, key: " " if node["value"] else "",
         "third_formatting": empty_string,
     },
     "while": {
@@ -372,7 +370,7 @@ custom_key_renderers = {
 }
 
 
-def comment(node, state):
+def comment(state, node):
     to_return = ""
     logging.debug("%s %s" % ("==> previous:", state["previous"]))
     if state["previous"] and state["previous"]["type"] != "endl" and state["previous"] is not node:
@@ -385,15 +383,15 @@ def comment(node, state):
     return to_return
 
 
-def print_(node, state):
+def print_(state, node):
     to_return = "print"
 
     if node["destination"]:
         to_return += " >>"
-        to_return += _generator_to_string(_render_node(node["destination"], state))
+        to_return += _generator_to_string(_render_node(state, node["destination"]))
 
     if node["value"]:
-        value = _generator_to_string(_render_list(node["type"], "value", node["value"], state))
+        value = _generator_to_string(_render_list(state, node, "value"))
         if value.startswith("(") and value.endswith(")") and "," not in value:
             pass
         elif node["value"][0]["type"] != "comma":
@@ -404,7 +402,7 @@ def print_(node, state):
     return to_return
 
 
-def endl(node, state):
+def endl(state, node):
     to_return = ""
 
     # replace tab with space
@@ -443,7 +441,7 @@ def endl(node, state):
         indentation = state["indentation_stack"][-1][1]
 
     if find("comment", node["formatting"]):
-        to_return += _generator_to_string(_render_list(None, None, node["formatting"], state))
+        to_return += _generator_to_string(_render_list(state, node, "formatting"))
 
     to_return += node["value"]
     to_return += indentation
@@ -452,17 +450,17 @@ def endl(node, state):
     return to_return
 
 
-def import_(node, state):
+def import_(state, node):
     to_return = []
 
     for i in filter(lambda x: x["type"] != "comma", node["value"]):
-        to_return.append("import " + _generator_to_string(_render_node(i, state)))
+        to_return.append("import " + _generator_to_string(_render_node(state, i)))
 
     return ("\n" + state["current_indent"]).join(to_return)
 
 
 advanced_formatters = {
-    "repr": lambda x, state: "repr(%s)" % _generator_to_string(_render_list(None, None, x["value"], state)),
+    "repr": lambda state, node: "repr(%s)" % _generator_to_string(_render_list(state, node, "value")),
     "comment": comment,
     "endl": endl,
     "import": import_,
