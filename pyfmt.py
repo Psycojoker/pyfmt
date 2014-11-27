@@ -144,7 +144,10 @@ empty_string = lambda state, node, key: dont_break_backslash(state, node, key, "
 
 
 def suite(state, node, key):
+    logging.debug(">> suite of '%s', key='%s'" % (node["type"], key))
     if node[key] and node[key][0]["type"] != "endl":
+        logging.debug("  prepend endl token on suite because it's missing")
+        logging.debug("  (first token type is '%s')" % node[key][0]["type"])
         node[key] = [
             {"type": "endl", "formatting": [], "value": "\n", "indent": state["current_indent"] + "    "}] + node[key]
     return _render_list(state, node, key, avoid_custom=True)
