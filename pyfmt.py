@@ -99,7 +99,7 @@ def _render_node(state, node):
         elif key_type == "formatting":
             logging.debug(for_debug + "formatting")
             state["previous"] = node
-            yield _render_key(state, node, key_name)
+            yield _render_formatting(state, node, key_name)
         elif key_type == "string":
             logging.debug(for_debug + "string")
             yield node[key_name]
@@ -136,7 +136,7 @@ def dont_break_backslash(state, node, key, normal_value):
     return normal_value
 
 
-def _render_key(state, node, key):
+def _render_formatting(state, node, key):
     if custom_key_renderers.get(node["type"], {}).get(key) is None:
         return dont_break_backslash(state, node, key, normal_value=" ")
 
