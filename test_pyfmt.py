@@ -639,8 +639,8 @@ def test_replace_old_comparison_operator():
     assert format_code("a <> b") == "a != b"
 
 
-def test_regression_slice():
-    assert format_code("a[1:2:3]")
+def test_slice():
+    assert format_code("a[1:2:3]") == "a[1:2:3]"
 
 
 comment_previous_endl_indent = """\
