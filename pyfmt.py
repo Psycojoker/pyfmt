@@ -75,13 +75,13 @@ def _render_list(state, node, key, avoid_custom=False):
 def _render_node(state, node):
     node_rendering_order = baron.nodes_rendering_order[node["type"]]
 
+    if node["type"] == "endl":
+        state["number_of_endl"] += 1
+    else:
+        state["number_of_endl"] = 0
+
     for key_type, key_name, display_condition in node_rendering_order:
         for_debug = "%s %s %s %s %s " % (node["type"], key_name, key_type, [node.get(key_name)], "----->",)
-
-        if node["type"] == "endl":
-            state["number_of_endl"] += 1
-        else:
-            state["number_of_endl"] = 0
 
         if node["type"] in advanced_formatters:
             logging.debug(for_debug + "advanced formatters")
