@@ -121,26 +121,33 @@ def _render_node(state, node):
     state["previous"] = node
 
 
-def dont_break_backslash(state, node, key, normal_value):
-    logging.debug("%s %s %s %s" % ("don't break backslash", [node[key]], [normal_value], key))
-    if isinstance(node[key], list):
-        # to_test = _generator_to_string(_render_list(None, None, to_test, {}))
-        pass
-
-    if "formatting" not in key:
-        return normal_value
-
-    if "\\" in node[key]:
-        return node[key]
-
-    return normal_value
-
-
 def _render_formatting(state, node, key):
     if custom_key_renderers.get(node["type"], {}).get(key) is None:
         return dont_break_backslash(state, node, key, normal_value=" ")
 
     return custom_key_renderers[node["type"]][key](state, node, key)
+
+
+def dont_break_backslash(state, node, key, normal_value):
+    logging.debug("-- don't break backslash '%s' on '%s', default: '%s'" % (node["type"], key, normal_value))
+
+    if "formatting" not in key:
+        return normal_value
+
+    if isinstance(node[key], basestring):
+        value = node[key]
+    else:
+        value = baron.dumps(node[key])
+
+    logging.debug("   value: '%s'" % value)
+
+    if "\\" in value:
+        logging.debug("   backslash in value, return value")
+        return value
+
+    logging.debug("   no backslash in value, return normal_value: '%s'" % normal_value)
+
+    return normal_value
 
 
 empty_string = lambda state, node, key: dont_break_backslash(state, node, key, "")
