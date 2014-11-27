@@ -88,9 +88,16 @@ def _render_node(state, node):
             yield advanced_renderers[node["type"]](state, node)
             break
 
-        if display_condition is False or (display_condition is not True and not node[display_condition]):
-            logging.debug(for_debug + "not displayed")
-            state["previous"] = node
+        # yuck, ugly
+        should_continue = False
+        for dc in (display_condition if isinstance(display_condition, list) else [display_condition]):
+            if dc is False or (dc is not True and not node[dc]):
+                logging.debug(for_debug + "not displayed")
+                state["previous"] = node
+                should_continue = True
+                break
+
+        if should_continue:
             continue
 
         if key_type == "constant":
