@@ -56,7 +56,9 @@ def format_code(source_code):
 
 
 def _generator_to_string(generator):
-    return "".join(list(generator))
+    to_return = list(generator)
+    logging.debug("(( _generator_to_string sequence: %s ))" % (to_return))
+    return "".join(to_return)
 
 
 def _render_list(state, node, key, avoid_custom=False):
