@@ -662,9 +662,8 @@ def test_respect_backslash():
     assert format_code(respect_backslash) == respect_backslash
 
 
-# Disable test because the many line statement is a big subject
-# def test_on_Self():
-#    assert format_code(open("./pyfmt.py", "r").read()) == open("./pyfmt.py", "r").read()
+def test_on_self():
+    assert format_code(open("./pyfmt.py", "r").read()) == open("./pyfmt.py", "r").read()
 
 
 def test_on_self_tests():

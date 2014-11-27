@@ -44,7 +44,7 @@ def format_code(source_code):
         logging.debug("root [%s] %s" % (statement_number, node["type"]))
         if node["type"] not in ('endl', 'comment', 'space'):
             if node["type"] in ("def", "class") and state["number_of_endl"] != 3 and statement_number != 0:
-                result += "\n"*(3 - state["number_of_endl"])
+                result += "\n" * (3 - state["number_of_endl"])
                 previous_is_function = True
             elif previous_is_function:
                 previous_is_function = False
@@ -165,8 +165,7 @@ def suite(state, node, key):
     if node[key] and node[key][0]["type"] != "endl":
         logging.debug("  prepend endl token on suite because it's missing")
         logging.debug("  (first token type is '%s')" % node[key][0]["type"])
-        node[key] = [
-            {"type": "endl", "formatting": [], "value": "\n", "indent": state["current_indent"] + "    "}] + node[key]
+        node[key] = [{"type": "endl", "formatting": [], "value": "\n", "indent": state["current_indent"] + "    "}] + node[key]
     return _render_list(state, node, key, avoid_custom=True)
 
 
@@ -194,8 +193,7 @@ def class_body(state, node, key):
     logging.debug("%s %s %s" % ("class_body", node[key], key))
 
     if node[key] and node[key][0]["type"] != "endl":
-        node[key] = [
-            {"type": "endl", "formatting": [], "value": "\n", "indent": state["current_indent"] + "    "}] + node[key]
+        node[key] = [{"type": "endl", "formatting": [], "value": "\n", "indent": state["current_indent"] + "    "}] + node[key]
 
     to_return = ""
     previous_is_function = False
@@ -475,8 +473,7 @@ def endl(state, node):
 
     elif indentation > state["indentation_stack"][-1][0]:
         if indentation != state["indentation_stack"][-1][1] + " " * 4:
-            state["indentation_stack"].append(
-                (indentation, state["indentation_stack"][-1][1] + " " * 4))
+            state["indentation_stack"].append((indentation, state["indentation_stack"][-1][1] + " " * 4))
             indentation = state["indentation_stack"][-2][1] + " " * 4
         else:
             state["indentation_stack"].append((indentation, indentation))
@@ -533,17 +530,13 @@ advanced_renderers = {
 
 
 def main():
-    parser = argparse.ArgumentParser(
-        description='Auto format a python file following the pep8 convention.')
-    parser.add_argument(
-        'file_name', metavar='file_name', type=str, help='file name')
-    parser.add_argument('-i', dest='in_place', action='store_true',
-                        default=False, help='in place modification, like sed')
+    parser = argparse.ArgumentParser(description='Auto format a python file following the pep8 convention.')
+    parser.add_argument('file_name', metavar='file_name', type=str, help='file name')
+    parser.add_argument('-i', dest='in_place', action='store_true', default=False, help='in place modification, like sed')
 
     args = parser.parse_args()
     if not os.path.exists(args.file_name):
-        sys.stderr.write(
-            "Error: the file '%s' does not exist.\n" % args.file_name)
+        sys.stderr.write("Error: the file '%s' does not exist.\n" % args.file_name)
         sys.exit(1)
 
     if not args.in_place:
