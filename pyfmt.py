@@ -449,7 +449,7 @@ def endl(state, node):
     if find("comment", node["formatting"]):
         to_return += _generator_to_string(_render_list(state, node, "formatting"))
 
-    to_return += node["value"]
+    to_return += "\n"
     to_return += indentation
     state["previous"] = node
     state["current_indent"] = node["indent"]
