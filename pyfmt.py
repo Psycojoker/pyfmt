@@ -150,7 +150,7 @@ def suite(state, node, key):
     return _render_list(state, node, key, avoid_custom=True)
 
 
-def dump_data_structure_body(state, node, key):
+def data_structure_body(state, node, key):
     if not find('endl', node[key]):
         return re.sub("([^\n ]) +$", "\g<1>", _generator_to_string(_render_list(state, node, key, avoid_custom=True)))
 
@@ -217,7 +217,7 @@ custom_key_renderers = {
         "second_formatting": empty_string,
     },
     "dict": {
-        "value": dump_data_structure_body,
+        "value": data_structure_body,
         "first_formatting": empty_string,
         "second_formatting": empty_string,
         "third_formatting": empty_string,
@@ -295,7 +295,7 @@ custom_key_renderers = {
         "second_formatting": empty_string,
     },
     "list": {
-        "value": dump_data_structure_body,
+        "value": data_structure_body,
         "first_formatting": empty_string,
         "second_formatting": empty_string,
         "third_formatting": empty_string,
@@ -318,7 +318,7 @@ custom_key_renderers = {
         "formatting": lambda state, node, key: " " if node["value"] else ""
     },
     "set": {
-        "value": dump_data_structure_body,
+        "value": data_structure_body,
         "first_formatting": empty_string,
         "second_formatting": empty_string,
         "third_formatting": empty_string,
@@ -340,7 +340,7 @@ custom_key_renderers = {
         "second_formatting": empty_string,
     },
     "tuple": {
-        "value": dump_data_structure_body,
+        "value": data_structure_body,
         "first_formatting": empty_string,
         "second_formatting": empty_string,
         "third_formatting": empty_string,
