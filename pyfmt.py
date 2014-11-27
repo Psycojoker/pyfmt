@@ -317,6 +317,9 @@ custom_key_renderers = {
         "fourth_formatting": empty_string,
         "fifth_formatting": empty_string,
     },
+    "from_import": {
+        "targets": lambda state, node, key: "*" if node["targets"][0]["type"] == "star" else _generator_to_string(_render_list(state, node, key, avoid_custom=True)),
+    },
     "generator_comprehension": {
         "first_formatting": empty_string,
         "second_formatting": empty_string,

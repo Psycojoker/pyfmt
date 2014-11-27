@@ -643,6 +643,10 @@ def test_slice():
     assert format_code("a[1:2:3]") == "a[1:2:3]"
 
 
+def test_import_from_star():
+    assert format_code("from x import *") == "from x import *"
+
+
 comment_previous_endl_indent = """\
 class A:
     a = b
