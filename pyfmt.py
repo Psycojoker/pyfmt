@@ -500,6 +500,7 @@ advanced_renderers = {
     "import": import_,
     "print": print_,
     "repr": lambda state, node: "repr(%s)" % _generator_to_string(_render_list(state, node, "value")),
+    "semicolon": lambda state, node: "\n" + state["current_indent"],
 }
 
 
