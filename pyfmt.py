@@ -236,9 +236,6 @@ custom_key_renderers = {
     "comma": {
         "first_formatting": empty_string,
     },
-    "comparison_operator": {
-        "formatting": lambda state, node, key: dont_break_backslash(state, node, key, normal_value=" " if node["second"] else ""),
-    },
     "def": {
         "value": suite,
         "second_formatting": empty_string,
@@ -494,8 +491,19 @@ def import_(state, node):
     return ("\n" + state["current_indent"]).join(to_return)
 
 
+def comparison_operator(state, node):
+    to_return = node["first"].replace("<>", "!=")
+
+    if node["second"]:
+        to_return += dont_break_backslash(state, node, "formatting", normal_value=" ")
+        to_return += node["second"]
+
+    return to_return
+
+
 advanced_renderers = {
     "comment": comment,
+    "comparison_operator": comparison_operator,
     "endl": endl,
     "import": import_,
     "print": print_,
