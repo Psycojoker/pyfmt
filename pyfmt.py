@@ -31,12 +31,12 @@ def find(node_type, tree):
 
 
 def format_code(source_code):
-    result = ""
     state = {
         "previous": None,
         "current_indent": "",
         "number_of_endl": 0,
         "indentation_stack": [],
+        "result": ""
     }
 
     previous_is_function = False
@@ -44,16 +44,16 @@ def format_code(source_code):
         logging.debug("root [%s] %s" % (statement_number, node["type"]))
         if node["type"] not in ('endl', 'comment', 'space'):
             if node["type"] in ("def", "class") and state["number_of_endl"] != 3 and statement_number != 0:
-                result += "\n" * (3 - state["number_of_endl"])
+                state["result"] += "\n" * (3 - state["number_of_endl"])
                 previous_is_function = True
             elif previous_is_function:
                 previous_is_function = False
-                result += "\n" * (3 - state["number_of_endl"])
+                state["result"] += "\n" * (3 - state["number_of_endl"])
 
-        result += _generator_to_string(_render_node(state, node))
+        state["result"] += _generator_to_string(_render_node(state, node))
         state["previous"] = node
 
-    return result
+    return state["result"]
 
 
 def _generator_to_string(generator):
