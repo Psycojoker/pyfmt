@@ -41,6 +41,7 @@ def format_code(source_code):
 
     previous_is_function = False
     for statement_number, node in enumerate(baron.parse(source_code)):
+        logging.debug("root [%s] %s" % (statement_number, node["type"]))
         if node["type"] not in ('endl', 'comment', 'space'):
             if node["type"] in ("def", "class") and state["number_of_endl"] != 3 and statement_number != 0:
                 result += "\n"*(3 - state["number_of_endl"])
