@@ -83,9 +83,9 @@ def _render_node(state, node):
     for key_type, key_name, display_condition in node_rendering_order:
         for_debug = "%s %s %s %s %s " % (node["type"], key_name, key_type, [node.get(key_name)], "----->",)
 
-        if node["type"] in advanced_formatters:
-            logging.debug(for_debug + "advanced formatters")
-            yield advanced_formatters[node["type"]](state, node)
+        if node["type"] in advanced_renderers:
+            logging.debug(for_debug + "advanced renderers")
+            yield advanced_renderers[node["type"]](state, node)
             break
 
         if display_condition is False or (display_condition is not True and not node[display_condition]):
@@ -494,7 +494,7 @@ def import_(state, node):
     return ("\n" + state["current_indent"]).join(to_return)
 
 
-advanced_formatters = {
+advanced_renderers = {
     "comment": comment,
     "endl": endl,
     "import": import_,
