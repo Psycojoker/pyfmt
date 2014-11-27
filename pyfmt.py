@@ -495,11 +495,11 @@ def import_(state, node):
 
 
 advanced_formatters = {
-    "repr": lambda state, node: "repr(%s)" % _generator_to_string(_render_list(state, node, "value")),
     "comment": comment,
     "endl": endl,
     "import": import_,
     "print": print_,
+    "repr": lambda state, node: "repr(%s)" % _generator_to_string(_render_list(state, node, "value")),
 }
 
 
