@@ -176,6 +176,35 @@ def data_structure_body(state, node, key):
     return to_return
 
 
+def class_body(state, node, key):
+    logging.debug("%s %s %s" % ("class_body", node[key], key))
+
+    if node[key] and node[key][0]["type"] != "endl":
+        node[key] = [
+            {"type": "endl", "formatting": [], "value": "\n", "indent": state["current_indent"] + "    "}] + node[key]
+
+    to_return = ""
+    previous_is_function = False
+
+    for statement_number, node in enumerate(node[key]):
+        logging.debug("  * %s" % node["type"])
+        if node["type"] not in ('endl', 'comment', 'space'):
+            if node["type"] == "def" and state["number_of_endl"] != 3 and statement_number != 1:
+                to_return = re.sub(' *$', '', to_return)
+                to_return += "\n" * \
+                    (2 - state["number_of_endl"]) + state["current_indent"]
+                previous_is_function = True
+
+            elif previous_is_function:
+                previous_is_function = False
+                to_return += "\n" * (2 - state["number_of_endl"])
+
+        to_return += _generator_to_string(_render_node(state, node))
+        state["previous"] = node
+
+    return to_return
+
+
 custom_key_renderers = {
     "assert": {
         "second_formatting": empty_string,
@@ -197,7 +226,7 @@ custom_key_renderers = {
         "second_formatting": empty_string,
     },
     "class": {
-        "value": suite,
+        "value": class_body,
         "second_formatting": empty_string,
         "third_formatting": empty_string,
         "fourth_formatting": empty_string,
