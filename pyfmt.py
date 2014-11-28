@@ -141,7 +141,7 @@ def dont_break_backslash(state, node, key, normal_value):
     if "formatting" not in key:
         return normal_value
 
-    if isinstance(node[key], basestring):
+    if isinstance(node[key], string_instance):
         value = node[key]
     else:
         value = baron.dumps(node[key])
