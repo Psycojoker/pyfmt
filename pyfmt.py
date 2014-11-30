@@ -358,6 +358,7 @@ custom_key_renderers = {
         "fourth_formatting": empty_string,
     },
     "raise": {
+        "first_formatting": lambda state, node, key: " " if node["value"] else "",
         "second_formatting": empty_string,
         "fourth_formatting": empty_string,
     },

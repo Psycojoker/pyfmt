@@ -651,6 +651,10 @@ def test_string_chain():
     assert format_code("a = ('b'\n     'c')") == "a = ('b'\n     'c')"
 
 
+def test_raise_empty():
+    assert format_code("raise") == "raise"
+
+
 comment_previous_endl_indent = """\
 class A:
     a = b
