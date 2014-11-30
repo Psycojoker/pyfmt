@@ -1,0 +1,20 @@
+* handle string_chains
+* how should I behave in splited function call? see pep8 for that
+* trailing spaces
+* don't break "\n" between parenthesis of a call/funcdef_args?
+
+Bugs:
+
+# stuff
+def pouet(): ...
+
+|
+v
+
+# stuff
+
+
+def pouet(): ...
+
+
+--------------------------------------
