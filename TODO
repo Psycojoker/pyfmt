@@ -2,6 +2,8 @@
 * how should I behave in splited function call? see pep8 for that
 * trailing spaces
 * don't break "\n" between parenthesis of a call/funcdef_args?
+* splits too long from_import
+* don't break aligned comment (see bug bellow)
 
 Bugs:
 
@@ -18,3 +20,88 @@ def pouet(): ...
 
 
 --------------------------------------
+
+def _show_warning(message, category, filename, lineno, file=None, line=None):
+    """Hook to write a warning to a file; replace if you like."""
+    if file is None:
+        file = sys.stderr
+    try:
+        file.write(formatwarning(message, category, filename, lineno, line))
+    except IOError:
+        pass # the file (probably stderr) is invalid - this warning gets lost.
+# Keep a working version around in case the deprecation of the old API is
+# triggered.
+
+
+|
+v
+
+def _show_warning(message, category, filename, lineno, file=None, line=None):
+    """Hook to write a warning to a file; replace if you like."""
+    if file is None:
+        file = sys.stderr
+    try:
+        file.write(formatwarning(message, category, filename, lineno, line))
+    except IOError:
+        pass  # the file (probably stderr) is invalid - this warning gets lost.
+            
+# triggered.
+
+---------------------------------------
+
+class Foobar:
+    ...
+    def difference(self, other):
+        return self._apply(other, self.data.difference)
+    __sub__ = difference
+
+
+|
+v
+
+class Foobar:
+    ...
+    def difference(self, other):
+        return self._apply(other, self.data.difference)
+    
+__sub__ = difference
+
+
+----------------------------------------
+
+{
+    # foobar
+    "stuff"
+}
+
+|  # comment is removed (haven't tested this exact code), probably similar for string_chain
+v
+
+{
+    "stuff"
+}
+
+----------------------------------------
+
+CHECK_TIMINGS = False     # making true makes tests take a lot longer
+                          # and can sometimes cause some non-serious
+                          # failures because some calls block a bit
+                          # longer than expected
+
+|
+v
+
+CHECK_TIMINGS = False  # making true makes tests take a lot longer
+        # and can sometimes cause some non-serious
+        # failures because some calls block a bit
+        # longer than expected
+
+-----------------------------------------
+
+        parts = dn.split(r'.')
+
+|  # I think that I just don't handle other type of strings
+v
+
+        parts = dn.split( r'.' )
+
