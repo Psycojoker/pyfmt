@@ -521,6 +521,15 @@ def comparison_operator(state, node):
     return to_return
 
 
+def string_chain(state, node):
+    to_return = ""
+    for i in node["value"]:
+        to_return += _generator_to_string(_render_node(state, i))
+        to_return += baron.dumps(i["second_formatting"])
+
+    return to_return
+
+
 advanced_renderers = {
     "comment": comment,
     "comparison_operator": comparison_operator,
@@ -529,6 +538,7 @@ advanced_renderers = {
     "print": print_,
     "repr": lambda state, node: "repr(%s)" % _generator_to_string(_render_list(state, node, "value")),
     "semicolon": lambda state, node: "\n" + state["current_indent"],
+    "string_chain": string_chain,
 }
 
 

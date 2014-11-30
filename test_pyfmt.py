@@ -647,6 +647,10 @@ def test_import_from_star():
     assert format_code("from x import *") == "from x import *"
 
 
+def test_string_chain():
+    assert format_code("a = ('b'\n     'c')") == "a = ('b'\n     'c')"
+
+
 comment_previous_endl_indent = """\
 class A:
     a = b
