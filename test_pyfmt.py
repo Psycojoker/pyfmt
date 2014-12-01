@@ -655,6 +655,10 @@ def test_raise_empty():
     assert format_code("raise") == "raise"
 
 
+def test_trailing_space():
+    assert format_code("pouet  \n  \nplop  \n") == "pouet\n\nplop\n"
+
+
 comment_previous_endl_indent = """\
 class A:
     a = b

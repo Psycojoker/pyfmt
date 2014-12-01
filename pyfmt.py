@@ -53,6 +53,9 @@ def format_code(source_code):
         state["result"] += _generator_to_string(_render_node(state, node))
         state["previous"] = node
 
+    # trailing spaces
+    state["result"] = re.sub(" +$", "", state["result"], flags=re.MULTILINE)
+
     return state["result"]
 
 
