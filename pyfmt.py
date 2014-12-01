@@ -437,21 +437,12 @@ def comment(state, node):
     return to_return
 
 
-def print_(state, node):
-    to_return = "print"
+def comparison_operator(state, node):
+    to_return = node["first"].replace("<>", "!=")
 
-    if node["destination"]:
-        to_return += " >>"
-        to_return += _generator_to_string(_render_node(state, node["destination"]))
-
-    if node["value"]:
-        value = _generator_to_string(_render_list(state, node, "value"))
-        if value.startswith("(") and value.endswith(")") and "," not in value:
-            pass
-        elif node["value"][0]["type"] != "comma":
-            to_return += " "
-
-        to_return += value
+    if node["second"]:
+        to_return += dont_break_backslash(state, node, "formatting", normal_value=" ")
+        to_return += node["second"]
 
     return to_return
 
@@ -512,12 +503,21 @@ def import_(state, node):
     return ("\n" + state["current_indent"]).join(to_return)
 
 
-def comparison_operator(state, node):
-    to_return = node["first"].replace("<>", "!=")
+def print_(state, node):
+    to_return = "print"
 
-    if node["second"]:
-        to_return += dont_break_backslash(state, node, "formatting", normal_value=" ")
-        to_return += node["second"]
+    if node["destination"]:
+        to_return += " >>"
+        to_return += _generator_to_string(_render_node(state, node["destination"]))
+
+    if node["value"]:
+        value = _generator_to_string(_render_list(state, node, "value"))
+        if value.startswith("(") and value.endswith(")") and "," not in value:
+            pass
+        elif node["value"][0]["type"] != "comma":
+            to_return += " "
+
+        to_return += value
 
     return to_return
 
