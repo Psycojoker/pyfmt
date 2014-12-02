@@ -1,4 +1,3 @@
-* how should I behave in splited function call? see pep8 for that
 * don't break "\n" between parenthesis of a call/funcdef_args?
 * splits too long from_import
 * don't break aligned comment (see bug bellow)
