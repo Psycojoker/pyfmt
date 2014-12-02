@@ -1,6 +1,8 @@
 * don't break "\n" between parenthesis of a call/funcdef_args?
 * splits too long from_import
 * don't break aligned comment (see bug bellow)
+* in "exec" statement, don't put a space if first char of value is "(", for eg: exec("foobar")
+* same for print function
 
 Bugs:
 
