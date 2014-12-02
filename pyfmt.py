@@ -232,12 +232,6 @@ custom_key_renderers = {
     "assert": {
         "second_formatting": empty_string,
     },
-    "associative_parenthesis": {
-        "first_formatting": empty_string,
-        "second_formatting": empty_string,
-        "third_formatting": empty_string,
-        "fourth_formatting": empty_string,
-    },
     "call_argument": {
         "first_formatting": empty_string,
         "second_formatting": empty_string,
@@ -429,6 +423,17 @@ custom_key_renderers = {
 }
 
 
+def associative_parenthesis(state, node):
+    to_return = "("
+    state["number_of_call"] += 1
+    to_return += dont_break_backslash(state, node, "second_formatting", "")
+    to_return += _generator_to_string(_render_node(state, node["value"]))
+    to_return += dont_break_backslash(state, node, "third_formatting", "")
+    state["number_of_call"] -= 1
+    to_return += ")"
+    return to_return
+
+
 def call(state, node):
     to_return = "("
     state["number_of_call"] += 1
@@ -548,6 +553,7 @@ def string_chain(state, node):
 
 
 advanced_renderers = {
+    "associative_parenthesis": associative_parenthesis,
     "call": call,
     "comment": comment,
     "comparison_operator": comparison_operator,

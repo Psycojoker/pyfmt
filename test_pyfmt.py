@@ -648,7 +648,7 @@ def test_import_from_star():
 
 
 def test_string_chain():
-    assert format_code("a = ('b'\n     'c')") == "a = ('b'\n     'c')"
+    assert format_code("a = 'b'     'c'") == "a = 'b'     'c'"
 
 
 def test_raise_empty():
@@ -699,3 +699,7 @@ def test_comment_before_class():
 
 def test_dont_break_endl_in_call():
     assert format_code("a(\n b,\n c)") == "a(\n b,\n c)"
+
+
+def test_dont_break_endl_in_associative_parenthesis():
+    assert format_code("(\n b)") == "(\n b)"
