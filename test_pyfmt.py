@@ -695,3 +695,7 @@ class pouet():
 
 def test_comment_before_class():
     assert format_code(comment_before_class) == comment_before_class
+
+
+def test_dont_break_endl_in_call():
+    assert format_code("a(\n b,\n c)") == "a(\n b,\n c)"

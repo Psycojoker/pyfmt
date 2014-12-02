@@ -36,6 +36,7 @@ def format_code(source_code):
         "current_indent": "",
         "number_of_endl": 0,
         "indentation_stack": [],
+        "number_of_call": 0,
         "result": ""
     }
 
@@ -158,6 +159,10 @@ def dont_break_backslash(state, node, key, normal_value):
         logging.debug("   backslash in value, return value")
         return value
 
+    if state["number_of_call"] > 0 and "\n" in value:
+        logging.debug("   in call, don't break user formatting")
+        return value
+
     logging.debug("   no backslash in value, return normal_value: '%s'" % normal_value)
 
     return normal_value
@@ -228,12 +233,6 @@ custom_key_renderers = {
         "second_formatting": empty_string,
     },
     "associative_parenthesis": {
-        "first_formatting": empty_string,
-        "second_formatting": empty_string,
-        "third_formatting": empty_string,
-        "fourth_formatting": empty_string,
-    },
-    "call": {
         "first_formatting": empty_string,
         "second_formatting": empty_string,
         "third_formatting": empty_string,
@@ -430,6 +429,17 @@ custom_key_renderers = {
 }
 
 
+def call(state, node):
+    to_return = "("
+    state["number_of_call"] += 1
+    to_return += dont_break_backslash(state, node, "second_formatting", "")
+    to_return += _generator_to_string(_render_list(state, node, "value"))
+    to_return += dont_break_backslash(state, node, "third_formatting", "")
+    state["number_of_call"] -= 1
+    to_return += ")"
+    return to_return
+
+
 def comment(state, node):
     to_return = ""
     logging.debug("%s %s" % ("==> previous:", state["previous"]))
@@ -538,6 +548,7 @@ def string_chain(state, node):
 
 
 advanced_renderers = {
+    "call": call,
     "comment": comment,
     "comparison_operator": comparison_operator,
     "endl": endl,
