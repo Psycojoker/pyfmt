@@ -44,7 +44,8 @@ def format_code(source_code):
         logging.debug("root [%s] %s" % (statement_number, node["type"]))
         if node["type"] not in ('endl', 'comment', 'space'):
             if node["type"] in ("def", "class") and state["number_of_endl"] != 3 and statement_number != 0:
-                state["result"] += "\n" * (3 - state["number_of_endl"])
+                if not find("comment", state["previous"]):
+                    state["result"] += "\n" * (3 - state["number_of_endl"])
                 previous_is_function = True
             elif previous_is_function:
                 previous_is_function = False
@@ -79,8 +80,10 @@ def _render_node(state, node):
     node_rendering_order = baron.nodes_rendering_order[node["type"]]
 
     if node["type"] == "endl":
+        logging.debug("++ number_of_endl += 1 (%s), node.type: '%s'" % (state["number_of_endl"], node["type"]))
         state["number_of_endl"] += 1
-    else:
+    elif node["type"] != "comment":
+        logging.debug("// number_of_endl = 0, node.type: '%s'" % node["type"])
         state["number_of_endl"] = 0
 
     for key_type, key_name, display_condition in node_rendering_order:

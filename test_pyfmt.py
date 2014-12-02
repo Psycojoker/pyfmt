@@ -684,3 +684,14 @@ def test_on_self():
 
 def test_on_self_tests():
     assert format_code(open("./test_pyfmt.py", "r").read()) == open("./test_pyfmt.py", "r").read()
+
+
+comment_before_class = """\
+# stuff
+class pouet():
+    pass
+"""
+
+
+def test_comment_before_class():
+    assert format_code(comment_before_class) == comment_before_class
