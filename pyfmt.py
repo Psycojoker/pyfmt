@@ -481,18 +481,12 @@ def endl(state, node):
         pass
 
     elif len(state["indentation_stack"]) == 0:
-        if len(indentation) != 4:
-            state["indentation_stack"].append((indentation, " " * 4))
-            indentation = " " * 4
-        else:
-            state["indentation_stack"].append((indentation, indentation))
+        state["indentation_stack"].append((indentation, " " * 4))
+        indentation = " " * 4
 
     elif indentation > state["indentation_stack"][-1][0]:
-        if indentation != state["indentation_stack"][-1][1] + " " * 4:
-            state["indentation_stack"].append((indentation, state["indentation_stack"][-1][1] + " " * 4))
-            indentation = state["indentation_stack"][-2][1] + " " * 4
-        else:
-            state["indentation_stack"].append((indentation, indentation))
+        state["indentation_stack"].append((indentation, state["indentation_stack"][-1][1] + " " * 4))
+        indentation = state["indentation_stack"][-2][1] + " " * 4
 
     elif indentation < state["indentation_stack"][-1][0]:
         while state["indentation_stack"] and indentation != state["indentation_stack"][-1][0]:
