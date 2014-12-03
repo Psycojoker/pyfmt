@@ -659,6 +659,10 @@ def test_trailing_space():
     assert format_code("pouet  \n  \nplop  \n") == "pouet\n\nplop\n"
 
 
+def test_exec_function():
+    assert format_code("exec(plop)") == "exec(plop)"
+
+
 comment_previous_endl_indent = """\
 class A:
     a = b

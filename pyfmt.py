@@ -228,6 +228,13 @@ def class_body(state, node, key):
     return to_return
 
 
+def exec_first_formatting(state, node, value):
+    if baron.dumps(node["value"]).lstrip().startswith("("):
+        return ""
+
+    return " "
+
+
 custom_key_renderers = {
     "assert": {
         "second_formatting": empty_string,
@@ -297,6 +304,7 @@ custom_key_renderers = {
         "second_formatting": empty_string,
     },
     "exec": {
+        "first_formatting": exec_first_formatting,
         "fourth_formatting": empty_string,
     },
     "except": {
