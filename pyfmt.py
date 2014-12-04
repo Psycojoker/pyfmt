@@ -168,9 +168,6 @@ def dont_break_backslash(state, node, key, normal_value):
     return normal_value
 
 
-empty_string = lambda state, node, key: dont_break_backslash(state, node, key, "")
-
-
 def suite(state, node, key):
     logging.debug(">> suite of '%s', key='%s'" % (node["type"], key))
     if node[key] and node[key][0]["type"] != "endl":
@@ -233,6 +230,10 @@ def exec_first_formatting(state, node, value):
         return ""
 
     return " "
+
+
+def empty_string(state, node, key):
+    return dont_break_backslash(state, node, key, "")
 
 
 custom_key_renderers = {
