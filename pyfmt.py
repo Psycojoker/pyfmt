@@ -122,6 +122,11 @@ class Dumper(object):
             self.previous = node
         return to_return
 
+    def _transform_condition(self, source_string):
+        if source_string[0] == '(' and source_string[-1] == ')':
+            source_string = source_string[1:-1]
+        return source_string
+
     @node()
     def endl(self, node):
         # replace tab with space
@@ -560,7 +565,8 @@ class Dumper(object):
     @node()
     def if_(self, node):
         yield "if "
-        yield self.dump_node(node["test"])
+        cond = self.dump_node(node["test"])
+        yield self._transform_condition(cond)
         yield ":"
         self.previous = node
         yield self.dump_suite(node["value"])
@@ -568,7 +574,8 @@ class Dumper(object):
     @node()
     def elif_(self, node):
         yield "elif "
-        yield self.dump_node(node["test"])
+        cond = self.dump_node(node["test"])
+        yield self._transform_condition(cond)
         yield ":"
         self.previous = node
         yield self.dump_suite(node["value"])
