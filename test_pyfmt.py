@@ -106,6 +106,15 @@ def test_if_comprehension():
     assert format_code("[  x      for  x     in     x      if      x]") == "[x for x in x if x]"
 
 
+def test_if_brackets():
+    assert format_code("if (True  )   : pass") == "if True:\n    pass\n"
+    assert format_code("if Exception(   )  : pass") == "if Exception():\n    pass\n"
+
+
+def test_elif_brackets():
+    assert format_code("if (True  )   : pass\nelif  (False    ): False  ") == "if True:\n    pass\nelif False:\n    False  \n"
+
+
 def test_getitem():
     assert format_code("a[  b  ]") == "a[b]"
 
