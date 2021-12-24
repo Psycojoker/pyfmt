@@ -5,7 +5,7 @@ PyFmt
 same spirit than [gofmt](http://golang.org/cmd/gofmt/). It follows the `pep8` and
 uses [Baron](https://github.com/Psycojoker/baron) to do its work in one pass.
 
-**`Pyfmt` is in its early stage of developpement, it already do a good job at
+**`Pyfmt` is in its early stage of development, it already do a good job at
 formatting most of python code but it doesn't handle yet splitting a too long
 line and might end up putting back into one line a line that you have split.**
 But it should be fine for ~80% of the cases.
@@ -62,5 +62,5 @@ Things that `pyfmt` do (if it's not already done in the code):
 Things that `pyfmt` don't do or don't do yet and that can be annoying:
 
 * properly formatting the content of a "from x import (lot of stuff)"
-* properly splitting too long lines, it may ends up putting back on one line a splited line
+* properly splitting too long lines, it may ends up putting back on one line a splitted line
 * removing extra blank lines
